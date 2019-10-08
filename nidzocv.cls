@@ -509,7 +509,7 @@
       \raisebox{-.6ex}{#1}\hspace{1ex}\cvhrulefill}}}
 
 % Left Sidebar
-\NewDocumentEnvironment{sidebar}{}{
+\NewDocumentEnvironment{sidebar}{O{0cm}O{0cm}}{
   \begin{tikzpicture}[remember picture,overlay]
     \fill[backgroundColor]%
     (current page.north west)%
@@ -531,7 +531,8 @@
             minimum size=10.2cm,
             path picture={
                 \node[
-                  xshift=-0.2cm,
+                  xshift=#1,
+                  yshift=#2,
                   anchor=center,
                   % draw,line width=.5mm,
                 ] at (path picture bounding box.center){
