@@ -12,6 +12,7 @@
 \RequirePackage{xcolor}
 \RequirePackage{xparse}
 \RequirePackage{pdfpages}
+\RequirePackage{enumitem}
 
 % Options in brackets are needed for centering in sidebar showframe=true
 \RequirePackage[margin=1cm,noheadfoot]{geometry}
