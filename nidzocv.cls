@@ -1,4 +1,4 @@
-% !TEX program = latexmk
+% !TEX program = pdflatex
 % !TEX encoding = UTF-8 Unicode
 % !TEX root = main.tex
 % !TEX options = -synctex=1 -interaction=nonstopmode -file-line-error "%DOC%"
@@ -11,6 +11,7 @@
 \RequirePackage{calc}
 \RequirePackage{xcolor}
 \RequirePackage{xparse}
+\RequirePackage{pdfpages}
 
 % Options in brackets are needed for centering in sidebar showframe=true
 \RequirePackage[margin=1cm,noheadfoot]{geometry}
