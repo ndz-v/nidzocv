@@ -22,6 +22,9 @@
 \RequirePackage{parskip}
 \RequirePackage{xstring}
 
+\newcounter{pdfpage}
+\newcounter{cvpage}
+
 % For drawing header, footer and blocks
 \RequirePackage{tikz}
 
@@ -41,17 +44,17 @@
 \usetikzlibrary{%
   arrows.meta,
   backgrounds,
-	calc,
-	fit,
+  calc,
+  fit,
   matrix,
-	positioning,
+  positioning,
   shapes.geometric,
   shapes.misc
 }
-\RequirePackage[hidelinks]{hyperref}
+
 \hypersetup{
   colorlinks=true,
-  % linkcolor=white,
+  linkcolor=blue,
   % filecolor=magenta,
   urlcolor=blue,
 }
@@ -78,6 +81,7 @@
     \RenewDocumentCommand{\familydefault}{}{\sfdefault}
   \fi
 \fi
+
 \ifxetex
   \NewDocumentCommand{\kright}{m}{\leavevmode #1%
     \kern-\XeTeXglyphbounds3 \the\XeTeXcharglyph`#1 }
@@ -118,36 +122,36 @@
 \pagestyle{empty}
 
 \tikzset{
-	@contactIcon/.style={minimum height=\baselineskip,contactIcon,},
-	@contactText/.style={minimum height=\baselineskip,text depth=0pt,contactText,},
-	@eventdottext/.style = {text width=\mainWidth-\timeDotSep,fontColor,anchor=north west,eventdottext,},
-	@headerIcon/.style={minimum width=\headerIconWidth,anchor=center,headerIcon,},
-	@interesticon/.style = {minimum width=\headerIconWidth,interesticon},
-	@interesttext/.style = {interesttext,},
-	@invisibletimedot/.style = {circle,minimum width=\timeDotDiameter,anchor=center,invisibletimedot,},
-	@languageText/.style={languageText,},
-	@progressArea/.style={minimum width=\progressAreaWidth,minimum height=\progressAreaHeight,rectangle,draw,accentColor,progressArea},
-	@progressBar/.style={minimum height=\progressAreaHeight,rectangle,draw,fill,accentColor,anchor=west,progressBar},
-	@sectionEduText/.style={@eventdottext,anchor=north west,sectionEduText,},
-	@sectionTitle/.style={anchor=north west,align=left,sectionTitle,},
-	@skillLevel/.style={skillLevel,},
-	@skillText/.style={skillText,},
-	@timedot/.style = {@invisibletimedot,draw,fill,accentColor,timedot,},
+  @contactIcon/.style={minimum height=\baselineskip,contactIcon,},
+  @contactText/.style={minimum height=\baselineskip,text depth=0pt,contactText,},
+  @eventdottext/.style = {text width=\mainWidth-\timeDotSep,fontColor,anchor=north west,eventdottext,},
+  @headerIcon/.style={minimum width=\headerIconWidth,anchor=center,headerIcon,},
+  @interesticon/.style = {minimum width=\headerIconWidth,interesticon},
+  @interesttext/.style = {interesttext,},
+  @invisibletimedot/.style = {circle,minimum width=\timeDotDiameter,anchor=center,invisibletimedot,},
+  @languageText/.style={languageText,},
+  @progressArea/.style={minimum width=\progressAreaWidth,minimum height=\progressAreaHeight,rectangle,draw,accentColor,progressArea},
+  @progressBar/.style={minimum height=\progressAreaHeight,rectangle,draw,fill,accentColor,anchor=west,progressBar},
+  @sectionEduText/.style={@eventdottext,anchor=north west,sectionEduText,},
+  @sectionTitle/.style={anchor=north west,align=left,sectionTitle,},
+  @skillLevel/.style={skillLevel,},
+  @skillText/.style={skillText,},
+  @timedot/.style = {@invisibletimedot,draw,fill,accentColor,timedot,},
   contactIcon/.style={},
   contactText/.style={},
-	eventdottext/.style = {},
+  eventdottext/.style = {},
   headerIcon/.style={},
-	interesticon/.style = {},
-	interesttext/.style = {},
-	invisibletimedot/.style = {},
+  interesticon/.style = {},
+  interesttext/.style = {},
+  invisibletimedot/.style = {},
   languageText/.style={},
   progressArea/.style={},
   progressBar/.style={},
-	sectionEduText/.style={},
+  sectionEduText/.style={},
   sectionTitle/.style={},
-	skillLevel/.style={},
-	skillText/.style={},
-	timedot/.style = {},
+  skillLevel/.style={},
+  skillText/.style={},
+  timedot/.style = {},
 }
 
 \pgfkeys{/variables/.is family,
@@ -197,7 +201,7 @@
       {german} {\cv@setGerman}
       {english} {\cv@setEnglish}
     }
-	{\ClassError{error}{Unknown option `#1' for cvLanguage %
+  {\ClassError{error}{Unknown option `#1' for cvLanguage %
      macro.}{Only `english', `chinese`, `french` and `dutch' are valid options %
      for this macro.}}
 }
@@ -304,7 +308,7 @@
 }
 \xdef\profilepicture{\empty}
 \NewDocumentCommand{\setPicture}{m}{
-	\IfNoValueOrEmpty{#1}{}{\xdef\profilepicture{#1}}
+  \IfNoValueOrEmpty{#1}{}{\xdef\profilepicture{#1}}
 }
 \xdef\signature{\empty}
 \NewDocumentCommand{\setSignaturePicture}{m}{
@@ -312,16 +316,16 @@
 }
 
 \NewDocumentCommand{\displaysignature}{}{
-	\begin{figure}[htbp]
-		\includegraphics[width=5cm]{\signature}
-	\end{figure}
+  \begin{figure}[htbp]
+    \includegraphics[width=5cm]{\signature}
+  \end{figure}
 }
 
 \NewDocumentCommand{\setAddress}{m}{
   \pgfkeyssetvalue{address}{#1}
 }
 \NewDocumentCommand{\setjobofferlocation}{m}{
-	\pgfkeyssetvalue{jobofferlocation}{#1}
+  \pgfkeyssetvalue{jobofferlocation}{#1}
 }
 \NewDocumentCommand{\setZipcode}{m}{
   \pgfkeyssetvalue{zipcode}{#1}
@@ -359,6 +363,7 @@
 %----------------------------------------------------------------------------------------
 
 \NewDocumentEnvironment{coverletter}{}{
+  \refstepcounter{cvpage}\label{cvpage.\thecvpage}
   \newgeometry{textwidth=\coverletterWidth,textheight=23cm,noheadfoot}
   \begin{tikzpicture}[remember picture, overlay, every node/.style={inner sep=0cm, outer sep=0cm}]
     \begin{scope}[on background layer]
@@ -490,8 +495,8 @@
   \vspace{15pt}
 
   \textbf{Bewerbung für die Stelle \pgfkeysvalueof{position}}  \null\hfill \today\\
-	\textbf{\pgfkeysvalueof{jobofferlocation}}
-	\textbf{\pgfkeysvalueof{positionid}}
+  \textbf{\pgfkeysvalueof{jobofferlocation}}
+  \textbf{\pgfkeysvalueof{positionid}}
 }{
   % \vspace{5pt}
 
@@ -510,6 +515,7 @@
 
 % Left Sidebar
 \NewDocumentEnvironment{sidebar}{O{0cm}O{0cm}}{
+  \refstepcounter{cvpage}\label{cvpage.\thecvpage}
   \begin{tikzpicture}[remember picture,overlay]
     \fill[backgroundColor]%
     (current page.north west)%
@@ -518,7 +524,7 @@
   \end{tikzpicture}
   \begin{minipage}{\sideWidth}
     \begin{center}
-			\IfFileExists{\profilepicture}{
+      \IfFileExists{\profilepicture}{
         \begin{tikzpicture}[remember picture, overlay]
           \node[
             anchor=center,
@@ -536,7 +542,7 @@
                   anchor=center,
                   % draw,line width=.5mm,
                 ] at (path picture bounding box.center){
-									\includegraphics[width=8cm]{\profilepicture}
+                  \includegraphics[width=8cm]{\profilepicture}
                 };
               }] at (current page.north west)
           {};
@@ -812,7 +818,7 @@
 \NewDocumentEnvironment{mainContent}{}{%
   \begin{tikzpicture}
     [every node/.style={inner sep=0pt,outer sep=0pt},remember picture,overlay,
-			shift={($(current page.north west)+(\sideWidth+2.5\margin+\timeDotSep,-0.5\margin)$)}]
+      shift={($(current page.north west)+(\sideWidth+2.5\margin+\timeDotSep,-\margin)$)}]
     \begin{scope}[on background layer]
     }{%
     \end{scope}
