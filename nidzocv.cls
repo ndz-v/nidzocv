@@ -3,6 +3,7 @@
 % !TEX root = main.tex
 % !TEX options = -synctex=1 -interaction=nonstopmode -file-line-error "%DOC%"
 
+\ProvidesClass{nidzocv}
 \LoadClass{article}
 
 \RequirePackage[german]{babel}
@@ -21,6 +22,8 @@
 % Remove paragraph indentation
 \RequirePackage{parskip}
 \RequirePackage{xstring}
+
+\RequirePackage{fontawesome5}
 
 \newcounter{pdfpage}
 \newcounter{cvpage}
@@ -59,38 +62,8 @@
   urlcolor=blue,
 }
 
-\NewDocumentCommand{\loadFonts}{}{
-  \RequirePackage{fontspec}
-  \RequirePackage{fontawesome}
+\RenewDocumentCommand{\familydefault}{}{\sfdefault}
 
-  \ProvideDocumentCommand{\faAddressCard}{}{{\cv@FA%
-        \symbol{"F2B9}}}
-  \ProvideDocumentCommand{\faVcard}{}{{\cv@FA%
-        \symbol{"F2BB}}}
-  \ProvideDocumentCommand{\faMicrochip}{}{{\cv@FA%
-        \symbol{"F2DB}}}
-}
-%
-\ifxetex
-  \loadFonts
-\else
-  \ifluatex
-    \loadFonts
-  \else
-    \RequirePackage{fontawesome}
-    \RenewDocumentCommand{\familydefault}{}{\sfdefault}
-  \fi
-\fi
-
-\ifxetex
-  \NewDocumentCommand{\kright}{m}{\leavevmode #1%
-    \kern-\XeTeXglyphbounds3 \the\XeTeXcharglyph`#1 }
-  \NewDocumentCommand{\kleft}{m}{\leavevmode %
-    \kern-\XeTeXglyphbounds1 \the\XeTeXcharglyph`#1 #1}
-\else
-  \NewDocumentCommand{\kright}{m}{#1}
-  \NewDocumentCommand{\kleft}{m}{#1}
-\fi
 \ExplSyntaxOn
 \cs_generate_variant:Nn\tl_item:nn {f}
 \DeclareExpandableDocumentCommand{\extract}{mm}{%
@@ -227,7 +200,7 @@
 \newlength\coverletterWidth
 \setlength\coverletterWidth{\mainWidth+3\margin}
 \newlength\headerHeight
-\setlength\headerHeight{5cm}
+\setlength\headerHeight{4cm}
 
 \newlength\nameblockHeight
 \setlength\nameblockHeight{1.3cm}
@@ -410,7 +383,7 @@
         }
       }
 
-      \setlength\addressblockHeight{6\addressHeight}
+      \setlength\addressblockHeight{6\addressHeight+.3cm}
       % Blue address block upper right
       % \fill[accentColor,draw=white,line width=1mm]%
       % ($(current page.north east)+(0,-0.8\headerHeight-0.5\addressblockHeight)$) %
@@ -635,7 +608,7 @@
   \vspace{15pt}
 
   \global\@contactfirstfalse
-  \@ContactTemplate{\address}{\faMapMarker}
+  \@ContactTemplate{\address}{\faMapMarker*}
   \@ContactTemplate{\phone}{\faPhone}
 
   \@ContactTemplateLink{\email}{\faEnvelope}
@@ -647,10 +620,10 @@
   \begin{tikzpicture}[%
       every node/.style={inner sep=0pt, outer sep=0pt}]
     \matrix [
-      column 1/.style={anchor=west},
-      column 2/.style={anchor=east,align=right},
+      column 1/.style={anchor=east},
+      column 2/.style={anchor=west,align=left},
       column sep=\contactItemSep,
-      row sep=\contactItemSep+3pt,
+			row sep=\contactItemSep,
       inner sep=0pt,
       outer sep=0pt] (contact) \bgroup
     \address{\pgfkeysvalueof{address}\\\pgfkeysvalueof{zipcode} \pgfkeysvalueof{city}}
@@ -683,7 +656,7 @@
     \matrix [
       column 1/.style={anchor=west},
       column sep=1.5\sectionSBSep,
-      row sep=1.5\sectionSBSep+5pt,
+			row sep=1.5\sectionSBSep,
       column 2/.style={anchor=east,align=right}
     ] (contact) \bgroup
     }{%
@@ -715,14 +688,11 @@
 \NewDocumentCommand{\@Title}{mm}{%
   \color{fontColor}
   \ifnodedefined{last item \the\value{lastItem}}{%
-    \setlength\headerIconWidth{%
-      \maxof{\headerIconWidth}{\widthof{\Large #2}}}%
-    \protected@write\@auxout{}{\global\headerIconWidth=\the\headerIconWidth}
 
     \node[below=\sectionSep of last item \the\value{lastItem}.south west,@sectionTitle]
     (@title \the\value{titleNext})
     {\begingroup\edef\y{\endgroup%
-        \cvSection\bgroup\noexpand\kleft{\extract{#1}{1}}}\y\StrGobbleLeft{#1}{1}
+				\cvSection\bgroup\noexpand\extract{#1}{1}}\y\StrGobbleLeft{#1}{1}
       \egroup
     };
 
@@ -731,9 +701,7 @@
 
     \node[below=\sectionSep of last item \the\value{lastItem}.south west,@sectionTitle]
     (@title \the\value{titleNext} dummy)
-    {
-      \phantom{\cvSection{Education}}
-    };
+    {\phantom{\cvSection{Education}}};
 
     \begin{scope}[on background layer]
       \draw[line width=\titleLineWidth,accentColor]
@@ -745,14 +713,14 @@
   }{%
     \node[@sectionTitle] at (0,0) (@title \the\value{titleNext})
     {\begingroup\edef\y{\endgroup
-        \cvSection\bgroup\noexpand\kleft{\extract{#1}{1}}}%
+				\cvSection\bgroup\noexpand\extract{#1}{1}}%
       \y\StrGobbleLeft{#1}{1}\egroup};
 
     \node[left=\timeDotSep of @title \the\value{titleNext},@headerIcon]
     {#2};
 
-    \node[@sectionTitle] at (0,0)(@title \the\value{titleNext} dummy) {%
-      \phantom{\cvSection{Education}}};
+    \node[@sectionTitle] at (0,0)(@title \the\value{titleNext} dummy)
+    {\phantom{\cvSection{Education}}};
 
     \begin{scope}[on background layer]
       \draw[line width=\titleLineWidth,accentColor]
@@ -765,6 +733,7 @@
   \stepcounter{titlePrev}%
   \stepcounter{titleNext}
 }
+
 \NewDocumentCommand{\@EndSectionDraw}{}{
   \color{fontColor}
   \draw (start) to (end.center);}
@@ -784,7 +753,7 @@
   \node[below=\itemSep of item \the\value{itemPrev}.south west,@sectionEduText]
   (item \the\value{itemNext})
   {
-    \IfNoValueOrEmpty{##1}{}{##1 \IfNoValueOrEmpty{##2}{}{\hfill {\color{accentColor}##2}}\\}\IfNoValueOrEmpty{##3}{\IfNoValueOrEmpty{##4}{}{##4\\}}{\textsc{\selectfont##3}\IfNoValueOrEmpty{##4}{}{, ##4\\}}
+		\IfNoValueOrEmpty{##1}{}{##1 \IfNoValueOrEmpty{##2}{}{\hfill {\color{accentColor}##2}}\\}\IfNoValueOrEmpty{##3}{\IfNoValueOrEmpty{##4}{}{##4\\}}{\textsc{##3}\IfNoValueOrEmpty{##4}{}{, ##4\\}}
 
     \IfNoValueOrEmpty{##5}{}{##5}
   };
@@ -798,7 +767,7 @@
   \node[below=\itemSep of @title \the\value{titlePrev}.south west,@sectionEduText]
   (item \the\value{itemNext})
   {
-    \IfNoValueOrEmpty{##1}{}{##1 \IfNoValueOrEmpty{##2}{}{\hfill {\color{accentColor}##2}}\\}\IfNoValueOrEmpty{##3}{\IfNoValueOrEmpty{##4}{}{##4\\}}{\textsc{\selectfont##3}\IfNoValueOrEmpty{##4}{\\}{, ##4\\}}
+		\IfNoValueOrEmpty{##1}{}{##1 \IfNoValueOrEmpty{##2}{}{\hfill {\color{accentColor}##2}}\\}\IfNoValueOrEmpty{##3}{\IfNoValueOrEmpty{##4}{}{##4\\}}{\textsc{##3}\IfNoValueOrEmpty{##4}{\\}{, ##4\\}}
 
     \IfNoValueOrEmpty{##5}{}{##5}
   };
@@ -864,7 +833,7 @@
 }
 
 \NewDocumentEnvironment{scholarship}{O{}}{%
-  \@Title{#1}{\faEuro}
+  \@Title{#1}{\faEuroSign}
   % insures uniqueness
   \stepcounter{itemPrev}
   \stepcounter{itemNext}
@@ -884,7 +853,7 @@
   \@whilenum\my@repeat@count<#1\do{\faCircle\advance%
     \my@repeat@count\@ne}%
   \my@repeat@count=\numexpr5-\z@\relax
-  \@whilenum\my@repeat@count>#1\do{\faCircleO\advance%
+  \@whilenum\my@repeat@count>#1\do{\faCircle[regular]\advance%
     \my@repeat@count\m@ne}%
   \endgroup
 }
