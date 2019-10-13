@@ -95,36 +95,16 @@
 \pagestyle{empty}
 
 \tikzset{
-  @contactIcon/.style={minimum height=\baselineskip,contactIcon,},
-  @contactText/.style={minimum height=\baselineskip,text depth=0pt,contactText,},
-  @eventdottext/.style = {text width=\mainWidth-\timeDotSep,fontColor,anchor=north west,eventdottext,},
-  @headerIcon/.style={minimum width=\headerIconWidth,anchor=center,headerIcon,},
-  @interesticon/.style = {minimum width=\headerIconWidth,interesticon},
-  @interesttext/.style = {interesttext,},
-  @invisibletimedot/.style = {circle,minimum width=\timeDotDiameter,anchor=center,invisibletimedot,},
-  @languageText/.style={languageText,},
-  @progressArea/.style={minimum width=\progressAreaWidth,minimum height=\progressAreaHeight,rectangle,draw,accentColor,progressArea},
-  @progressBar/.style={minimum height=\progressAreaHeight,rectangle,draw,fill,accentColor,anchor=west,progressBar},
-  @sectionEduText/.style={@eventdottext,anchor=north west,sectionEduText,},
-  @sectionTitle/.style={anchor=north west,align=left,sectionTitle,},
-  @skillLevel/.style={skillLevel,},
-  @skillText/.style={skillText,},
-  @timedot/.style = {@invisibletimedot,draw,fill,accentColor,timedot,},
-  contactIcon/.style={},
-  contactText/.style={},
-  eventdottext/.style = {},
-  headerIcon/.style={},
-  interesticon/.style = {},
-  interesttext/.style = {},
-  invisibletimedot/.style = {},
-  languageText/.style={},
-  progressArea/.style={},
-  progressBar/.style={},
-  sectionEduText/.style={},
-  sectionTitle/.style={},
-  skillLevel/.style={},
-  skillText/.style={},
-  timedot/.style = {},
+  @contactIcon/.style={minimum height=\baselineskip,{},},
+  @contactText/.style={minimum height=\baselineskip,text depth=0pt,{},},
+  @eventdottext/.style = {text width=\mainWidth-\timeDotSep,fontColor,anchor=north west,{},},
+  @headerIcon/.style={minimum width=\headerIconWidth,anchor=center,{},},
+  @invisibletimedot/.style = {circle,minimum width=\timeDotDiameter,anchor=center,{},},
+  @progressArea/.style={minimum width=\progressAreaWidth,minimum height=\progressAreaHeight,rectangle,draw,accentColor,{},},
+  @progressBar/.style={minimum height=\progressAreaHeight,rectangle,draw,fill,accentColor,anchor=west,{},},
+  @sectionEduText/.style={@eventdottext,anchor=north west,{},},
+  @sectionTitle/.style={anchor=north west,align=left,{},},
+  @timedot/.style = {@invisibletimedot,draw,fill,accentColor,{},},
 }
 
 \pgfkeys{/variables/.is family,
@@ -133,32 +113,30 @@
          .initial = #1}}
 % Set all title names to English (default):
 \NewDocumentCommand{\cv@setEnglish}{}{
-    \pgfkeys{/variables/profile = PROFILE}%
     \pgfkeys{/variables/contact = CONTACT}%
-    \pgfkeys{/variables/languages = LANGUAGES}%
-    \pgfkeys{/variables/interests = Interests}%
-    \pgfkeys{/variables/professional = Professional}%
-    \pgfkeys{/variables/personal = Personal}%
-    \pgfkeys{/variables/projects = Projects}%
     \pgfkeys{/variables/education = Education}%
     \pgfkeys{/variables/experience = Experience}%
-    \pgfkeys{/variables/references = References}%
+    \pgfkeys{/variables/interests = Interests}%
+    \pgfkeys{/variables/languages = LANGUAGES}%
+    \pgfkeys{/variables/personal = Personal}%
+    \pgfkeys{/variables/professional = Professional}%
+    \pgfkeys{/variables/profile = PROFILE}%
+    \pgfkeys{/variables/projects = Projects}%
     \pgfkeys{/variables/scholarship = Scholarship}%
     \pgfkeys{/variables/skills = Skills}%
 }
 %
 % Set all title names to German:
 \NewDocumentCommand{\cv@setGerman}{}{
-    \pgfkeys{/variables/profile = PROFIL}%
     \pgfkeys{/variables/contact = KONTAKT}%
-    \pgfkeys{/variables/languages = SPRACHEN}%
-    \pgfkeys{/variables/interests = Interessen}%
-    \pgfkeys{/variables/professional = Professionel}%
-    \pgfkeys{/variables/personal = Persönlich}%
-    \pgfkeys{/variables/projects = Projekte}%
     \pgfkeys{/variables/education = Bildung}%
     \pgfkeys{/variables/experience = Erfahrung}%
-    \pgfkeys{/variables/references = Referenzen}%
+    \pgfkeys{/variables/interests = Interessen}%
+    \pgfkeys{/variables/languages = SPRACHEN}%
+    \pgfkeys{/variables/personal = Persönlich}%
+    \pgfkeys{/variables/professional = Professionel}%
+    \pgfkeys{/variables/profile = PROFIL}%
+    \pgfkeys{/variables/projects = Projekte}%
     \pgfkeys{/variables/scholarship = Stipendien}%
     \pgfkeys{/variables/skills = Fertigkeiten}%
 }
@@ -188,85 +166,60 @@
 % Diameter of points in experience timeline
 \newlength\dotDiameter
 \setlength\dotDiameter{3pt}
-
 \newlength\margin
 \setlength\margin{1cm}
-
 \newlength\sideWidth
 \setlength\sideWidth{0.3\paperwidth-\margin}
 \newlength\mainWidth
 \setlength\mainWidth{\paperwidth-3.5\margin-\sideWidth}
-
 \newlength\coverletterWidth
 \setlength\coverletterWidth{\mainWidth+3\margin}
 \newlength\headerHeight
 \setlength\headerHeight{4cm}
-
 \newlength\nameblockHeight
 \setlength\nameblockHeight{1.3cm}
-
 \newlength\footerHeight
 \setlength\footerHeight{3cm}
-
 \newlength\addressblockHeight
 \setlength\addressblockHeight{2cm}
 \newlength\addressblockWidth
 \setlength\addressblockWidth{\sideWidth+2.4\margin}
-
 \newlength\sectionSBSep
 \setlength\sectionSBSep{4pt}
-
 \newlength\sBSectionLineWidth
 \setlength\sBSectionLineWidth{1pt}
-
 \newlength\skillSep
 \setlength\skillSep{1ex}
-
 \newlength\headerIconWidth
 \setlength\headerIconWidth{0pt}
-
 \newlength\colSep
 \setlength\colSep{0.1cm} % 2 times column separation!
-
 \newlength\timeDotDiameter
 \setlength\timeDotDiameter{3pt}
-
 \newlength\timeDotSep
 \setlength\timeDotSep{0.4cm}
-
 \newlength\startEndSep
 \setlength\startEndSep{0.3cm}
-
 \newlength\itemSep
 \setlength\itemSep{0.4cm}
-
 \newlength\tableSepWidth
 \setlength\tableSepWidth{0.3cm}
-
 \newlength\progressAreaWidth
 \setlength\progressAreaWidth{5em}
-
 \newlength\progressAreaHeight
 \setlength\progressAreaHeight{0.75em}
-
 \newlength\sectionSep
 \setlength\sectionSep{0.6cm}
-
 \newlength\titleLineWidth
 \setlength\titleLineWidth{2pt}
-
 \newlength\titleLineSpacing
 \setlength\titleLineSpacing{0.1cm}
-
 \newlength\projectDetailsSep
 \setlength\projectDetailsSep{0.2cm}
-
 \newlength\contactItemSep
 \setlength\contactItemSep{5pt}
-
 \newlength\idNameSep
 \setlength\idNameSep{0.1cm}
-
 \newlength\positionSep
 \setlength\positionSep{0.5cm}
 
@@ -335,9 +288,10 @@
 %   Cover Letter Environment
 %----------------------------------------------------------------------------------------
 
-\NewDocumentEnvironment{coverletter}{}{
+\NewDocumentEnvironment{coverletter}{O{\footerHeight}O{6.7cm}}{
+  \setlength\footerHeight{#1}
   \refstepcounter{cvpage}\label{cvpage.\thecvpage}
-  \newgeometry{textwidth=\coverletterWidth,textheight=23cm,noheadfoot}
+  \newgeometry{textwidth=\coverletterWidth,textheight=\paperheight-#2,noheadfoot}
   \begin{tikzpicture}[remember picture, overlay, every node/.style={inner sep=0cm, outer sep=0cm}]
     \begin{scope}[on background layer]
       % Header
@@ -435,7 +389,7 @@
       ($(current page.south west)+(-2pt,\footerHeight-0.5\addressblockHeight)$)%
       rectangle%
       ++(\addressblockWidth+0.3cm,\addressblockHeight);
-
+      \setlength\textwidth{#1}
       \draw (current page.south west) ++(\addressblockWidth, \footerHeight) node (emailnode) {};
 
       \node[anchor=east] at (emailnode) (email)
@@ -643,7 +597,7 @@
   \NewDocumentCommand{\languageRating}{mm}{%
     {\globaldefs=1\relax\pgfkeys{%
           /languages/lang\the\value{@languages} = ##2}}
-    \node[@languageText]{##1}; \pgfmatrixnextcell %
+    \node[]{##1}; \pgfmatrixnextcell %
     \node[@progressArea] (@language \the\value{@languages}) {}; \\
     \stepcounter{@languages}
   }%
@@ -753,9 +707,9 @@
   \node[below=\itemSep of item \the\value{itemPrev}.south west,@sectionEduText]
   (item \the\value{itemNext})
   {
-		\IfNoValueOrEmpty{##1}{}{##1 \IfNoValueOrEmpty{##2}{}{\hfill {\color{accentColor}##2}}\\}\IfNoValueOrEmpty{##3}{\IfNoValueOrEmpty{##4}{}{##4\\}}{\textsc{##3}\IfNoValueOrEmpty{##4}{}{, ##4\\}}
-
-    \IfNoValueOrEmpty{##5}{}{##5}
+    ##1 \hfill ##2\\
+    \textsc{##3} ##4\\
+    ##5
   };
 
   \node[left=\timeDotSep of item \the\value{itemNext} header,@timedot]
@@ -767,9 +721,9 @@
   \node[below=\itemSep of @title \the\value{titlePrev}.south west,@sectionEduText]
   (item \the\value{itemNext})
   {
-		\IfNoValueOrEmpty{##1}{}{##1 \IfNoValueOrEmpty{##2}{}{\hfill {\color{accentColor}##2}}\\}\IfNoValueOrEmpty{##3}{\IfNoValueOrEmpty{##4}{}{##4\\}}{\textsc{##3}\IfNoValueOrEmpty{##4}{\\}{, ##4\\}}
-
-    \IfNoValueOrEmpty{##5}{}{##5}
+    ##1 \hfill ##2\\
+    \textsc{##3} ##4\\
+    ##5
   };
 
   \node[left=\timeDotSep of item \the\value{itemNext} header,@timedot]
@@ -808,7 +762,7 @@
     }{%
   \end{tikzpicture}%
 }
-\NewDocumentEnvironment{education}{O{}}{%
+\NewDocumentEnvironment{education}{O{\pgfkeysvalueof{/variables/education}}}{%
   \@Title{#1}{\faGraduationCap}
   \stepcounter{itemPrev}
   \stepcounter{itemNext}
@@ -820,7 +774,7 @@
   node (last item \the\value{lastItem}) {};
 }
 
-\NewDocumentEnvironment{experience}{O{}}{%
+\NewDocumentEnvironment{experience}{O{\pgfkeysvalueof{/variables/experience}}}{%
   \@Title{#1}{\faBriefcase}
   \stepcounter{itemPrev}
   \stepcounter{itemNext}
@@ -832,7 +786,7 @@
   node (last item \the\value{lastItem}) {};
 }
 
-\NewDocumentEnvironment{scholarship}{O{}}{%
+\NewDocumentEnvironment{scholarship}{O{\pgfkeysvalueof{/variables/scholarship}}}{%
   \@Title{#1}{\faEuroSign}
   % insures uniqueness
   \stepcounter{itemPrev}
@@ -847,13 +801,12 @@
 
 \newcount\my@repeat@count
 \NewDocumentCommand{\skill}{m}{%
-  \color{fontColor}
   \begingroup
   \my@repeat@count=\z@
-  \@whilenum\my@repeat@count<#1\do{\faCircle\advance%
+  \@whilenum\my@repeat@count<#1\do{\faStar\advance%
     \my@repeat@count\@ne}%
   \my@repeat@count=\numexpr5-\z@\relax
-  \@whilenum\my@repeat@count>#1\do{\faCircle[regular]\advance%
+  \@whilenum\my@repeat@count>#1\do{\faStar[regular]\advance%
     \my@repeat@count\m@ne}%
   \endgroup
 }
@@ -880,7 +833,7 @@
   \fi
 }
 
-\NewDocumentEnvironment{skills}{O{}}{%
+\NewDocumentEnvironment{skills}{O{\pgfkeysvalueof{/variables/skills}}}{%
   \@Title{#1}{\faStar}
   \global\@firstskilltrue
 }{%
@@ -898,7 +851,7 @@
   (last item \the\value{lastItem}) {};
 }
 
-\NewDocumentEnvironment{interests}{O{}}{%
+\NewDocumentEnvironment{interests}{O{\pgfkeysvalueof{/variables/interests}}}{%
   \@Title{#1}{\faUser}
   % insures uniqueness
   \stepcounter{itemPrev}
