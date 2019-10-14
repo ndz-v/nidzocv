@@ -236,22 +236,27 @@
 \NewDocumentCommand{\setPicture}{m}{
   \IfNoValueOrEmpty{#1}{}{\xdef\profilepicture{#1}}
 }
+\NewDocumentCommand{\displayCompanyAdress}{}{
+  \textbf{\pgfkeysvalueof{companyName}}\\
+  \pgfkeysvalueof{companyAddress}\\
+  \pgfkeysvalueof{companyZip} \pgfkeysvalueof{companyCity}
+}
+\NewDocumentCommand{\displaySubject}{O{Bewerbung als}O{\today}}{
+
+  \textbf{#1 \pgfkeysvalueof{position}}  \null\hfill #2\\
+  \textbf{\pgfkeysvalueof{positionid}}
+}
 \xdef\signature{\empty}
 \NewDocumentCommand{\setSignaturePicture}{m}{
   \IfNoValueOrEmpty{#1}{}{\xdef\signature{#1}}
 }
-
 \NewDocumentCommand{\displaysignature}{}{
   \begin{figure}[htbp]
     \includegraphics[width=5cm]{\signature}
   \end{figure}
 }
-
 \NewDocumentCommand{\setAddress}{m}{
   \pgfkeyssetvalue{address}{#1}
-}
-\NewDocumentCommand{\setjobofferlocation}{m}{
-  \pgfkeyssetvalue{jobofferlocation}{#1}
 }
 \NewDocumentCommand{\setZipcode}{m}{
   \pgfkeyssetvalue{zipcode}{#1}
@@ -290,6 +295,7 @@
 
 \NewDocumentEnvironment{coverletter}{O{\footerHeight}O{6.7cm}}{
   \setlength\footerHeight{#1}
+  \color{fontColor}
   \refstepcounter{cvpage}\label{cvpage.\thecvpage}
   \newgeometry{textwidth=\coverletterWidth,textheight=\paperheight-#2,noheadfoot}
   \begin{tikzpicture}[remember picture, overlay, every node/.style={inner sep=0cm, outer sep=0cm}]
@@ -397,13 +403,13 @@
 
       \node[
         align=left,
-        below=-5pt-\addressHeight of email.north east,
+        below=-8pt-\addressHeight of email.north east,
         anchor=north east](address)
       {\pgfkeysvalueof{address}, \pgfkeysvalueof{zipcode} \pgfkeysvalueof{city}};
 
       \node[
         align=left,
-        below=5pt+\addressHeight of email.south east,
+        below=8pt+\addressHeight of email.south east,
         anchor=south east](phone)
       {\pgfkeysvalueof{phoneNumber}};
 
@@ -411,22 +417,7 @@
   \end{tikzpicture}
 
   \vspace{\dimexpr\headerHeight-1in-\topmargin\relax}
-  % \vspace{5pt}
-
-  % \vspace{\baselineskip}
-
-  \textbf{\pgfkeysvalueof{companyName}}\\
-  \pgfkeysvalueof{companyAddress}\\
-  \pgfkeysvalueof{companyZip} \pgfkeysvalueof{companyCity}
-
-  \vspace{15pt}
-
-  \textbf{Bewerbung für die Stelle \pgfkeysvalueof{position}}  \null\hfill \today\\
-  \textbf{\pgfkeysvalueof{jobofferlocation}}
-  \textbf{\pgfkeysvalueof{positionid}}
 }{
-  % \vspace{5pt}
-
   \restoregeometry
   \cleardoublepage
 }
@@ -689,7 +680,7 @@
 }
 
 \NewDocumentCommand{\@EndSectionDraw}{}{
-  \color{fontColor}
+  \color{accentColor}
   \draw (start) to (end.center);}
 \newcounter{itemPrev}
 \setcounter{itemPrev}{0}
