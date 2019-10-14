@@ -244,6 +244,7 @@
 \NewDocumentCommand{\displaySubject}{O{Bewerbung als}O{\today}}{
 
   \textbf{#1 \pgfkeysvalueof{position}}  \null\hfill #2\\
+  \textbf{\pgfkeysvalueof{jobofferlocation}}
   \textbf{\pgfkeysvalueof{positionid}}
 }
 \xdef\signature{\empty}
@@ -257,6 +258,9 @@
 }
 \NewDocumentCommand{\setAddress}{m}{
   \pgfkeyssetvalue{address}{#1}
+}
+\NewDocumentCommand{\setJobofferlocation}{m}{
+  \pgfkeyssetvalue{jobofferlocation}{#1}
 }
 \NewDocumentCommand{\setZipcode}{m}{
   \pgfkeyssetvalue{zipcode}{#1}
