@@ -836,7 +836,7 @@
     below=\sectionSep of @title \the\value{titlePrev}.south west,
     anchor=north west] (skills)
   {
-    \begin{tabular}{@{}ll@{\hskip\colSep}ll@{}}%
+    \begin{tabular}{@{}ll@{\hskip 1cm}ll@{}}%
       \@skillsTwoTable
       \@skillsTable
     \end{tabular}
