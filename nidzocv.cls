@@ -238,22 +238,23 @@
 }
 \NewDocumentCommand{\displayCompanyAdress}{}{
   \textbf{\pgfkeysvalueof{companyName}}\\
+  \pgfkeysvalueof{contactPerson}
   \pgfkeysvalueof{companyAddress}\\
   \pgfkeysvalueof{companyZip} \pgfkeysvalueof{companyCity}
 }
 \NewDocumentCommand{\displaySubject}{O{Bewerbung als}O{\today}}{
 
   \textbf{#1 \pgfkeysvalueof{position}}  \null\hfill #2\\
-  \textbf{\pgfkeysvalueof{jobofferlocation}}
-  \textbf{\pgfkeysvalueof{positionid}}
+  {\pgfkeysvalueof{jobofferlocation}
+  \pgfkeysvalueof{positionid}}
 }
 \xdef\signature{\empty}
 \NewDocumentCommand{\setSignaturePicture}{m}{
   \IfNoValueOrEmpty{#1}{}{\xdef\signature{#1}}
 }
-\NewDocumentCommand{\displaysignature}{}{
+\NewDocumentCommand{\displaysignature}{O{5cm}}{
   \begin{figure}[htbp]
-    \includegraphics[width=5cm]{\signature}
+    \includegraphics[width=#1]{\signature}
   \end{figure}
 }
 \NewDocumentCommand{\setAddress}{m}{
@@ -282,6 +283,9 @@
 }
 \NewDocumentCommand{\setCompanyName}{m}{
   \pgfkeyssetvalue{companyName}{#1}
+}
+\NewDocumentCommand{\setContactPerson}{m}{
+  \pgfkeyssetvalue{contactPerson}{#1}
 }
 \NewDocumentCommand{\setCompanyAddress}{m}{
   \pgfkeyssetvalue{companyAddress}{#1}
@@ -514,6 +518,10 @@
   \ruleline{\pgfkeysvalueof{/variables/profile}}
   \vspace{\sectionSBSep}
 
+}{%
+}
+
+\NewDocumentEnvironment{miscellaneous}{}{%
 }{%
 }
 
