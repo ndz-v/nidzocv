@@ -492,9 +492,9 @@
 		rectangle%
 		++(\sideWidth+2\margin,-\paperheight);
 	\end{tikzpicture}
+	\color{fontColor}
 	\begin{minipage}{\sideWidth}
 		\begin{center}
-			\color{fontColor}
 			}{
 		\end{center}
 	\end{minipage}
@@ -851,7 +851,7 @@
 		below=\sectionSep of @title \the\value{titlePrev}.south west,
 		anchor=north west] (skills)
 	{
-		\begin{tabular}{@{}ll@{\hskip 1cm}ll@{}}%
+		\begin{tabular}{@{}l@{\hskip 5pt}l@{\hskip 10pt}l@{\hskip 5pt}l@{}}%
 			\@skillsTwoTable
 			\@skillsTable
 		\end{tabular}
