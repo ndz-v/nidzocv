@@ -300,7 +300,9 @@
 %----------------------------------------------------------------------------------------
 %   Cover Letter Environment
 %----------------------------------------------------------------------------------------
-
+\newlength\fullnameWidth
+\newlength\extraWidth
+\newlength\addressHeight
 \NewDocumentEnvironment{coverletter}{O{\footerHeight}O{6.7cm}}{
 \setlength\footerHeight{#1}
 \color{fontColor}
@@ -315,7 +317,7 @@
 		++(\paperwidth, -0.8\headerHeight);
 
 		\fontsize{14}{12}\selectfont
-		\newlength\fullnameWidth
+
 		\setlength\fullnameWidth{\widthof{\pgfkeysvalueof{firstName} \pgfkeysvalueof{lastName}}}
 		\fontsize{10}{12}\selectfont
 
@@ -336,7 +338,7 @@
 		++(-\paperwidth, \footerHeight);
 
 		\fontsize{10}{12}\selectfont\color{white}
-		\newlength\extraWidth
+
 		\setlength\extraWidth{
 			\maxof{
 				\widthof{\pgfkeysvalueof{address}, \pgfkeysvalueof{zipcode} \pgfkeysvalueof{city}}}{\widthof{\pgfkeysvalueof{email}}
@@ -344,7 +346,6 @@
 		}
 		\setlength\addressblockWidth{0.5\paperwidth-0.5\coverletterWidth+\extraWidth}
 
-		\newlength\addressHeight
 		\setlength\addressHeight{
 			\heightof{
 				\pgfkeysvalueof{address}, \pgfkeysvalueof{zipcode} \pgfkeysvalueof{city}
