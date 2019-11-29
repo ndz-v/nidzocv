@@ -25,8 +25,11 @@
 
 \RequirePackage{fontawesome5}
 
-\newcounter{pdfpage}
+% Create counters so pages can be referenced in the document
 \newcounter{cvpage}
+\newcounter{attachment}
+% Global options for pdfpages
+\includepdfset{linkname=attachment, pagecommand={\refstepcounter{attachment}\label{attachment.\theattachment}}}
 
 % For drawing header, footer and blocks
 \RequirePackage{tikz}
