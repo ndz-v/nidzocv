@@ -45,11 +45,8 @@
 }
 
 \usetikzlibrary{%
-	arrows.meta,
 	backgrounds,
 	calc,
-	fit,
-	matrix,
 	positioning,
 	shapes.geometric,
 	shapes.misc
@@ -150,10 +147,10 @@
 	\str_case:nnF {#1}
 	{
 		{german} {\cv@setGerman}
-			{english} {\cv@setEnglish}
+		{english} {\cv@setEnglish}
 	}
 	{\ClassError{error}{Unknown option `#1' for cvLanguage %
-			macro.}{Only `english', `chinese`, `french` and `dutch' are valid options %
+			macro.}{Only `english' and `german' are valid options %
 			for this macro.}}
 }
 \ExplSyntaxOff
