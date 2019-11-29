@@ -15,6 +15,9 @@
 \RequirePackage{pdfpages}
 \RequirePackage{enumitem}
 
+% For drawing header, footer and blocks
+\RequirePackage{tikz}
+
 % Options in brackets are needed for centering in sidebar showframe=true
 \RequirePackage[margin=1cm,noheadfoot]{geometry}
 \RequirePackage{graphicx}
@@ -30,9 +33,6 @@
 \newcounter{attachment}
 % Global options for pdfpages
 \includepdfset{linkname=attachment, pagecommand={\refstepcounter{attachment}\label{attachment.\theattachment}}}
-
-% For drawing header, footer and blocks
-\RequirePackage{tikz}
 
 % |\@IfNoValueOrEmptyTF{argument}{if empty}{if not empty}|
 % checks if an argument is empty.
@@ -95,16 +95,16 @@
 \pagestyle{empty}
 
 \tikzset{
-	@contactIcon/.style={minimum height=\baselineskip,{},},
-	@contactText/.style={minimum height=\baselineskip,text depth=0pt,{},},
-	@eventdottext/.style = {text width=\mainWidth-\timeDotSep,fontColor,anchor=north west,{},},
-	@headerIcon/.style={minimum width=\headerIconWidth,anchor=center,{},},
-	@invisibletimedot/.style = {circle,minimum width=\timeDotDiameter,anchor=center,{},},
-	@progressArea/.style={minimum width=\progressAreaWidth,minimum height=\progressAreaHeight,rectangle,draw,accentColor,{},},
-	@progressBar/.style={minimum height=\progressAreaHeight,rectangle,draw,fill,accentColor,anchor=west,{},},
-	@sectionEduText/.style={@eventdottext,anchor=north west,{},},
-	@sectionTitle/.style={anchor=north west,align=left,{},},
-	@timedot/.style = {@invisibletimedot,draw,fill,accentColor,{},},
+	@contactIcon/.style={minimum height=\baselineskip},
+	@contactText/.style={minimum height=\baselineskip,text depth=0pt},
+	@eventdottext/.style = {text width=\mainWidth-\timeDotSep,fontColor,anchor=north west},
+	@headerIcon/.style={minimum width=\headerIconWidth,anchor=center},
+	@invisibletimedot/.style = {circle,minimum width=\timeDotDiameter,anchor=center},
+	@progressArea/.style={minimum width=\progressAreaWidth,minimum height=\progressAreaHeight,rectangle,draw,accentColor},
+	@progressBar/.style={minimum height=\progressAreaHeight,rectangle,draw,fill,accentColor,anchor=west},
+	@sectionEduText/.style={@eventdottext,anchor=north west},
+	@sectionTitle/.style={anchor=north west,align=left},
+	@timedot/.style = {@invisibletimedot,draw,fill,accentColor},
 }
 
 \pgfkeys{/variables/.is family,
@@ -342,8 +342,6 @@
 		(current page.south east) rectangle%
 		++(-\paperwidth, \footerHeight);
 
-		\fontsize{10}{12}\selectfont\color{white}
-
 		\fill[accentColor,draw=white,line width=1mm]%
 		($(current page.south west)+(-2pt,\footerHeight-0.5\addressblockHeight)$)%
 		rectangle%
@@ -353,11 +351,11 @@
 		at (current page.south west) (email)
 		{\href{mailto:\pgfkeysvalueof{email}}{\color{white}{\pgfkeysvalueof{email}}}};
 
-		\node[align=left,below=-8pt-\addressHeight of email.north east,anchor=north east]
+		\node[align=left,text=white,below=-8pt-\addressHeight of email.north east,anchor=north east]
 		(address)
 		{\pgfkeysvalueof{address}, \pgfkeysvalueof{zipcode} \pgfkeysvalueof{city}};
 
-		\node[align=left, below=8pt+\addressHeight of email.south east, anchor=south east]
+		\node[align=left,text=white,below=8pt+\addressHeight of email.south east, anchor=south east]
 		(phone)
 		{\pgfkeysvalueof{phoneNumber}};
 
@@ -407,11 +405,11 @@
 		at (current page.south east) (email)
 		{\href{mailto:\pgfkeysvalueof{email}}{\color{white}{\pgfkeysvalueof{email}}}};
 
-		\node[align=left,text=white, below=-8pt-\addressHeight of email.north west,anchor=north west]
+		\node[align=left,text=white,below=-8pt-\addressHeight of email.north west,anchor=north west]
 		(address)
 		{\pgfkeysvalueof{address}, \pgfkeysvalueof{zipcode} \pgfkeysvalueof{city}};
 
-		\node[align=left,text=white, below=8pt+\addressHeight of email.south west, anchor=south west]
+		\node[align=left,text=white,below=8pt+\addressHeight of email.south west, anchor=south west]
 		(phone)
 		{\pgfkeysvalueof{phoneNumber}};
 
