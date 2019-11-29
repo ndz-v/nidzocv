@@ -303,6 +303,17 @@
 \newlength\fullnameWidth
 \newlength\extraWidth
 \newlength\addressHeight
+
+\NewDocumentCommand{\calculateLengths}{}{
+	\fontsize{14}{12}\selectfont
+	\setlength\fullnameWidth{\widthof{\pgfkeysvalueof{firstName} \pgfkeysvalueof{lastName}}}
+	\fontsize{10}{12}\selectfont
+	\setlength\extraWidth{\maxof{\widthof{\pgfkeysvalueof{address}, \pgfkeysvalueof{zipcode} \pgfkeysvalueof{city}}}{\widthof{\pgfkeysvalueof{email}}}}
+		\setlength\addressblockWidth{0.5\paperwidth-0.5\coverletterWidth+\extraWidth}
+	\setlength\addressHeight{\heightof{\pgfkeysvalueof{address}, \pgfkeysvalueof{zipcode} \pgfkeysvalueof{city}}}
+	\setlength\addressblockHeight{6\addressHeight+.3cm}
+}
+
 \NewDocumentEnvironment{coverletter}{O{\footerHeight}O{6.7cm}}{
 \setlength\footerHeight{#1}
 \color{fontColor}
@@ -311,15 +322,9 @@
 \begin{tikzpicture}[remember picture, overlay, every node/.style={inner sep=0cm, outer sep=0cm}]
 	\begin{scope}[on background layer]
 		% Header
-		\fill[backgroundColor]%
-		(current page.north west)%
-		rectangle%
-		++(\paperwidth, -0.8\headerHeight);
+		\fill[backgroundColor] (current page.north west) rectangle ++(\paperwidth, -0.8\headerHeight);
 
-		\fontsize{14}{12}\selectfont
-
-		\setlength\fullnameWidth{\widthof{\pgfkeysvalueof{firstName} \pgfkeysvalueof{lastName}}}
-		\fontsize{10}{12}\selectfont
+		\calculateLengths
 
 		% Blue name block
 		\fill[accentColor,draw=white,line width=1mm]%
@@ -328,8 +333,8 @@
 		++(0.5\paperwidth-0.5\coverletterWidth+\fullnameWidth+0.3cm,-\nameblockHeight);
 
 		% First and Second Name
-		\draw (current page.north west) ++(0.5\paperwidth-0.5\coverletterWidth, -0.8\headerHeight) node (name) {};
-		\node[anchor=west] at (name) (coverletter name)
+		\node[anchor=west,xshift=0.5\paperwidth-0.5\coverletterWidth, yshift=-0.8\headerHeight]
+		at (current page.north west) (coverletter name)
 		{\fontsize{14}{12}\selectfont\color{white}\pgfkeysvalueof{firstName} \pgfkeysvalueof{lastName}};
 
 		% Footer
@@ -339,87 +344,75 @@
 
 		\fontsize{10}{12}\selectfont\color{white}
 
-		\setlength\extraWidth{
-			\maxof{
-				\widthof{\pgfkeysvalueof{address}, \pgfkeysvalueof{zipcode} \pgfkeysvalueof{city}}}{\widthof{\pgfkeysvalueof{email}}
-			}
-		}
-		\setlength\addressblockWidth{0.5\paperwidth-0.5\coverletterWidth+\extraWidth}
-
-		\setlength\addressHeight{
-			\heightof{
-				\pgfkeysvalueof{address}, \pgfkeysvalueof{zipcode} \pgfkeysvalueof{city}
-			}
-		}
-
-		\setlength\addressblockHeight{6\addressHeight+.3cm}
-		% Blue address block upper right
-		% \fill[accentColor,draw=white,line width=1mm]%
-		% ($(current page.north east)+(0,-0.8\headerHeight-0.5\addressblockHeight)$) %
-		% rectangle %
-		% ++(-\addressblockWidth-0.3cm,\addressblockHeight);
-
-		% \draw (current page.north east) ++(-\addressblockWidth, -0.8\headerHeight) node (emailnode) {};
-
-		% \node[anchor=west] at (emailnode) (email)
-		% {\href{mailto:\pgfkeysvalueof{email}}{\color{white}{\pgfkeysvalueof{email}}}};
-
-		% \node[
-		%   align=left,
-		%   below=-5pt-\addressHeight of email.north west,
-		%   anchor=north west](address)
-		% {\pgfkeysvalueof{address}, \pgfkeysvalueof{zipcode} \pgfkeysvalueof{city}};
-
-		% \node[
-		%   align=left,
-		%   below=5pt+\addressHeight of email.south west,
-		%   anchor=south west](phone)
-		% {\pgfkeysvalueof{phoneNumber}};
-
-		% Blue address block down right
-		% \fill[accentColor,draw=white,line width=1mm]%
-		% ($(current page.south east)+(0,\footerHeight-0.5\addressblockHeight)$)%
-		% rectangle%
-		% ++(-\addressblockWidth-0.3cm,\addressblockHeight);
-
-		% \draw (current page.south east) ++(-\addressblockWidth, \footerHeight) node (emailnode) {};
-
-		% \node[anchor=west] at (emailnode) (email)
-		% {\href{mailto:\pgfkeysvalueof{email}}{\color{white}{\pgfkeysvalueof{email}}}};
-
-		% \node[
-		%   align=left,
-		%   below=-5pt-\addressHeight of email.north west,
-		%   anchor=north west](address)
-		% {\pgfkeysvalueof{address}, \pgfkeysvalueof{zipcode} \pgfkeysvalueof{city}};
-
-		% \node[
-		%   align=left,
-		%   below=5pt+\addressHeight of email.south west,
-		%   anchor=south west](phone)
-		% {\pgfkeysvalueof{phoneNumber}};
-
-		% Blue address block down left
 		\fill[accentColor,draw=white,line width=1mm]%
 		($(current page.south west)+(-2pt,\footerHeight-0.5\addressblockHeight)$)%
 		rectangle%
 		++(\addressblockWidth+0.3cm,\addressblockHeight);
-		\setlength\textwidth{#1}
-		\draw (current page.south west) ++(\addressblockWidth, \footerHeight) node (emailnode) {};
 
-		\node[anchor=east] at (emailnode) (email)
+		\node[anchor=east, xshift=\addressblockWidth, yshift=\footerHeight]
+		at (current page.south west) (email)
 		{\href{mailto:\pgfkeysvalueof{email}}{\color{white}{\pgfkeysvalueof{email}}}};
 
-		\node[
-			align=left,
-			below=-8pt-\addressHeight of email.north east,
-			anchor=north east](address)
+		\node[align=left,below=-8pt-\addressHeight of email.north east,anchor=north east]
+		(address)
 		{\pgfkeysvalueof{address}, \pgfkeysvalueof{zipcode} \pgfkeysvalueof{city}};
 
-		\node[
-			align=left,
-			below=8pt+\addressHeight of email.south east,
-			anchor=south east](phone)
+		\node[align=left, below=8pt+\addressHeight of email.south east, anchor=south east]
+		(phone)
+		{\pgfkeysvalueof{phoneNumber}};
+
+	\end{scope}
+\end{tikzpicture}
+
+\vspace{\dimexpr\headerHeight-1in-\topmargin\relax}
+}{
+\restoregeometry
+\cleardoublepage
+}
+
+\NewDocumentEnvironment{coverletter*}{O{\footerHeight}O{6.7cm}}{
+\setlength\footerHeight{#1}
+\color{fontColor}
+\refstepcounter{cvpage}\label{cvpage.\thecvpage}
+\newgeometry{textwidth=\coverletterWidth,textheight=\paperheight-#2,noheadfoot}
+\begin{tikzpicture}[remember picture, overlay, every node/.style={inner sep=0cm, outer sep=0cm}]
+	\begin{scope}[on background layer]
+		% Header
+		\fill[backgroundColor] (current page.north west) rectangle ++(\paperwidth, -0.8\headerHeight);
+
+		\calculateLengths
+
+		% Blue name block
+		\fill[accentColor,draw=white,line width=1mm]%
+		($(current page.north east)+(1pt,-0.8\headerHeight+0.5\nameblockHeight)$)%
+		rectangle
+		++(-0.5\paperwidth+0.5\coverletterWidth-\fullnameWidth-0.3cm,-\nameblockHeight);
+
+		% First and Second Name
+		\node[anchor=east,xshift=-0.5\paperwidth+0.5\coverletterWidth, yshift=-0.8\headerHeight]
+		at (current page.north east) (coverletter name)
+		{\fontsize{14}{12}\selectfont\color{white}\pgfkeysvalueof{firstName} \pgfkeysvalueof{lastName}};
+
+		% Footer
+		\fill[backgroundColor]%
+		(current page.south east) rectangle%
+		++(-\paperwidth, \footerHeight);
+
+		\fill[accentColor,draw=white,line width=1mm]%
+		($(current page.south east)+(1pt,\footerHeight-0.5\addressblockHeight)$)%
+		rectangle%
+		++(-\addressblockWidth-0.3cm,\addressblockHeight);
+
+		\node[anchor=west, xshift=-\addressblockWidth, yshift=\footerHeight]
+		at (current page.south east) (email)
+		{\href{mailto:\pgfkeysvalueof{email}}{\color{white}{\pgfkeysvalueof{email}}}};
+
+		\node[align=left,text=white, below=-8pt-\addressHeight of email.north west,anchor=north west]
+		(address)
+		{\pgfkeysvalueof{address}, \pgfkeysvalueof{zipcode} \pgfkeysvalueof{city}};
+
+		\node[align=left,text=white, below=8pt+\addressHeight of email.south west, anchor=south west]
+		(phone)
 		{\pgfkeysvalueof{phoneNumber}};
 
 	\end{scope}
@@ -441,39 +434,36 @@
 			\raisebox{-.6ex}{#1}\hspace{1ex}\cvhrulefill}}}
 
 \NewDocumentCommand{\displaysidebarpicture}{O{0cm}O{0cm}}{
-  \IfFileExists{\profilepicture}{
-  	\begin{tikzpicture}[remember picture, overlay]
-  		\node[
-  			anchor=center,
-  			xshift=.5*(\sideWidth+2\margin),
-  			yshift=-0.4*(\sideWidth+2\margin)+0.21cm,
-  			regular polygon,
-  			regular polygon sides=4,
-  			text=black,
-  			% draw=black,line width=.5mm,
-  			minimum size=10.2cm,
-  			path picture={
-  					\node[
-  						xshift=#1,
-  						yshift=#2,
-  						anchor=center,
-  						% draw,line width=.5mm,
-  					] at (path picture bounding box.center){
-  						\includegraphics[width=8cm]{\profilepicture}
-  					};
-  				}] at (current page.north west)
-  		{};
-  	\end{tikzpicture}
-  	\vspace{130pt}
-  }{}
-	\begin{center}
-		\LARGE
-		\vspace{3\idNameSep}
-		\pgfkeysvalueof{firstName}
-		\vspace{3\idNameSep}
-		\pgfkeysvalueof{lastName}
-		\vspace{\positionSep}
-	\end{center}
+\IfFileExists{\profilepicture}{
+	\begin{tikzpicture}[remember picture, overlay]
+		\node[
+			anchor=center,
+			xshift=.5*(\sideWidth+2\margin),
+			yshift=-0.4*(\sideWidth+2\margin)+0.21cm,
+			% regular polygon,
+			% regular polygon sides=4,
+			% text=black,
+			% draw=black,line width=.5mm,
+			minimum size=7.2cm,
+			path picture={
+					\node[xshift=#1,yshift=#2,anchor=center,
+						% draw,line width=.5mm,
+					] at (path picture bounding box.center){
+						\includegraphics[width=8cm]{\profilepicture}
+					};
+				}] at (current page.north west)
+		{};
+	\end{tikzpicture}
+	\vspace{130pt}
+}{}
+\begin{center}
+	\LARGE
+	\vspace{3\idNameSep}
+	\pgfkeysvalueof{firstName}
+	\vspace{3\idNameSep}
+	\pgfkeysvalueof{lastName}
+	\vspace{\positionSep}
+\end{center}
 }
 
 \NewDocumentCommand{\displayjobdetails}{}{
