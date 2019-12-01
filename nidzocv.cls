@@ -29,10 +29,10 @@
 \RequirePackage{fontawesome5}
 
 % Create counters so pages can be referenced in the document
-\newcounter{@cvpage}
-\newcounter{@attachment}
+\newcounter{cvpage}
+\newcounter{attachment}
 % Global options for pdfpages
-\includepdfset{linkname=@attachment, pagecommand={\refstepcounter{@attachment}\label{@attachment.\the@attachment}}}
+\includepdfset{linkname=attachment, pagecommand={\refstepcounter{attachment}\label{attachment.\theattachment}}}
 
 % |\@IfNoValueOrEmptyTF{argument}{if empty}{if not empty}|
 % checks if an argument is empty.
@@ -309,7 +309,7 @@
 \NewDocumentEnvironment{coverletter}{O{\@footerHeight}O{6.7cm}}{
 	\setlength\@footerHeight{#1}
 	\color{fontColor}
-	\refstepcounter{@cvpage}\label{@cvpage.\the@cvpage}
+	\refstepcounter{cvpage}\label{cvpage.\thecvpage}
 	\newgeometry{textwidth=\@coverletterWidth,textheight=\paperheight-#2,noheadfoot}
 	\begin{tikzpicture}[remember picture, overlay, every node/.style={inner sep=0cm, outer sep=0cm}]
 		\begin{scope}[on background layer]
@@ -363,7 +363,7 @@
 \NewDocumentEnvironment{coverletter*}{O{\@footerHeight}O{6.7cm}}{
 	\setlength\@footerHeight{#1}
 	\color{fontColor}
-	\refstepcounter{@cvpage}\label{@cvpage.\the@cvpage}
+	\refstepcounter{cvpage}\label{cvpage.\thecvpage}
 	\newgeometry{textwidth=\@coverletterWidth,textheight=\paperheight-#2,noheadfoot}
 	\begin{tikzpicture}[remember picture, overlay, every node/.style={inner sep=0cm, outer sep=0cm}]
 		\begin{scope}[on background layer]
@@ -465,7 +465,7 @@
 
 % Left Sidebar
 \NewDocumentEnvironment{sidebar}{}{
-	\refstepcounter{@cvpage}\label{@cvpage.\the@cvpage}
+	\refstepcounter{cvpage}\label{cvpage.\thecvpage}
 	\begin{tikzpicture}[remember picture,overlay]
 		\fill[backgroundColor]%
 		(current page.north west)%
