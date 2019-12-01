@@ -29,10 +29,10 @@
 \RequirePackage{fontawesome5}
 
 % Create counters so pages can be referenced in the document
-\newcounter{cvpage}
-\newcounter{attachment}
+\newcounter{@cvpage}
+\newcounter{@attachment}
 % Global options for pdfpages
-\includepdfset{linkname=attachment, pagecommand={\refstepcounter{attachment}\label{attachment.\theattachment}}}
+\includepdfset{linkname=@attachment, pagecommand={\refstepcounter{@attachment}\label{@attachment.\the@attachment}}}
 
 % |\@IfNoValueOrEmptyTF{argument}{if empty}{if not empty}|
 % checks if an argument is empty.
@@ -97,12 +97,12 @@
 \tikzset{
 	@contactIcon/.style={minimum height=\baselineskip},
 	@contactText/.style={minimum height=\baselineskip,text depth=0pt},
-	@eventdottext/.style = {text width=\mainWidth-\timeDotSep,fontColor,anchor=north west},
-	@headerIcon/.style={minimum width=\headerIconWidth,anchor=center},
-	@invisibletimedot/.style = {circle,minimum width=\timeDotDiameter,anchor=center},
-	@progressArea/.style={minimum width=\progressAreaWidth,minimum height=\progressAreaHeight,rectangle,draw,accentColor},
-	@progressBar/.style={minimum height=\progressAreaHeight,rectangle,draw,fill,accentColor,anchor=west},
-	@sectionEduText/.style={@eventdottext,anchor=north west},
+	@eventdottext/.style = {text width=\@mainWidth-\@timeDotSep,fontColor,anchor=north west},
+	@headerIcon/.style={minimum width=\@headerIconWidth,anchor=center},
+	@invisibletimedot/.style = {circle,minimum width=\@timeDotDiameter,anchor=center},
+	@progressArea/.style={minimum width=\@progressAreaWidth,minimum height=\@progressAreaHeight,rectangle,draw,accentColor},
+	@progressBar/.style={minimum height=\@progressAreaHeight,rectangle,draw,fill,accentColor,anchor=west},
+	@sectionEduText/.style={@eventdottext,anchor=north west,align=justify},
 	@sectionTitle/.style={anchor=north west,align=left},
 	@timedot/.style = {@invisibletimedot,draw,fill,accentColor},
 }
@@ -164,64 +164,56 @@
 %----------------------------------------------------------------------------------------
 
 % Diameter of points in experience timeline
-\newlength\dotDiameter
-\setlength\dotDiameter{3pt}
-\newlength\margin
-\setlength\margin{1cm}
-\newlength\sideWidth
-\setlength\sideWidth{0.3\paperwidth-\margin}
-\newlength\mainWidth
-\setlength\mainWidth{\paperwidth-3.5\margin-\sideWidth}
-\newlength\coverletterWidth
-\setlength\coverletterWidth{\mainWidth+3\margin}
-\newlength\headerHeight
-\setlength\headerHeight{4cm}
-\newlength\nameblockHeight
-\setlength\nameblockHeight{1.3cm}
-\newlength\footerHeight
-\setlength\footerHeight{3cm}
-\newlength\addressblockHeight
-\setlength\addressblockHeight{2cm}
-\newlength\addressblockWidth
-\setlength\addressblockWidth{\sideWidth+2.4\margin}
-\newlength\sectionSBSep
-\setlength\sectionSBSep{4pt}
-\newlength\sBSectionLineWidth
-\setlength\sBSectionLineWidth{1pt}
-\newlength\skillSep
-\setlength\skillSep{1ex}
-\newlength\headerIconWidth
-\setlength\headerIconWidth{0pt}
-\newlength\colSep
-\setlength\colSep{0.1cm} % 2 times column separation!
-\newlength\timeDotDiameter
-\setlength\timeDotDiameter{3pt}
-\newlength\timeDotSep
-\setlength\timeDotSep{0.4cm}
-\newlength\startEndSep
-\setlength\startEndSep{0.3cm}
-\newlength\itemSep
-\setlength\itemSep{0.4cm}
-\newlength\tableSepWidth
-\setlength\tableSepWidth{0.3cm}
-\newlength\progressAreaWidth
-\setlength\progressAreaWidth{5em}
-\newlength\progressAreaHeight
-\setlength\progressAreaHeight{0.75em}
-\newlength\sectionSep
-\setlength\sectionSep{0.6cm}
-\newlength\titleLineWidth
-\setlength\titleLineWidth{2pt}
-\newlength\titleLineSpacing
-\setlength\titleLineSpacing{0.1cm}
-\newlength\projectDetailsSep
-\setlength\projectDetailsSep{0.2cm}
-\newlength\contactItemSep
-\setlength\contactItemSep{5pt}
-\newlength\idNameSep
-\setlength\idNameSep{0.1cm}
-\newlength\positionSep
-\setlength\positionSep{0.5cm}
+\newlength\@margin
+\setlength\@margin{1cm}
+\newlength\@sideWidth
+\setlength\@sideWidth{0.3\paperwidth-\@margin}
+\newlength\@mainWidth
+\setlength\@mainWidth{\paperwidth-3.5\@margin-\@sideWidth}
+\newlength\@coverletterWidth
+\setlength\@coverletterWidth{\@mainWidth+3\@margin}
+\newlength\@headerHeight
+\setlength\@headerHeight{4cm}
+\newlength\@nameblockHeight
+\setlength\@nameblockHeight{1.3cm}
+\newlength\@footerHeight
+\setlength\@footerHeight{3cm}
+\newlength\@addressblockHeight
+\setlength\@addressblockHeight{2cm}
+\newlength\@addressblockWidth
+\setlength\@addressblockWidth{\@sideWidth+2.4\@margin}
+\newlength\@sectionSBSep
+\setlength\@sectionSBSep{4pt}
+\newlength\@sBSectionLineWidth
+\setlength\@sBSectionLineWidth{1pt}
+\newlength\@skillSep
+\setlength\@skillSep{1ex}
+\newlength\@headerIconWidth
+\setlength\@headerIconWidth{0pt}
+\newlength\@colSep
+\setlength\@colSep{2cm} % 2 times column separation!
+\newlength\@timeDotDiameter
+\setlength\@timeDotDiameter{3pt}
+\newlength\@timeDotSep
+\setlength\@timeDotSep{0.4cm}
+\newlength\@itemSep
+\setlength\@itemSep{0.4cm}
+\newlength\@progressAreaWidth
+\setlength\@progressAreaWidth{5em}
+\newlength\@progressAreaHeight
+\setlength\@progressAreaHeight{0.75em}
+\newlength\@sectionSep
+\setlength\@sectionSep{0.6cm}
+\newlength\@titleLineWidth
+\setlength\@titleLineWidth{2pt}
+\newlength\@titleLineSpacing
+\setlength\@titleLineSpacing{0.1cm}
+\newlength\@contactItemSep
+\setlength\@contactItemSep{5pt}
+\newlength\@idNameSep
+\setlength\@idNameSep{0.1cm}
+\newlength\@positionSep
+\setlength\@positionSep{0.5cm}
 
 %----------------------------------------------------------------------------------------
 %   Commands for profile info
@@ -304,164 +296,163 @@
 \newlength\extraWidth
 \newlength\addressHeight
 
-\NewDocumentCommand{\calculateLengths}{}{
+\NewDocumentCommand{\@calculateLengths}{}{
 	\fontsize{14}{12}\selectfont
 	\setlength\fullnameWidth{\widthof{\pgfkeysvalueof{firstName} \pgfkeysvalueof{lastName}}}
 	\fontsize{10}{12}\selectfont
 	\setlength\extraWidth{\maxof{\widthof{\pgfkeysvalueof{address}, \pgfkeysvalueof{zipcode} \pgfkeysvalueof{city}}}{\widthof{\pgfkeysvalueof{email}}}}
-		\setlength\addressblockWidth{0.5\paperwidth-0.5\coverletterWidth+\extraWidth}
+		\setlength\@addressblockWidth{0.5\paperwidth-0.5\@coverletterWidth+\extraWidth}
 	\setlength\addressHeight{\heightof{\pgfkeysvalueof{address}, \pgfkeysvalueof{zipcode} \pgfkeysvalueof{city}}}
-	\setlength\addressblockHeight{6\addressHeight+.3cm}
+	\setlength\@addressblockHeight{6\addressHeight+.3cm}
 }
 
-\NewDocumentEnvironment{coverletter}{O{\footerHeight}O{6.7cm}}{
-\setlength\footerHeight{#1}
-\color{fontColor}
-\refstepcounter{cvpage}\label{cvpage.\thecvpage}
-\newgeometry{textwidth=\coverletterWidth,textheight=\paperheight-#2,noheadfoot}
-\begin{tikzpicture}[remember picture, overlay, every node/.style={inner sep=0cm, outer sep=0cm}]
-	\begin{scope}[on background layer]
-		% Header
-		\fill[backgroundColor] (current page.north west) rectangle ++(\paperwidth, -0.8\headerHeight);
+\NewDocumentEnvironment{coverletter}{O{\@footerHeight}O{6.7cm}}{
+	\setlength\@footerHeight{#1}
+	\color{fontColor}
+	\refstepcounter{@cvpage}\label{@cvpage.\the@cvpage}
+	\newgeometry{textwidth=\@coverletterWidth,textheight=\paperheight-#2,noheadfoot}
+	\begin{tikzpicture}[remember picture, overlay, every node/.style={inner sep=0cm, outer sep=0cm}]
+		\begin{scope}[on background layer]
+			% Header
+			\fill[backgroundColor] (current page.north west) rectangle ++(\paperwidth, -0.8\@headerHeight);
 
-		\calculateLengths
+			\@calculateLengths
 
-		% Blue name block
-		\fill[accentColor,draw=white,line width=1mm]%
-		($(current page.north west)+(-2pt,-0.8\headerHeight+0.5\nameblockHeight)$)%
-		rectangle%
-		++(0.5\paperwidth-0.5\coverletterWidth+\fullnameWidth+0.3cm,-\nameblockHeight);
+			% Blue name block
+			\fill[accentColor,draw=white,line width=1mm]%
+			($(current page.north west)+(-2pt,-0.8\@headerHeight+0.5\@nameblockHeight)$)%
+			rectangle%
+			++(0.5\paperwidth-0.5\@coverletterWidth+\fullnameWidth+0.3cm,-\@nameblockHeight);
 
-		% First and Second Name
-		\node[anchor=west,xshift=0.5\paperwidth-0.5\coverletterWidth, yshift=-0.8\headerHeight]
-		at (current page.north west) (coverletter name)
-		{\fontsize{14}{12}\selectfont\color{white}\pgfkeysvalueof{firstName} \pgfkeysvalueof{lastName}};
+			% First and Second Name
+			\node[anchor=west,xshift=0.5\paperwidth-0.5\@coverletterWidth, yshift=-0.8\@headerHeight]
+			at (current page.north west) (coverletter name)
+			{\fontsize{14}{12}\selectfont\color{white}\pgfkeysvalueof{firstName} \pgfkeysvalueof{lastName}};
 
-		% Footer
-		\fill[backgroundColor]%
-		(current page.south east) rectangle%
-		++(-\paperwidth, \footerHeight);
+			% Footer
+			\fill[backgroundColor]%
+			(current page.south east) rectangle%
+			++(-\paperwidth, \@footerHeight);
 
-		\fill[accentColor,draw=white,line width=1mm]%
-		($(current page.south west)+(-2pt,\footerHeight-0.5\addressblockHeight)$)%
-		rectangle%
-		++(\addressblockWidth+0.3cm,\addressblockHeight);
+			\fill[accentColor,draw=white,line width=1mm]%
+			($(current page.south west)+(-2pt,\@footerHeight-0.5\@addressblockHeight)$)%
+			rectangle%
+			++(\@addressblockWidth+0.3cm,\@addressblockHeight);
 
-		\node[anchor=east, xshift=\addressblockWidth, yshift=\footerHeight]
-		at (current page.south west) (email)
-		{\href{mailto:\pgfkeysvalueof{email}}{\color{white}{\pgfkeysvalueof{email}}}};
+			\node[anchor=east, xshift=\@addressblockWidth, yshift=\@footerHeight]
+			at (current page.south west) (email)
+			{\href{mailto:\pgfkeysvalueof{email}}{\color{white}{\pgfkeysvalueof{email}}}};
 
-		\node[align=left,text=white,below=-8pt-\addressHeight of email.north east,anchor=north east]
-		(address)
-		{\pgfkeysvalueof{address}, \pgfkeysvalueof{zipcode} \pgfkeysvalueof{city}};
+			\node[align=left,text=white,below=-8pt-\addressHeight of email.north east,anchor=north east]
+			(address)
+			{\pgfkeysvalueof{address}, \pgfkeysvalueof{zipcode} \pgfkeysvalueof{city}};
 
-		\node[align=left,text=white,below=8pt+\addressHeight of email.south east, anchor=south east]
-		(phone)
-		{\pgfkeysvalueof{phoneNumber}};
+			\node[align=left,text=white,below=8pt+\addressHeight of email.south east, anchor=south east]
+			(phone)
+			{\pgfkeysvalueof{phoneNumber}};
 
-	\end{scope}
-\end{tikzpicture}
+		\end{scope}
+	\end{tikzpicture}
 
-\vspace{\dimexpr\headerHeight-1in-\topmargin\relax}
+	\vspace{\dimexpr\@headerHeight-1in-\topmargin\relax}
 }{
-\restoregeometry
-\cleardoublepage
+	\restoregeometry
+	\cleardoublepage
 }
 
-\NewDocumentEnvironment{coverletter*}{O{\footerHeight}O{6.7cm}}{
-\setlength\footerHeight{#1}
-\color{fontColor}
-\refstepcounter{cvpage}\label{cvpage.\thecvpage}
-\newgeometry{textwidth=\coverletterWidth,textheight=\paperheight-#2,noheadfoot}
-\begin{tikzpicture}[remember picture, overlay, every node/.style={inner sep=0cm, outer sep=0cm}]
-	\begin{scope}[on background layer]
-		% Header
-		\fill[backgroundColor] (current page.north west) rectangle ++(\paperwidth, -0.8\headerHeight);
+\NewDocumentEnvironment{coverletter*}{O{\@footerHeight}O{6.7cm}}{
+	\setlength\@footerHeight{#1}
+	\color{fontColor}
+	\refstepcounter{@cvpage}\label{@cvpage.\the@cvpage}
+	\newgeometry{textwidth=\@coverletterWidth,textheight=\paperheight-#2,noheadfoot}
+	\begin{tikzpicture}[remember picture, overlay, every node/.style={inner sep=0cm, outer sep=0cm}]
+		\begin{scope}[on background layer]
+			% Header
+			\fill[backgroundColor] (current page.north west) rectangle ++(\paperwidth, -0.8\@headerHeight);
 
-		\calculateLengths
+			\@calculateLengths
 
-		% Blue name block
-		\fill[accentColor,draw=white,line width=1mm]%
-		($(current page.north east)+(1pt,-0.8\headerHeight+0.5\nameblockHeight)$)%
-		rectangle
-		++(-0.5\paperwidth+0.5\coverletterWidth-\fullnameWidth-0.3cm,-\nameblockHeight);
+			% Blue name block
+			\fill[accentColor,draw=white,line width=1mm]%
+			($(current page.north east)+(1pt,-0.8\@headerHeight+0.5\@nameblockHeight)$)%
+			rectangle
+			++(-0.5\paperwidth+0.5\@coverletterWidth-\fullnameWidth-0.3cm,-\@nameblockHeight);
 
-		% First and Second Name
-		\node[anchor=east,xshift=-0.5\paperwidth+0.5\coverletterWidth, yshift=-0.8\headerHeight]
-		at (current page.north east) (coverletter name)
-		{\fontsize{14}{12}\selectfont\color{white}\pgfkeysvalueof{firstName} \pgfkeysvalueof{lastName}};
+			% First and Second Name
+			\node[anchor=east,xshift=-0.5\paperwidth+0.5\@coverletterWidth, yshift=-0.8\@headerHeight]
+			at (current page.north east) (coverletter name)
+			{\fontsize{14}{12}\selectfont\color{white}\pgfkeysvalueof{firstName} \pgfkeysvalueof{lastName}};
 
-		% Footer
-		\fill[backgroundColor]%
-		(current page.south east) rectangle%
-		++(-\paperwidth, \footerHeight);
+			% Footer
+			\fill[backgroundColor]%
+			(current page.south east) rectangle%
+			++(-\paperwidth, \@footerHeight);
 
-		\fill[accentColor,draw=white,line width=1mm]%
-		($(current page.south east)+(1pt,\footerHeight-0.5\addressblockHeight)$)%
-		rectangle%
-		++(-\addressblockWidth-0.3cm,\addressblockHeight);
+			\fill[accentColor,draw=white,line width=1mm]%
+			($(current page.south east)+(1pt,\@footerHeight-0.5\@addressblockHeight)$)%
+			rectangle%
+			++(-\@addressblockWidth-0.3cm,\@addressblockHeight);
 
-		\node[anchor=west, xshift=-\addressblockWidth, yshift=\footerHeight]
-		at (current page.south east) (email)
-		{\href{mailto:\pgfkeysvalueof{email}}{\color{white}{\pgfkeysvalueof{email}}}};
+			\node[anchor=west, xshift=-\@addressblockWidth, yshift=\@footerHeight]
+			at (current page.south east) (email)
+			{\href{mailto:\pgfkeysvalueof{email}}{\color{white}{\pgfkeysvalueof{email}}}};
 
-		\node[align=left,text=white,below=-8pt-\addressHeight of email.north west,anchor=north west]
-		(address)
-		{\pgfkeysvalueof{address}, \pgfkeysvalueof{zipcode} \pgfkeysvalueof{city}};
+			\node[align=left,text=white,below=-8pt-\addressHeight of email.north west,anchor=north west]
+			(address)
+			{\pgfkeysvalueof{address}, \pgfkeysvalueof{zipcode} \pgfkeysvalueof{city}};
 
-		\node[align=left,text=white,below=8pt+\addressHeight of email.south west, anchor=south west]
-		(phone)
-		{\pgfkeysvalueof{phoneNumber}};
+			\node[align=left,text=white,below=8pt+\addressHeight of email.south west, anchor=south west]
+			(phone)
+			{\pgfkeysvalueof{phoneNumber}};
 
-	\end{scope}
-\end{tikzpicture}
+		\end{scope}
+	\end{tikzpicture}
 
-\vspace{\dimexpr\headerHeight-1in-\topmargin\relax}
+	\vspace{\dimexpr\@headerHeight-1in-\topmargin\relax}
 }{
-\restoregeometry
-\cleardoublepage
+	\restoregeometry
+	\cleardoublepage
 }
 
 %----------------------------------------------------------------------------------------
 %   Sidebar Environment
 %----------------------------------------------------------------------------------------
-\NewDocumentCommand{\cvhrulefill}{}{{\color{accentColor}%
-			\leavevmode\leaders\hrule height \sBSectionLineWidth\hfill\kern\z@}}
-\NewDocumentCommand{\ruleline}{m}{\par\noindent\raisebox{.6ex}{%
-		\makebox[\linewidth]{\cvhrulefill\hspace{1ex}%
-			\raisebox{-.6ex}{#1}\hspace{1ex}\cvhrulefill}}}
+\NewDocumentCommand{\@cvhrulefill}{}{
+	{\color{accentColor}%
+	\leavevmode\leaders\hrule height \@sBSectionLineWidth\hfill\kern\z@}
+}
+
+\NewDocumentCommand{\@ruleline}{m}{
+	\par\noindent\raisebox{.6ex}{%
+		\makebox[\linewidth]{\@cvhrulefill\hspace{1ex}%
+			\raisebox{-.6ex}{#1}\hspace{1ex}\@cvhrulefill}}%
+}
 
 \NewDocumentCommand{\displaysidebarpicture}{O{0cm}O{0cm}}{
-\IfFileExists{\profilepicture}{
-	\begin{tikzpicture}[remember picture, overlay]
-		\node[
-			anchor=center,
-			xshift=.5*(\sideWidth+2\margin),
-			yshift=-0.4*(\sideWidth+2\margin)+0.21cm,
-			% regular polygon,
-			% regular polygon sides=4,
-			% text=black,
-			% draw=black,line width=.5mm,
-			minimum size=7.2cm,
-			path picture={
-					\node[xshift=#1,yshift=#2,anchor=center,
-						% draw,line width=.5mm,
-					] at (path picture bounding box.center){
-						\includegraphics[width=8cm]{\profilepicture}
-					};
-				}] at (current page.north west)
-		{};
-	\end{tikzpicture}
-	\vspace{130pt}
-}{}
-\begin{center}
-	\LARGE
-	\vspace{3\idNameSep}
-	\pgfkeysvalueof{firstName}
-	\vspace{3\idNameSep}
-	\pgfkeysvalueof{lastName}
-	\vspace{\positionSep}
-\end{center}
+	\IfFileExists{\profilepicture}{
+		\begin{tikzpicture}[remember picture, overlay]
+			\node[anchor=center,xshift=.5*(\@sideWidth+2\@margin),
+				yshift=-0.4*(\@sideWidth+2\@margin)+0.21cm,
+				minimum size=7.2cm,
+				path picture={
+						\node[xshift=#1,yshift=#2,anchor=center,
+							% draw,line width=.5mm,
+						] at (path picture bounding box.center){
+							\includegraphics[width=8cm]{\profilepicture}
+						};
+					}] at (current page.north west)
+			{};
+		\end{tikzpicture}
+		\vspace{130pt}
+	}{}
+	\begin{center}
+		\LARGE
+		\vspace{3\@idNameSep}
+		\pgfkeysvalueof{firstName}
+		\vspace{3\@idNameSep}
+		\pgfkeysvalueof{lastName}
+		\vspace{\@positionSep}
+	\end{center}
 }
 
 \NewDocumentCommand{\displayjobdetails}{}{
@@ -469,20 +460,20 @@
 		\pgfkeysvalueof{position}\\
 		\pgfkeysvalueof{positionid}
 	\end{center}
-	\vspace{\positionSep}
+	\vspace{\@positionSep}
 }
 
 % Left Sidebar
 \NewDocumentEnvironment{sidebar}{}{
-	\refstepcounter{cvpage}\label{cvpage.\thecvpage}
+	\refstepcounter{@cvpage}\label{@cvpage.\the@cvpage}
 	\begin{tikzpicture}[remember picture,overlay]
 		\fill[backgroundColor]%
 		(current page.north west)%
 		rectangle%
-		++(\sideWidth+2\margin,-\paperheight);
+		++(\@sideWidth+2\@margin,-\paperheight);
 	\end{tikzpicture}
 	\color{fontColor}
-	\begin{minipage}{\sideWidth}
+	\begin{minipage}{\@sideWidth}
 		\begin{center}
 			}{
 		\end{center}
@@ -492,12 +483,12 @@
 
 \NewDocumentEnvironment{sidear*}{}{%
 	\vspace*{\fill}
-	\vspace*{-0.5\margin}
+	\vspace*{-0.5\@margin}
 	\begin{tikzpicture}[remember picture,overlay]
 		\fill[backgroundColor] (current page.north east) rectangle %
-		++(-\sideWidth-2\margin,-\paperheight);
+		++(-\@sideWidth-2\@margin,-\paperheight);
 	\end{tikzpicture}%
-	\begin{minipage}{\sideWidth}
+	\begin{minipage}{\@sideWidth}
 		\begin{center}
 			}{%
 		\end{center}
@@ -506,9 +497,9 @@
 }
 
 \NewDocumentEnvironment{profile}{}{%
-	\vspace{\sectionSBSep}
-	\ruleline{\pgfkeysvalueof{/variables/profile}}
-	\vspace{\sectionSBSep}
+	\vspace{\@sectionSBSep}
+	\@ruleline{\pgfkeysvalueof{/variables/profile}}
+	\vspace{\@sectionSBSep}
 
 }{%
 }
@@ -534,7 +525,7 @@
 	}
 }
 
-\NewDocumentCommand{\cvContactTemplate}{O{} mm}{
+\NewDocumentCommand{\contactTemplate}{O{} mm}{
 	\if@contactfirst%
 		\\%
 	\else %
@@ -548,12 +539,8 @@
 
 \newif\if@contactfirst
 \NewDocumentEnvironment{contact}{}{%
-	\vspace{\sectionSBSep}
-	\ruleline{\pgfkeysvalueof{/variables/contact}}%
-	% \begin{flushleft}
-	%   KONTAKT
-	% \end{flushleft}
-	% \vspace{\sectionSBSep}
+	\vspace{\@sectionSBSep}
+	\@ruleline{\pgfkeysvalueof{/variables/contact}}%
 	\vspace{15pt}
 
 	\global\@contactfirstfalse
@@ -571,23 +558,27 @@
 		\matrix [
 			column 1/.style={anchor=east},
 			column 2/.style={anchor=west,align=left},
-			column sep=\contactItemSep,
-			row sep=\contactItemSep,
+			column sep=\@contactItemSep,
+			row sep=\@contactItemSep,
 			inner sep=0pt,
 			outer sep=0pt] (contact) \bgroup
 		\address{\pgfkeysvalueof{address}\\\pgfkeysvalueof{zipcode} \pgfkeysvalueof{city}}
 		\email{mailto:\pgfkeysvalueof{email}}{\pgfkeysvalueof{email}}
 		\phone{\pgfkeysvalueof{phoneNumber}}
 		}{%
-		\\\egroup; % \\ required, does not compile otherwise
+		\\\egroup;
 	\end{tikzpicture}%
 }
 
 \newcounter{@languages}
 \setcounter{@languages}{1}
-\pgfkeys{/languages/.is family,
+\pgfkeys{
+	/languages/.is family,
 	/languages/.unknown/.style = {%
-			\pgfkeyscurrentpath/\pgfkeyscurrentname/.initial = #1}}
+		\pgfkeyscurrentpath/\pgfkeyscurrentname/.initial = #1
+	}
+}
+
 \NewDocumentEnvironment{languages}{}{%
 	\NewDocumentCommand{\languageRating}{mm}{%
 		{\globaldefs=1\relax\pgfkeys{%
@@ -596,16 +587,16 @@
 		\node[@progressArea] (@language \the\value{@languages}) {}; \\
 		\stepcounter{@languages}
 	}%
-	\vspace{\sectionSBSep}
-	\ruleline{\pgfkeysvalueof{/variables/languages}}%
-	% \vspace{\sectionSBSep}
+	\vspace{\@sectionSBSep}
+	\@ruleline{\pgfkeysvalueof{/variables/languages}}%
+	% \vspace{\@sectionSBSep}
 	\vspace{15pt}
 	\begin{tikzpicture}[%
 			every node/.style={text depth=0pt,inner sep=0pt,outer sep=0pt}]
 		\matrix [
 			column 1/.style={anchor=west},
-			column sep=1.5\sectionSBSep,
-			row sep=1.5\sectionSBSep,
+			column sep=1.5\@sectionSBSep,
+			row sep=1.5\@sectionSBSep,
 			column 2/.style={anchor=east,align=right}
 		] (contact) \bgroup
 		}{%
@@ -627,129 +618,107 @@
 %----------------------------------------------------------------------------------------
 %   Main Environment
 %----------------------------------------------------------------------------------------
-\NewDocumentCommand{\cvSection}{m}{\large\textbf{#1}}
+\NewDocumentCommand{\titleText}{m}{\large\textbf{#1}}
 
-\newcounter{titlePrev}
-\setcounter{titlePrev}{0}
-\newcounter{titleNext}
-\setcounter{titleNext}{1}
+\newcounter{@titlePrev}
+\setcounter{@titlePrev}{0}
+\newcounter{@titleNext}
+\setcounter{@titleNext}{1}
 
 \NewDocumentCommand{\@Title}{mm}{%
 	\color{fontColor}
-	\ifnodedefined{last item \the\value{lastItem}}{%
 
-		\node[below=\sectionSep of last item \the\value{lastItem}.south west,@sectionTitle]
-		(@title \the\value{titleNext})
-		{\begingroup\edef\y{\endgroup%
-				\cvSection\bgroup\noexpand\extract{#1}{1}}\y\StrGobbleLeft{#1}{1}
-			\egroup
-		};
+	\ifnodedefined{last item \the\value{@lastItem}}{%
+		\tikzset{@titlenode/.style = {below=\@sectionSep of last item \the\value{@lastItem}.south west}}
+	}{
+		\tikzset{@titlenode/.style = {}}
+	}
 
-		\node[left=\timeDotSep of @title \the\value{titleNext},@headerIcon]
-		{#2};
+	\node[@titlenode,@sectionTitle](@title \the\value{@titleNext})
+	{
+		\begingroup\edef\y
+		{\endgroup\titleText\bgroup\noexpand\extract{#1}{1}}\y\StrGobbleLeft{#1}{1}\egroup
+	};
 
-		\node[below=\sectionSep of last item \the\value{lastItem}.south west,@sectionTitle]
-		(@title \the\value{titleNext} dummy)
-		{\phantom{\cvSection{Education}}};
+	\node[left=\@timeDotSep of @title \the\value{@titleNext},@headerIcon]
+	{#2};
 
-		\begin{scope}[on background layer]
-			\draw[line width=\titleLineWidth,accentColor]
-			let \p1=(@title \the\value{titleNext} %
-			dummy.south west),
-			\p2=(current page.east) in
-			(\x1,\y1-\titleLineSpacing) to (\x2,\y1-\titleLineSpacing);
-		\end{scope}
-	}{%
-		\node[@sectionTitle] at (0,0) (@title \the\value{titleNext})
-		{\begingroup\edef\y{\endgroup
-				\cvSection\bgroup\noexpand\extract{#1}{1}}%
-			\y\StrGobbleLeft{#1}{1}\egroup};
+	\node[@titlenode,@sectionTitle](@title \the\value{@titleNext} dummy)
+	{\phantom{\titleText{Education}}};
 
-		\node[left=\timeDotSep of @title \the\value{titleNext},@headerIcon]
-		{#2};
-
-		\node[@sectionTitle] at (0,0)(@title \the\value{titleNext} dummy)
-		{\phantom{\cvSection{Education}}};
-
-		\begin{scope}[on background layer]
-			\draw[line width=\titleLineWidth,accentColor]
-			let \p1=(@title \the\value{titleNext} %
-			dummy.south west),
-			\p2=(current page.east) in
-			(\x1,\y1-\titleLineSpacing) to (\x2,\y1-\titleLineSpacing);
-		\end{scope}
-	}%
-	\stepcounter{titlePrev}%
-	\stepcounter{titleNext}
+	\begin{scope}[on background layer]
+		\draw[line width=\@titleLineWidth,accentColor]
+		let \p1=(@title \the\value{@titleNext}
+		dummy.south west),
+		\p2=(current page.east) in
+		(\x1,\y1-\@titleLineSpacing) to (\x2,\y1-\@titleLineSpacing);
+	\end{scope}
+	\stepcounter{@titlePrev}%
+	\stepcounter{@titleNext}
 }
 
 \NewDocumentCommand{\@EndSectionDraw}{}{
 	\color{accentColor}
-	\draw (start) to (end.center);}
-\newcounter{itemPrev}
-\setcounter{itemPrev}{0}
-\newcounter{itemNext}
-\setcounter{itemNext}{1}
-\newcounter{lastItem}
-\setcounter{lastItem}{1}
+	\draw (start) to (end.center);
+}
+
+\newcounter{@itemPrev}
+\setcounter{@itemPrev}{0}
+\newcounter{@itemNext}
+\setcounter{@itemNext}{1}
+\newcounter{@lastItem}
+\setcounter{@lastItem}{1}
 
 \NewDocumentCommand{\@definecvItem}{}{
-\NewDocumentCommand{\cvItem}{O{}O{}O{}O{}O{}}{%
-\ifnodedefined{item \the\value{itemPrev}}{%
-	\node[below=\itemSep of item \the\value{itemPrev}.south west,@eventdottext]
-	(item \the\value{itemNext} header){\phantom{Evening}};
+	\NewDocumentEnvironment{cvItem}{}{%
+		\ifnodedefined{item \the\value{@itemPrev}}{%
+			\tikzset{@skillnode/.style= {below=\@itemSep of item \the\value{@itemPrev}.south west}}
+		}{
+			\tikzset{@skillnode/.style= {below=\@itemSep of @title \the\value{@titlePrev}.south west}}
+		}
 
-	\node[below=\itemSep of item \the\value{itemPrev}.south west,@sectionEduText]
-	(item \the\value{itemNext})
-	{
-		##1 \hfill ##2\\
-		\textsc{##3} ##4\\
-		##5
-	};
+		\node[@skillnode,@eventdottext]
+		(item \the\value{@itemNext} header){\phantom{Evening}};
 
-	\node[left=\timeDotSep of item \the\value{itemNext} header,@timedot]
-	{};
-}{
-	\node[below=\itemSep of @title \the\value{titlePrev}.south west,@eventdottext]
-	(item \the\value{itemNext} header){\phantom{Evening}};
+		\node[@skillnode,@sectionEduText]
+		(item \the\value{@itemNext})
+		\bgroup
+		}{
+		\egroup;
 
-	\node[below=\itemSep of @title \the\value{titlePrev}.south west,@sectionEduText]
-	(item \the\value{itemNext})
-	{
-		##1 \hfill ##2\\
-		\textsc{##3} ##4\\
-		##5
-	};
-
-	\node[left=\timeDotSep of item \the\value{itemNext} header,@timedot]
-	(start)
-	{};
-}
-\node[left=\timeDotSep of item \the\value{itemNext}.south west,@invisibletimedot]
-(end)
-{};
-\stepcounter{itemPrev}
-\stepcounter{itemNext}
-}
+		\ifnodedefined{item \the\value{@itemPrev}}{%
+			\node[left=\@timeDotSep of item \the\value{@itemNext} header,@timedot]
+			{};
+		}{
+			\node[left=\@timeDotSep of item \the\value{@itemNext} header,@timedot]
+			(start)
+			{};
+		}
+		\node[left=\@timeDotSep of item \the\value{@itemNext}.south west,@invisibletimedot]
+		(end)
+		{};
+		\stepcounter{@itemPrev}
+		\stepcounter{@itemNext}
+	}
 }
 
 \NewDocumentEnvironment{mainContent}{}{%
 	\begin{tikzpicture}
 		[every node/.style={inner sep=0pt,outer sep=0pt},remember picture,overlay,
-			shift={($(current page.north west)+(\sideWidth+2.5\margin+\timeDotSep,-\margin)$)}]
+			shift={($(current page.north west)+(\@sideWidth+2.5\@margin+\@timeDotSep,-\@margin)$)}]
 		\begin{scope}[on background layer]
 			}{%
 		\end{scope}
 	\end{tikzpicture}
 	\restoregeometry
-	\setcounter{itemPrev}{0}
-	\setcounter{itemNext}{1}
-	\setcounter{lastItem}{1}
+	\setcounter{@itemPrev}{0}
+	\setcounter{@itemNext}{1}
+	\setcounter{@lastItem}{1}
 }
 
 \NewDocumentEnvironment{mainContent*}{}{%
-	\stepcounter{titlePrev}
-	\stepcounter{titleNext}
+	\stepcounter{@titlePrev}
+	\stepcounter{@titleNext}
 	\begin{tikzpicture}[%
 			every node/.style={%
 					inner sep=0pt,
@@ -757,49 +726,49 @@
 			remember picture,
 			overlay,
 			shift={($(current page.north west)+%
-						(\margin+\timeDotSep,-\margin)$)}]
+						(\@margin+\@timeDotSep,-\@margin)$)}]
 		}{%
 	\end{tikzpicture}%
 }
+
 \NewDocumentEnvironment{education}{O{\pgfkeysvalueof{/variables/education}}}{%
 	\@Title{#1}{\faGraduationCap}
-	\stepcounter{itemPrev}
-	\stepcounter{itemNext}
+	\stepcounter{@itemPrev}
+	\stepcounter{@itemNext}
 	\@definecvItem
 }{%
 	\@EndSectionDraw
-	\stepcounter{lastItem}
-	\draw (item \the\value{itemPrev}.south west)
-	node (last item \the\value{lastItem}) {};
+	\stepcounter{@lastItem}
+	\draw (item \the\value{@itemPrev}.south west)
+	node (last item \the\value{@lastItem}) {};
 }
 
 \NewDocumentEnvironment{experience}{O{\pgfkeysvalueof{/variables/experience}}}{%
 	\@Title{#1}{\faBriefcase}
-	\stepcounter{itemPrev}
-	\stepcounter{itemNext}
+	\stepcounter{@itemPrev}
+	\stepcounter{@itemNext}
 	\@definecvItem
 }{%
 	\@EndSectionDraw
-	\stepcounter{lastItem}
-	\draw (item \the\value{itemPrev}.south west)
-	node (last item \the\value{lastItem}) {};
+	\stepcounter{@lastItem}
+	\draw (item \the\value{@itemPrev}.south west)
+	node (last item \the\value{@lastItem}) {};
 }
 
 \NewDocumentEnvironment{scholarship}{O{\pgfkeysvalueof{/variables/scholarship}}}{%
 	\@Title{#1}{\faEuroSign}
-	% insures uniqueness
-	\stepcounter{itemPrev}
-	\stepcounter{itemNext}
+	\stepcounter{@itemPrev}
+	\stepcounter{@itemNext}
 	\@definecvItem
 }{%
 	\@EndSectionDraw
-	\stepcounter{lastItem}
-	\draw (item \the\value{itemPrev}.south west)
-	node (last item \the\value{lastItem}) {};
+	\stepcounter{@lastItem}
+	\draw (item \the\value{@itemPrev}.south west)
+	node (last item \the\value{@lastItem}) {};
 }
 
 \newcount\my@repeat@count
-\NewDocumentCommand{\skill}{m}{%
+\NewDocumentCommand{\@skillgrade}{m}{%
 	\begingroup
 	\my@repeat@count=\z@
 	\@whilenum\my@repeat@count<#1\do{\faStar\advance%
@@ -811,54 +780,87 @@
 }
 
 \newif\if@firstskill
+\newif\if@skillone
+\newif\if@skillgradeless
 \NewDocumentCommand{\@skillsTwoTable}{}{}
+\NewDocumentCommand{\@skillsOneTable}{}{}
 \NewDocumentCommand{\@skillsTable}{}{}
 \NewDocumentCommand{\skillTwo}{mmmm}{%
 	\if@firstskill
-		\g@addto@macro\@skillsTwoTable{\skill{#1} %
-			& #2 & \skill{#3} & #4}
+		\g@addto@macro\@skillsTwoTable{\@skillgrade{#1} & #2 & \@skillgrade{#3} & #4}
 		\@firstskillfalse
 	\else
-		\g@addto@macro\@skillsTwoTable{\\[\skillSep] \skill{#1} %
-			& #2 & \skill{#3} & #4}
+		\g@addto@macro\@skillsTwoTable{\\[\@skillSep] \@skillgrade{#1} & #2 & \@skillgrade{#3} & #4}
 	\fi
 }
 \NewDocumentCommand{\skillOne}{mm}{%
+	\@skillonetrue
+
 	\if@firstskill
-		\g@addto@macro\@skillsTable{\skill{#1} & #2}
+		\g@addto@macro\@skillsOneTable{\@skillgrade{#1} & #2}
 		\@firstskillfalse
 	\else
-		\g@addto@macro\@skillsTable{\\[\skillSep] \skill{#1} & #2}
+		\g@addto@macro\@skillsOneTable{\\[\@skillSep] \@skillgrade{#1} & #2}
+	\fi
+}
+\NewDocumentCommand{\skill}{m}{%
+	\@skillgradelesstrue
+
+	\if@firstskill
+		\g@addto@macro\@skillsTable{\parbox{\@mainWidth-\@timeDotSep}{#1}}
+		\@firstskillfalse
+	\else
+		\g@addto@macro\@skillsTable{\\[\@skillSep] \parbox{\@mainWidth-\@timeDotSep}{#1}}
 	\fi
 }
 
 \NewDocumentEnvironment{skills}{O{\pgfkeysvalueof{/variables/skills}}}{%
 	\@Title{#1}{\faStar}
 	\global\@firstskilltrue
+	\global\@skillonefalse
+	\global\@skillgradelessfalse
 }{%
-	\node[
-		below=\sectionSep of @title \the\value{titlePrev}.south west,
-		anchor=north west] (skills)
+	\node[below=\@sectionSep of @title \the\value{@titlePrev}.south west,anchor=north west]
+	(skills)
 	{
-		\begin{tabular}{@{}l@{\hskip 5pt}l@{\hskip 10pt}l@{\hskip 5pt}l@{}}%
+		\begin{tabular}{@{}l@{\hskip 5pt}l@{\hskip \@colSep}l@{\hskip 5pt}l@{}}%
 			\@skillsTwoTable
-			\@skillsTable
 		\end{tabular}
 	};
-	\stepcounter{lastItem}
+
+	\if@skillone
+		\node[below=-0.65\@sectionSep of skills.south west,anchor=north west,]
+		 (skills)
+		{
+			\begin{tabular}{@{}l@{\hskip 5pt}l@{}}%
+				\@skillsOneTable
+			\end{tabular}
+		};
+	\fi
+
+	\if@skillgradeless
+		\node[below=-0.65\@sectionSep of skills.south west,anchor=north west]
+		(skills)
+		{
+			\begin{tabular}{@{}l}%
+				\@skillsTable
+			\end{tabular}
+		};
+	\fi
+
+	\stepcounter{@lastItem}
 	\draw (skills.south west) node %
-	(last item \the\value{lastItem}) {};
+	(last item \the\value{@lastItem}) {};
 }
 
 \NewDocumentEnvironment{interests}{O{\pgfkeysvalueof{/variables/interests}}}{%
 	\@Title{#1}{\faUser}
-	% insures uniqueness
-	\stepcounter{itemPrev}
-	\stepcounter{itemNext}
+	\stepcounter{@itemPrev}
+	\stepcounter{@itemNext}
 	\@definecvItem
 }{%
 	\@EndSectionDraw
-	\stepcounter{lastItem}
-	\draw (item \the\value{itemPrev}.south west)
-	node (last item \the\value{lastItem}) {};
+	\stepcounter{@lastItem}
+	\draw (item \the\value{@itemPrev}.south west)
+	node (last item \the\value{@lastItem}) {};
 }
