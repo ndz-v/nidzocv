@@ -424,21 +424,6 @@
 	\vspace*{\fill}
 }
 
-\NewDocumentEnvironment{sidear*}{}{%
-	\vspace*{\fill}
-	\vspace*{-0.5\@margin}
-	\begin{tikzpicture}[remember picture,overlay]
-		\fill[backgroundColor] (current page.north east) rectangle %
-		++(-\@sideWidth-2\@margin,-\paperheight);
-	\end{tikzpicture}%
-	\begin{minipage}{\@sideWidth}
-		\begin{center}
-			}{%
-		\end{center}
-	\end{minipage}
-	\vspace*{\fill}
-}
-
 \NewDocumentEnvironment{profile}{}{%
 	\vspace{\@sectionSBSep}
 	\@ruleline{\pgfkeysvalueof{/variables/profile}}
@@ -657,21 +642,6 @@
 	\setcounter{@itemPrev}{0}
 	\setcounter{@itemNext}{1}
 	\setcounter{@lastItem}{1}
-}
-
-\NewDocumentEnvironment{mainContent*}{}{%
-	\stepcounter{@titlePrev}
-	\stepcounter{@titleNext}
-	\begin{tikzpicture}[%
-			every node/.style={%
-					inner sep=0pt,
-					outer sep=0pt},
-			remember picture,
-			overlay,
-			shift={($(current page.north west)+%
-						(\@margin+\@timeDotSep,-\@margin)$)}]
-		}{%
-	\end{tikzpicture}%
 }
 
 \NewDocumentEnvironment{education}{O{\pgfkeysvalueof{/variables/education}}}{%
