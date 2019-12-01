@@ -1,5 +1,10 @@
 # My CV Template
 
+<!--
+command to convert a pdf page to png
+convert -density 200 main.pdf\[\0] -quality 100 -background white -flatten coverletter.png
+-->
+
 ## How to use
 
 Fill main.tex, sidebar.tex and maincontent.tex with information and build it.
