@@ -37,7 +37,7 @@
 % |\@IfNoValueOrEmptyTF{argument}{if empty}{if not empty}|
 % checks if an argument is empty.
 \ExplSyntaxOn
-\DeclareExpandableDocumentCommand{\IfNoValueOrEmpty}%
+\DeclareExpandableDocumentCommand{\@IfNoValueOrEmpty}%
 {mmm}{\IfNoValueTF{#1}{#2}{
 		\tl_if_empty:nTF {#1} {#2} {#3}%
 	}
@@ -226,7 +226,7 @@
 }
 \xdef\profilepicture{\empty}
 \NewDocumentCommand{\setPicture}{m}{
-	\IfNoValueOrEmpty{#1}{}{\xdef\profilepicture{#1}}
+	\@IfNoValueOrEmpty{#1}{}{\xdef\profilepicture{#1}}
 }
 \NewDocumentCommand{\displayCompanyAdress}{}{
 	\textbf{\pgfkeysvalueof{companyName}}\\
@@ -242,7 +242,7 @@
 }
 \xdef\signature{\empty}
 \NewDocumentCommand{\setSignaturePicture}{m}{
-	\IfNoValueOrEmpty{#1}{}{\xdef\signature{#1}}
+	\@IfNoValueOrEmpty{#1}{}{\xdef\signature{#1}}
 }
 \NewDocumentCommand{\displaysignature}{O{5cm}}{
 	\begin{figure}[htbp]
@@ -292,25 +292,29 @@
 %----------------------------------------------------------------------------------------
 %   Cover Letter Environment
 %----------------------------------------------------------------------------------------
-\newlength\fullnameWidth
-\newlength\extraWidth
-\newlength\addressHeight
+\newlength\@fullnameWidth
+\newlength\@addressWidth
+\newlength\@addressHeight
 
 \NewDocumentCommand{\@calculateLengths}{}{
 	\fontsize{14}{12}\selectfont
-	\setlength\fullnameWidth{\widthof{\pgfkeysvalueof{firstName} \pgfkeysvalueof{lastName}}}
+	\setlength\@fullnameWidth{\widthof{\pgfkeysvalueof{firstName} \pgfkeysvalueof{lastName}}}
+
 	\fontsize{10}{12}\selectfont
-	\setlength\extraWidth{\maxof{\widthof{\pgfkeysvalueof{address}, \pgfkeysvalueof{zipcode} \pgfkeysvalueof{city}}}{\widthof{\pgfkeysvalueof{email}}}}
-		\setlength\@addressblockWidth{0.5\paperwidth-0.5\@coverletterWidth+\extraWidth}
-	\setlength\addressHeight{\heightof{\pgfkeysvalueof{address}, \pgfkeysvalueof{zipcode} \pgfkeysvalueof{city}}}
-	\setlength\@addressblockHeight{6\addressHeight+.3cm}
+
+	\setlength\@addressWidth{\maxof{\widthof{\pgfkeysvalueof{address}, \pgfkeysvalueof{zipcode} \pgfkeysvalueof{city}}}{\widthof{\pgfkeysvalueof{email}}}}
+
+	\setlength\@addressblockWidth{0.5\paperwidth-0.5\@coverletterWidth+\@addressWidth}
+	\setlength\@addressHeight{\heightof{\pgfkeysvalueof{address}, \pgfkeysvalueof{zipcode} \pgfkeysvalueof{city}}}
+	\setlength\@addressblockHeight{6\@addressHeight+.3cm}
 }
 
-\NewDocumentEnvironment{coverletter}{O{\@footerHeight}O{6.7cm}}{
-	\setlength\@footerHeight{#1}
+\NewDocumentEnvironment{coverletter}{O{\@headerHeight} O{\@footerHeight}}{
+	\setlength\@headerHeight{#1}
+	\setlength\@footerHeight{#2}
 	\color{fontColor}
 	\refstepcounter{cvpage}\label{cvpage.\thecvpage}
-	\newgeometry{textwidth=\@coverletterWidth,textheight=\paperheight-#2,noheadfoot}
+	\newgeometry{textwidth=\@coverletterWidth,textheight=\paperheight,noheadfoot}
 	\begin{tikzpicture}[remember picture, overlay, every node/.style={inner sep=0cm, outer sep=0cm}]
 		\begin{scope}[on background layer]
 			% Header
@@ -318,36 +322,28 @@
 
 			\@calculateLengths
 
-			% Blue name block
-			\fill[accentColor,draw=white,line width=1mm]%
-			($(current page.north west)+(-2pt,-0.8\@headerHeight+0.5\@nameblockHeight)$)%
-			rectangle%
-			++(0.5\paperwidth-0.5\@coverletterWidth+\fullnameWidth+0.3cm,-\@nameblockHeight);
+			\coordinate (nameblockpos) at ($(current page.north west)+(-2pt,-0.8\@headerHeight+0.5\@nameblockHeight)$);
+			\coordinate (addressblockpos) at ($(current page.south west)+(-2pt,\@footerHeight-0.5\@addressblockHeight)$);
 
-			% First and Second Name
-			\node[anchor=west,xshift=0.5\paperwidth-0.5\@coverletterWidth, yshift=-0.8\@headerHeight]
-			at (current page.north west) (coverletter name)
+			\fill[accentColor,draw=white,line width=1mm] (nameblockpos) rectangle%
+			++(0.5\paperwidth-0.5\@coverletterWidth+\@fullnameWidth+0.3cm,-\@nameblockHeight)%
+			node [anchor=west, xshift=-\@fullnameWidth-0.3cm+2pt, yshift=0.5\@nameblockHeight] (coverletter name)
 			{\fontsize{14}{12}\selectfont\color{white}\pgfkeysvalueof{firstName} \pgfkeysvalueof{lastName}};
 
 			% Footer
-			\fill[backgroundColor]%
-			(current page.south east) rectangle%
-			++(-\paperwidth, \@footerHeight);
+			\fill[backgroundColor] (current page.south east) rectangle ++(-\paperwidth, \@footerHeight);
 
-			\fill[accentColor,draw=white,line width=1mm]%
-			($(current page.south west)+(-2pt,\@footerHeight-0.5\@addressblockHeight)$)%
-			rectangle%
-			++(\@addressblockWidth+0.3cm,\@addressblockHeight);
-
-			\node[anchor=east, xshift=\@addressblockWidth, yshift=\@footerHeight]
-			at (current page.south west) (email)
+			% Blue address block
+			\fill[accentColor,draw=white,line width=1mm] (addressblockpos) rectangle%
+			++(\@addressblockWidth+0.3cm,\@addressblockHeight)
+			node[anchor=west, text=white,xshift=-\@addressWidth-0.3cm+2pt, yshift=-0.5\@addressblockHeight] (email)
 			{\href{mailto:\pgfkeysvalueof{email}}{\color{white}{\pgfkeysvalueof{email}}}};
 
-			\node[align=left,text=white,below=-8pt-\addressHeight of email.north east,anchor=north east]
+			\node[align=right,text=white,below=-8pt-\@addressHeight of email.north west,anchor=north west]
 			(address)
 			{\pgfkeysvalueof{address}, \pgfkeysvalueof{zipcode} \pgfkeysvalueof{city}};
 
-			\node[align=left,text=white,below=8pt+\addressHeight of email.south east, anchor=south east]
+			\node[align=right,text=white,below=8pt+\@addressHeight of email.south west, anchor=south west]
 			(phone)
 			{\pgfkeysvalueof{phoneNumber}};
 
@@ -355,61 +351,8 @@
 	\end{tikzpicture}
 
 	\vspace{\dimexpr\@headerHeight-1in-\topmargin\relax}
-}{
-	\restoregeometry
-	\cleardoublepage
-}
-
-\NewDocumentEnvironment{coverletter*}{O{\@footerHeight}O{6.7cm}}{
-	\setlength\@footerHeight{#1}
-	\color{fontColor}
-	\refstepcounter{cvpage}\label{cvpage.\thecvpage}
-	\newgeometry{textwidth=\@coverletterWidth,textheight=\paperheight-#2,noheadfoot}
-	\begin{tikzpicture}[remember picture, overlay, every node/.style={inner sep=0cm, outer sep=0cm}]
-		\begin{scope}[on background layer]
-			% Header
-			\fill[backgroundColor] (current page.north west) rectangle ++(\paperwidth, -0.8\@headerHeight);
-
-			\@calculateLengths
-
-			% Blue name block
-			\fill[accentColor,draw=white,line width=1mm]%
-			($(current page.north east)+(1pt,-0.8\@headerHeight+0.5\@nameblockHeight)$)%
-			rectangle
-			++(-0.5\paperwidth+0.5\@coverletterWidth-\fullnameWidth-0.3cm,-\@nameblockHeight);
-
-			% First and Second Name
-			\node[anchor=east,xshift=-0.5\paperwidth+0.5\@coverletterWidth, yshift=-0.8\@headerHeight]
-			at (current page.north east) (coverletter name)
-			{\fontsize{14}{12}\selectfont\color{white}\pgfkeysvalueof{firstName} \pgfkeysvalueof{lastName}};
-
-			% Footer
-			\fill[backgroundColor]%
-			(current page.south east) rectangle%
-			++(-\paperwidth, \@footerHeight);
-
-			\fill[accentColor,draw=white,line width=1mm]%
-			($(current page.south east)+(1pt,\@footerHeight-0.5\@addressblockHeight)$)%
-			rectangle%
-			++(-\@addressblockWidth-0.3cm,\@addressblockHeight);
-
-			\node[anchor=west, xshift=-\@addressblockWidth, yshift=\@footerHeight]
-			at (current page.south east) (email)
-			{\href{mailto:\pgfkeysvalueof{email}}{\color{white}{\pgfkeysvalueof{email}}}};
-
-			\node[align=left,text=white,below=-8pt-\addressHeight of email.north west,anchor=north west]
-			(address)
-			{\pgfkeysvalueof{address}, \pgfkeysvalueof{zipcode} \pgfkeysvalueof{city}};
-
-			\node[align=left,text=white,below=8pt+\addressHeight of email.south west, anchor=south west]
-			(phone)
-			{\pgfkeysvalueof{phoneNumber}};
-
-		\end{scope}
-	\end{tikzpicture}
-
-	\vspace{\dimexpr\@headerHeight-1in-\topmargin\relax}
-}{
+	}{
+	\vspace{\dimexpr\@footerHeight+1.2cm\relax}
 	\restoregeometry
 	\cleardoublepage
 }
@@ -521,7 +464,7 @@
 		\if@contactfirst \\ \else %
 			\global\@contactfirsttrue \fi\node[@contactIcon]{#2};
 		\pgfmatrixnextcell \node[@contactText]{%
-			\IfNoValueOrEmpty{##1}{##2}{\href{##1}{##2}}};
+			\@IfNoValueOrEmpty{##1}{##2}{\href{##1}{##2}}};
 	}
 }
 
@@ -533,7 +476,7 @@
 	\fi %
 	\node[@contactIcon]{#2};
 	\pgfmatrixnextcell \node[@contactText]{%
-		\IfNoValueOrEmpty{#1}{#3}{\href{#1}{#3}}%
+		\@IfNoValueOrEmpty{#1}{#3}{\href{#1}{#3}}%
 	};
 }
 
