@@ -191,7 +191,7 @@
 \newlength\@headerIconWidth
 \setlength\@headerIconWidth{0pt}
 \newlength\@colSep
-\setlength\@colSep{2cm} % 2 times column separation!
+\setlength\@colSep{0.5cm} % 2 times column separation!
 \newlength\@timeDotDiameter
 \setlength\@timeDotDiameter{3pt}
 \newlength\@timeDotSep
