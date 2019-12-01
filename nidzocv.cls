@@ -52,7 +52,9 @@
 	calc,
 	positioning,
 	shapes.geometric,
-	shapes.misc
+	shapes.misc,
+	shadings,
+   	shadows,
 }
 
 \hypersetup{
@@ -322,21 +324,21 @@
 
 			\@calculateLengths
 
-			\coordinate (nameblockpos) at ($(current page.north west)+(-2pt,-0.8\@headerHeight+0.5\@nameblockHeight)$);
-			\coordinate (addressblockpos) at ($(current page.south west)+(-2pt,\@footerHeight-0.5\@addressblockHeight)$);
+			\coordinate (nameblockpos) at ($(current page.north west)+(0pt,-0.8\@headerHeight+0.5\@nameblockHeight)$);
+			\coordinate (addressblockpos) at ($(current page.south west)+(0pt,\@footerHeight-0.5\@addressblockHeight)$);
 
-			\fill[accentColor,draw=white,line width=1mm] (nameblockpos) rectangle%
+			\fill[accentColor, drop shadow] (nameblockpos) rectangle%
 			++(0.5\paperwidth-0.5\@coverletterWidth+\@fullnameWidth+0.3cm,-\@nameblockHeight)%
-			node [anchor=west, xshift=-\@fullnameWidth-0.3cm+2pt, yshift=0.5\@nameblockHeight] (coverletter name)
+			node [anchor=west, xshift=-\@fullnameWidth-0.3cm,yshift=0.5\@nameblockHeight] (coverletter name)
 			{\fontsize{14}{12}\selectfont\color{white}\pgfkeysvalueof{firstName} \pgfkeysvalueof{lastName}};
 
 			% Footer
 			\fill[backgroundColor] (current page.south east) rectangle ++(-\paperwidth, \@footerHeight);
 
 			% Blue address block
-			\fill[accentColor,draw=white,line width=1mm] (addressblockpos) rectangle%
+			\fill[accentColor,drop shadow] (addressblockpos) rectangle%
 			++(\@addressblockWidth+0.3cm,\@addressblockHeight)
-			node[anchor=west, text=white,xshift=-\@addressWidth-0.3cm+2pt, yshift=-0.5\@addressblockHeight] (email)
+			node[anchor=west, text=white,xshift=-\@addressWidth-0.3cm, yshift=-0.5\@addressblockHeight] (email)
 			{\href{mailto:\pgfkeysvalueof{email}}{\color{white}{\pgfkeysvalueof{email}}}};
 
 			\node[align=right,text=white,below=-8pt-\@addressHeight of email.north west,anchor=north west]
@@ -533,9 +535,7 @@
 		\setcounter{@languagelevel}{1}
 		\loop\ifnum\value{@languagelevel}<\value{@languages}
 		\draw (@language \the\value{@languagelevel}.west) %
-		node[%
-			@progressBar,
-			minimum width=\pgfkeysvalueof{%
+		node[@progressBar,minimum width=\pgfkeysvalueof{%
 				/languages/lang\the\value{@languagelevel}}em]%
 		{};
 		\stepcounter{@languagelevel}
@@ -576,10 +576,9 @@
 
 	\begin{scope}[on background layer]
 		\draw[line width=\@titleLineWidth,accentColor]
-		let \p1=(@title \the\value{@titleNext}
-		dummy.south west),
-		\p2=(current page.east) in
-		(\x1,\y1-\@titleLineSpacing) to (\x2,\y1-\@titleLineSpacing);
+		let
+			\p1=(@title \the\value{@titleNext} dummy.south west),
+			\p2=(current page.east) in (\x1,\y1-\@titleLineSpacing) to (\x2,\y1-\@titleLineSpacing);
 	\end{scope}
 	\stepcounter{@titlePrev}%
 	\stepcounter{@titleNext}
