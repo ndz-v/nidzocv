@@ -33,7 +33,11 @@ Fill main.tex, sidebar.tex and maincontent.tex with information and build it.
 \setJobofferURL{Stelle auf google.de,}
 \setPositionId{Job ID 1234}
 ```
-
-<img src="https://github.com/nidzov/nidzocv/blob/master/media/coverletter.png" width="400">
-
-<img src="https://github.com/nidzov/nidzocv/blob/master/media/cv.png" width="400">
+<div class="row">
+    <div class="column">
+        <img src="https://github.com/nidzov/nidzocv/blob/master/media/coverletter.png" width="400">
+    </div>
+    <div class="column">
+        <img src="https://github.com/nidzov/nidzocv/blob/master/media/cv.png" width="400">
+    </div>
+</div>
