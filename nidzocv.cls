@@ -66,7 +66,7 @@
 %	Colors
 %----------------------------------------------------------------------------------------
 
-% Lines under experience points
+% Lines under title points
 \definecolor{lineColors}{HTML}{4A6B8A}
 % Background color sidebar and coverletter heading
 \definecolor{backgroundColor}{HTML}{ECECEC}
@@ -354,30 +354,56 @@
 			\raisebox{-.6ex}{#1}\hspace{1ex}\@hRulefill}}%
 }
 
-\NewDocumentCommand{\displaySidebarPicture}{O{0cm}O{0cm}}{
+\NewDocumentCommand{\displaySidebarSignature}{}{
+	\vfill
+	\includegraphics[width=4cm]{\signature}\\
+	\pgfkeysvalueof{city}, \today
+}
+
+\newif\if@isPictureDefined
+\global\@isPictureDefinedfalse
+
+% Optional arguments: xshift, yshift, picture size
+\NewDocumentCommand{\displaySidebarPicture}{O{0cm}O{0cm}O{0cm}}{
 	\IfFileExists{\profilePicture}{
+		\global\@isPictureDefinedtrue
 		\begin{tikzpicture}[remember picture, overlay]
-			\node[anchor=center,xshift=.5*(\@sideWidth+2\@margin),
-				yshift=-0.4*(\@sideWidth+2\@margin)+0.21cm,
-				minimum size=7.2cm,
+			\node[anchor=north west,
+				minimum width=\@sideWidth+2\@margin-2pt,
+				draw, line width = 2pt,color=backgroundColor,
+				minimum height= 150pt,
 				path picture={
-						\node[xshift=#1,yshift=#2,anchor=center,
-						] at (path picture bounding box.center){
-							\includegraphics[width=8cm]{\profilePicture}
-						};
-					}] at (current page.north west)
+					\node[xshift=#1,yshift=#2,anchor=center] at (path picture bounding box.center){\includegraphics[height=150pt+#3]{\profilePicture}};
+				}
+			] at (current page.north west) (picture)
 			{};
 		\end{tikzpicture}
-		\vspace{130pt}
-	}{}
-	\begin{center}
-		\LARGE
-		\vspace{3\@idNameSep}
-		\pgfkeysvalueof{firstName}
-		\vspace{3\@idNameSep}
-		\pgfkeysvalueof{lastName}
-		\vspace{\@positionSep}
-	\end{center}
+	}{\global\@isPictureDefinedfalse}
+	\vspace{170pt}
+}
+
+\NewDocumentCommand{\displaySidebarName}{}{
+	\if@isPictureDefined
+		\begin{tikzpicture}[remember picture, overlay]
+			\node[anchor=north, yshift=-10pt] at (picture.south) {
+				{\LARGE
+				\vspace{3\@idNameSep}
+				\pgfkeysvalueof{firstName}
+				\vspace{3\@idNameSep}
+				\pgfkeysvalueof{lastName}
+				\vspace{\@positionSep}}
+			};
+		\end{tikzpicture}
+	\else
+		\begin{center}
+			\LARGE
+			\vspace{3\@idNameSep}
+			\pgfkeysvalueof{firstName}
+			\vspace{3\@idNameSep}
+			\pgfkeysvalueof{lastName}
+			\vspace{\@positionSep}
+		\end{center}
+	\fi
 }
 
 \NewDocumentCommand{\displayJobDetails}{}{
@@ -386,6 +412,7 @@
 		\pgfkeysvalueof{positionid}
 	\end{center}
 	\vspace{\@positionSep}
+	\vspace{10pt}
 }
 
 % Left Sidebar
@@ -393,15 +420,14 @@
 	\refstepcounter{cvPage}\label{cvPage.\thecvPage}
 	\begin{tikzpicture}[remember picture,overlay]
 		\fill[backgroundColor](current page.north west)rectangle%
-		++(\@sideWidth+2\@margin,-\paperheight);
+		++(\@sideWidth+2\@margin,-\paperheight) node [anchor=north] (sidebar){};
 	\end{tikzpicture}
 	\color{fontColor}
-	\begin{minipage}{\@sideWidth}
+	\begin{minipage}[c][\textheight]{\@sideWidth}
 		\begin{center}
 }{
 		\end{center}
 	\end{minipage}
-	\vspace*{\fill}
 }
 
 \NewDocumentEnvironment{profile}{}{%
@@ -646,37 +672,37 @@
 	\endgroup
 }
 
-\newif\if@IsFirstSkill
-\newif\if@IsOneSkill
-\newif\if@IsGradelessSkill
+\newif\if@isFirstSkill
+\newif\if@isOneSkill
+\newif\if@isGradelessSkill
 \NewDocumentCommand{\@twoSkillsTable}{}{}
 \NewDocumentCommand{\@oneSkillTable}{}{}
 \NewDocumentCommand{\@gradelessSkillTable}{}{}
 
 \NewDocumentCommand{\skillTwo}{mmmm}{%
-	\if@IsFirstSkill
+	\if@isFirstSkill
 		\g@addto@macro\@twoSkillsTable{\@markGrade{#1} & #2 & \@markGrade{#3} & #4}
-		\@IsFirstSkillfalse
+		\@isFirstSkillfalse
 	\else
 		\g@addto@macro\@twoSkillsTable{\\[\@skillSep] \@markGrade{#1} & #2 & \@markGrade{#3} & #4}
 	\fi
 }
 \NewDocumentCommand{\skillOne}{mm}{%
-	\@IsOneSkilltrue
+	\@isOneSkilltrue
 
-	\if@IsFirstSkill
+	\if@isFirstSkill
 		\g@addto@macro\@oneSkillTable{\@markGrade{#1} & #2}
-		\@IsFirstSkillfalse
+		\@isFirstSkillfalse
 	\else
 		\g@addto@macro\@oneSkillTable{\\[\@skillSep] \@markGrade{#1} & #2}
 	\fi
 }
 \NewDocumentCommand{\skill}{m}{%
-	\@IsGradelessSkilltrue
+	\@isGradelessSkilltrue
 
-	\if@IsFirstSkill
+	\if@isFirstSkill
 		\g@addto@macro\@gradelessSkillTable{\parbox{\@mainWidth-\@timeDotSep}{#1}}
-		\@IsFirstSkillfalse
+		\@isFirstSkillfalse
 	\else
 		\g@addto@macro\@gradelessSkillTable{\\[\@skillSep] \parbox{\@mainWidth-\@timeDotSep}{#1}}
 	\fi
@@ -684,9 +710,9 @@
 
 \NewDocumentEnvironment{skills}{O{\pgfkeysvalueof{/variables/skills}}}{%
 	\@createTitle{#1}{\faStar}
-	\global\@IsFirstSkilltrue
-	\global\@IsOneSkillfalse
-	\global\@IsGradelessSkillfalse
+	\global\@isFirstSkilltrue
+	\global\@isOneSkillfalse
+	\global\@isGradelessSkillfalse
 }{%
 	\node[below=\@sectionSep of @title \the\value{@titlePrev}.south west,anchor=north west]
 	(skills)
@@ -695,7 +721,7 @@
 			\@twoSkillsTable
 		\end{tabular}
 	};
-	\if@IsOneSkill
+	\if@isOneSkill
 		\node[below=-0.65\@sectionSep of skills.south west,anchor=north west,]
 		 (skills)
 		{
@@ -705,7 +731,7 @@
 		};
 	\fi
 
-	\if@IsGradelessSkill
+	\if@isGradelessSkill
 		\node[below=-0.65\@sectionSep of skills.south west,anchor=north west]
 		(skills)
 		{
