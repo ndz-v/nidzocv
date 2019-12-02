@@ -93,6 +93,8 @@
 \setlength\@coverletterWidth{\@mainWidth+3\@margin}
 \newlength\@headerHeight
 \setlength\@headerHeight{4cm}
+\newlength\@minipageLength
+\setlength\@minipageLength{\textheight-1cm}
 \newlength\@nameBlockHeight
 \setlength\@nameBlockHeight{1.3cm}
 \newlength\@footerHeight
@@ -164,6 +166,7 @@
 	@sectionEduText/.style={@eventdotText,anchor=north west,align=justify},
 	@sectionTitle/.style={anchor=north west,align=left},
 	@timedot/.style = {@invisibleTimeDot,draw,fill,accentColor},
+	@sidebarPicturePosition/.style = {anchor=north east},
 	@column1/.style={anchor=west},
 	@column2/.style={anchor=east,align=right}
 }
@@ -368,18 +371,21 @@
 	\IfFileExists{\profilePicture}{
 		\global\@isPictureDefinedtrue
 		\begin{tikzpicture}[remember picture, overlay]
-			\node[anchor=north west,
+			\node[@sidebarPicturePosition,
+				yshift=\textheight+2\@margin,
+				xshift=-3.5pt,
 				minimum width=\@sideWidth+2\@margin-2pt,
 				draw, line width = 2pt,color=backgroundColor,
 				minimum height= 150pt,
 				path picture={
 					\node[xshift=#1,yshift=#2,anchor=center] at (path picture bounding box.center){\includegraphics[height=150pt+#3]{\profilePicture}};
 				}
-			] at (current page.north west) (picture)
+			] at (sidebar.north east) (picture)
 			{};
+
 		\end{tikzpicture}
 	}{\global\@isPictureDefinedfalse}
-	\vspace{170pt}
+	\vspace{150pt}
 }
 
 \NewDocumentCommand{\displaySidebarName}{}{
@@ -417,17 +423,37 @@
 
 % Left Sidebar
 \NewDocumentEnvironment{sidebar}{}{
+	\tikzset{@sidebarPicturePosition/.style = {anchor=north east},}
 	\refstepcounter{cvPage}\label{cvPage.\thecvPage}
 	\begin{tikzpicture}[remember picture,overlay]
 		\fill[backgroundColor](current page.north west)rectangle%
 		++(\@sideWidth+2\@margin,-\paperheight) node [anchor=north] (sidebar){};
 	\end{tikzpicture}
 	\color{fontColor}
-	\begin{minipage}[c][\textheight]{\@sideWidth}
+	\begin{flushleft}
+		\begin{minipage}[c][\@minipageLength]{\@sideWidth}
+			\begin{center}
+}{
+			\end{center}
+		\end{minipage}
+	\end{flushleft}
+}
+
+\NewDocumentEnvironment{sidebar*}{}{
+	\tikzset{@sidebarPicturePosition/.style = {anchor=north west},}
+	\refstepcounter{cvPage}\label{cvPage.\thecvPage}
+	\begin{tikzpicture}[remember picture,overlay]
+		\fill[backgroundColor](current page.north east)rectangle%
+		++(-\@sideWidth-2\@margin,-\paperheight) node [anchor=north] (sidebar){};
+	\end{tikzpicture}
+	\color{fontColor}
+	\begin{flushright}
+		\begin{minipage}[t][\@minipageLength-.5cm]{\@sideWidth}
 		\begin{center}
 }{
 		\end{center}
 	\end{minipage}
+	\end{flushright}
 }
 
 \NewDocumentEnvironment{profile}{}{%
@@ -574,7 +600,7 @@
 		\draw[line width=\@titleLineWidth,accentColor]
 		let
 			\p1=(@title \the\value{@titleNext} dummy.south west),
-			\p2=(current page.east) in (\x1,\y1-\@titleLineSpacing) to (\x2,\y1-\@titleLineSpacing);
+			\p2=(current page.east) in (\x1,\y1-\@titleLineSpacing) to (\@mainWidth-\@timeDotSep,\y1-\@titleLineSpacing);
 	\end{scope}
 	\stepcounter{@titlePrev}%
 	\stepcounter{@titleNext}
@@ -633,6 +659,20 @@
 }{%
 		\end{scope}
 	\end{tikzpicture}
+	\restoregeometry
+	\setcounter{@itemPrev}{0}
+	\setcounter{@itemNext}{1}
+	\setcounter{@lastItem}{1}
+}
+
+\NewDocumentEnvironment{mainContent*}{}{%
+	\stepcounter{@titlePrev}
+	\stepcounter{@titleNext}
+	\begin{tikzpicture}[%
+			every node/.style={inner sep=0pt,outer sep=0pt},remember picture,overlay,
+			shift={($(current page.north west)+(\@margin+\@timeDotSep,-\@margin)$)}]
+		}{%
+	\end{tikzpicture}%
 	\restoregeometry
 	\setcounter{@itemPrev}{0}
 	\setcounter{@itemNext}{1}
