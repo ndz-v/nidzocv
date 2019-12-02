@@ -38,3 +38,6 @@ Fill main.tex, cvsidebar.tex and cvbody.tex with information and build it.
 \setJobofferURL{Stelle auf google.de,}
 \setPositionId{Job ID 1234}
 ```
+## Thanks
+
+Big thank you to @github/opieters/limecv
