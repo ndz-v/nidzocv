@@ -5,9 +5,10 @@ command to convert a pdf page to png
 convert -density 200 main.pdf\[\0] -quality 100 -background white -flatten coverletter.png
 -->
 
-Coverletter             |  CV
-:-------------------------:|:-------------------------:
-![](https://github.com/nidzov/nidzocv/blob/master/media/coverletter.png)  |  ![](https://github.com/nidzov/nidzocv/blob/master/media/cv.png)
+<div>
+  <img src="https://github.com/nidzov/nidzocv/blob/master/media/coverletter.png" alt-="cv example" width="300px"/>
+  <img src="https://github.com/nidzov/nidzocv/blob/master/media/cv.png" alt-="coverletter example" width="300px"/>
+</div>
 
 ## How to use
 
