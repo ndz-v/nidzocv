@@ -12,8 +12,8 @@ Fill main.tex, sidebar.tex and maincontent.tex with information and build it.
 ### Example for main information in main.tex
 
 ```latex
-\setfirstName{Vorname}
-\setlastName{Nachname}
+\setFirstName{Vorname}
+\setLastName{Nachname}
 \setAddress{Musterstrasse 30}
 \setZipcode{12345}
 \setCity{Musterstadt}
@@ -23,14 +23,15 @@ Fill main.tex, sidebar.tex and maincontent.tex with information and build it.
 \setPicture{media/profilepic.png}
 \setSignaturePicture{media/signatur.png}
 
-\setPosition{Position Stelle}
-\setjobofferlocation{Stellenanzeige auf \href{www.googl.de}{google.de}\\}
-\setPositionId{Position ID}
-
 \setCompanyName{Firmenname}
+\setContactPerson{Kontakt Person\\}
 \setCompanyAddress{Musterstr. 2}
 \setCompanyZip{12345}
 \setCompanyCity{Musterstadt}
+\setPosition{Bewerber}
+
+\setJobofferURL{Stelle auf google.de,}
+\setPositionId{Job ID 1234}
 ```
 
 <img src="https://github.com/nidzov/nidzocv/blob/master/media/coverletter.png" width="400">
