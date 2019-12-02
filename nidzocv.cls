@@ -8,6 +8,7 @@
 
 \RequirePackage[german]{babel}
 \RequirePackage{lipsum}
+\RequirePackage[hidelinks,pdfusetitle]{hyperref}
 \RequirePackage[hidelinks]{hyperref}
 \RequirePackage{calc}
 \RequirePackage{xcolor}
@@ -28,9 +29,6 @@
 
 \RequirePackage{fontawesome5}
 
-% Create counters so pages can be referenced in the document
-\newcounter{cvpage}
-\newcounter{attachment}
 % Global options for pdfpages
 \includepdfset{linkname=attachment, pagecommand={\refstepcounter{attachment}\label{attachment.\theattachment}}}
 
@@ -57,15 +55,6 @@
    	shadows,
 }
 
-\hypersetup{
-	colorlinks=true,
-	linkcolor=blue,
-	% filecolor=magenta,
-	urlcolor=blue,
-}
-
-\RenewDocumentCommand{\familydefault}{}{\sfdefault}
-
 \ExplSyntaxOn
 \cs_generate_variant:Nn\tl_item:nn {f}
 \DeclareExpandableDocumentCommand{\extract}{mm}{%
@@ -86,15 +75,27 @@
 % Accent color i.e. loading bars
 % \definecolor{accentColor}{HTML}{133253}
 \definecolor{accentColor}{HTML}{4A6B8A}
-% Color for Background rectangles
-\definecolor{white}{HTML}{FFFFFF}
+% Name and address block color
+\definecolor{blockcolor}{HTML}{4A6B8A}
 
 %----------------------------------------------------------------------------------------
 %	Config
 %----------------------------------------------------------------------------------------
 
+\RenewDocumentCommand{\familydefault}{}{\sfdefault}
+
 % No page numbering
 \pagestyle{empty}
+
+% PDF meta data
+\title{Bewerbung als \pgfkeysvalueof{position}}
+\author{\pgfkeysvalueof{firstName} \pgfkeysvalueof{lastName}}
+
+\hypersetup{
+	colorlinks=true,
+	linkcolor=blue,
+	urlcolor=blue
+}
 
 \tikzset{
 	@contactIcon/.style={minimum height=\baselineskip},
@@ -160,6 +161,10 @@
 }
 \ExplSyntaxOff
 \cvSetLanguage{german}
+
+% Create counters so pages can be referenced in the document
+\newcounter{cvpage}
+\newcounter{attachment}
 
 %----------------------------------------------------------------------------------------
 %	Margins
@@ -237,7 +242,6 @@
 	\pgfkeysvalueof{companyZip} \pgfkeysvalueof{companyCity}
 }
 \NewDocumentCommand{\displaySubject}{O{Bewerbung als}O{\today}}{
-
 \textbf{#1 \pgfkeysvalueof{position}}  \null\hfill #2\\
 {\pgfkeysvalueof{jobofferlocation}
 \pgfkeysvalueof{positionid}}
@@ -327,7 +331,7 @@
 			\coordinate (nameblockpos) at ($(current page.north west)+(0pt,-0.8\@headerHeight+0.5\@nameblockHeight)$);
 			\coordinate (addressblockpos) at ($(current page.south west)+(0pt,\@footerHeight-0.5\@addressblockHeight)$);
 
-			\fill[accentColor, drop shadow] (nameblockpos) rectangle%
+			\fill[blockcolor, drop shadow] (nameblockpos) rectangle%
 			++(0.5\paperwidth-0.5\@coverletterWidth+\@fullnameWidth+0.3cm,-\@nameblockHeight)%
 			node [anchor=west, xshift=-\@fullnameWidth-0.3cm,yshift=0.5\@nameblockHeight] (coverletter name)
 			{\fontsize{14}{12}\selectfont\color{white}\pgfkeysvalueof{firstName} \pgfkeysvalueof{lastName}};
@@ -336,7 +340,7 @@
 			\fill[backgroundColor] (current page.south east) rectangle ++(-\paperwidth, \@footerHeight);
 
 			% Blue address block
-			\fill[accentColor,drop shadow] (addressblockpos) rectangle%
+			\fill[blockcolor,drop shadow] (addressblockpos) rectangle%
 			++(\@addressblockWidth+0.3cm,\@addressblockHeight)
 			node[anchor=west, text=white,xshift=-\@addressWidth-0.3cm, yshift=-0.5\@addressblockHeight] (email)
 			{\href{mailto:\pgfkeysvalueof{email}}{\color{white}{\pgfkeysvalueof{email}}}};
