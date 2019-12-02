@@ -7,7 +7,7 @@ convert -density 200 main.pdf\[\0] -quality 100 -background white -flatten cover
 
 Coverletter             |  CV
 :-------------------------:|:-------------------------:
-![](https://github.com/nidzov/nidzocv/blob/master/media/coverletter.png)  |  ![](https://github.com/nidzov/nidzocv/blob/master/media/cv.png)
+![](https://github.com/nidzov/nidzocv/blob/master/media/coverletter.png)  |  ![](https://github.com/nidzov/nidzocv/blob/master/media/cv1.png)
 
 ## How to use
 
