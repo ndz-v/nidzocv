@@ -5,6 +5,10 @@ command to convert a pdf page to png
 convert -density 200 main.pdf\[\0] -quality 100 -background white -flatten coverletter.png
 -->
 
+Coverletter             |  CV
+:-------------------------:|:-------------------------:
+![](https://github.com/nidzov/nidzocv/blob/master/media/coverletter.png)  |  ![](https://github.com/nidzov/nidzocv/blob/master/media/cv.png)
+
 ## How to use
 
 Fill main.tex, sidebar.tex and maincontent.tex with information and build it.
@@ -33,7 +37,3 @@ Fill main.tex, sidebar.tex and maincontent.tex with information and build it.
 \setJobofferURL{Stelle auf google.de,}
 \setPositionId{Job ID 1234}
 ```
-
-Coverletter             |  CV
-:-------------------------:|:-------------------------:
-![](https://github.com/nidzov/nidzocv/blob/master/media/coverletter.png)  |  ![](https://github.com/nidzov/nidzocv/blob/master/media/cv.png)
