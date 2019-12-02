@@ -448,7 +448,7 @@
 	\end{tikzpicture}
 	\color{fontColor}
 	\begin{flushright}
-		\begin{minipage}[t][\@minipageLength-.5cm]{\@sideWidth}
+		\begin{minipage}[c][\@minipageLength]{\@sideWidth}
 		\begin{center}
 }{
 		\end{center}
@@ -459,11 +459,12 @@
 \NewDocumentEnvironment{profile}{}{%
 	\vspace{\@sectionSBSep}
 	\@ruleline{\pgfkeysvalueof{/variables/profile}}
-	\vspace{\@sectionSBSep}
+	\vspace{\@sectionSBSep}\\
 }{%
+\vspace{.5cm}
 }
 
-\NewDocumentEnvironment{miscellaneous}{}{}{}
+\NewDocumentEnvironment{miscellaneous}{}{}{\vspace{.5cm}}
 
 \NewDocumentCommand{\@contactTemplate}{mm}{
 	\NewDocumentCommand{#1}{m}{
@@ -525,6 +526,7 @@
 }{%
 		\\\egroup;
 	\end{tikzpicture}%
+	\vspace{.5cm}
 }
 
 \newcounter{@languages}
@@ -563,6 +565,7 @@
 		\stepcounter{@languagelevel}
 		\repeat
 	\end{tikzpicture}
+	\vspace{.5cm}
 }
 
 %----------------------------------------------------------------------------------------
