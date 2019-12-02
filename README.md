@@ -11,7 +11,7 @@ Coverletter             |  CV
 
 ## How to use
 
-Fill main.tex, sidebar.tex and maincontent.tex with information and build it.
+Fill main.tex, cvsidebar.tex and cvbody.tex with information and build it.
 
 ### Example for main information in main.tex
 
