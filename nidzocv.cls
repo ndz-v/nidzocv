@@ -566,7 +566,7 @@
 }
 
 %----------------------------------------------------------------------------------------
-%   Main Environment
+%   Body Environment
 %----------------------------------------------------------------------------------------
 \NewDocumentCommand{\titleText}{m}{\large\textbf{#1}}
 
@@ -651,7 +651,7 @@
 	}
 }
 
-\NewDocumentEnvironment{mainContent}{}{%
+\NewDocumentEnvironment{body}{}{%
 	\begin{tikzpicture}
 		[every node/.style={inner sep=0pt,outer sep=0pt},remember picture,overlay,
 			shift={($(current page.north west)+(\@sideWidth+2.5\@margin+\@timeDotSep,-\@margin)$)}]
@@ -665,7 +665,7 @@
 	\setcounter{@lastItem}{1}
 }
 
-\NewDocumentEnvironment{mainContent*}{}{%
+\NewDocumentEnvironment{body*}{}{%
 	\stepcounter{@titlePrev}
 	\stepcounter{@titleNext}
 	\begin{tikzpicture}[%
