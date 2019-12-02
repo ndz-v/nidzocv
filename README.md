@@ -40,4 +40,4 @@ Fill main.tex, cvsidebar.tex and cvbody.tex with information and build it.
 ```
 ## Thanks
 
-Big thank you to opieters/limecv
+Big thank you to [opieters/limecv](https://github.com/opieters/limecv)

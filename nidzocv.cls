@@ -695,9 +695,9 @@
 }
 
 % Create needed environments
+\@createEnvironment{experience}{\pgfkeysvalueof{/variables/experience}}{\faBriefcase}
 \@createEnvironment{education}{\pgfkeysvalueof{/variables/education}}{\faGraduationCap}
-\@createEnvironment{experience}{\pgfkeysvalueof{/variables/experience}}{\faGraduationCap}
-\@createEnvironment{scholarship}{\pgfkeysvalueof{/variables/scholarship}}{\faGraduationCap}
+\@createEnvironment{scholarship}{\pgfkeysvalueof{/variables/scholarship}}{\faDollarSign}
 \@createEnvironment{interests}{\pgfkeysvalueof{/variables/interests}}{\faGraduationCap}
 
 \newcount\my@repeat@count
