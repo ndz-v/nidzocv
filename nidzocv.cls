@@ -538,6 +538,7 @@
 	}
 }
 
+\newcounter{@languagelevel}
 \NewDocumentEnvironment{languages}{}{%
 	\NewDocumentCommand{\languageRating}{mm}{%
 		{\globaldefs=1\relax\pgfkeys{%
@@ -556,7 +557,6 @@
 		\bgroup
 }{%
 		\\\egroup;
-		\newcounter{@languagelevel}
 		\setcounter{@languagelevel}{1}
 		\loop\ifnum\value{@languagelevel}<\value{@languages}
 		\draw (@language \the\value{@languagelevel}.west) %
@@ -685,7 +685,7 @@
 % Environment template
 \NewDocumentCommand{\@createEnvironment}{mmm}{
 	\NewDocumentEnvironment{#1}{O{#2}}{
-		\@createTitle{#2}{#3}
+		\@createTitle{##1}{#3}
 		\stepcounter{@itemPrev}
 		\stepcounter{@itemNext}
 		\@definecvItem
