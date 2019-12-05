@@ -18,25 +18,28 @@ Fill main.tex, cvsidebar.tex and cvbody.tex with information and build it.
 ### Example for main information in main.tex
 
 ```latex
-\setFirstName{Vorname}
-\setLastName{Nachname}
-\setAddress{Musterstrasse 30}
+% \cvSetLanguage{german}
+\cvSetLanguage{english}
+
+\setFirstName{John}
+\setLastName{Doe}
+\setAddress{Street 1}
 \setZipcode{12345}
-\setCity{Musterstadt}
-\setEmail{vorname.nachname@mail.de}
+\setCity{City}
+\setEmail{firstname.lastname@mail.com}
 \setPhone{+49 162 1234 567}
 
 \setPicture{media/profilepic.png}
-\setSignaturePicture{media/signatur.png}
+\setSignaturePicture{media/signature.png}
 
-\setCompanyName{Firmenname}
-\setContactPerson{Kontakt Person\\}
-\setCompanyAddress{Musterstr. 2}
+\setCompanyName{Company Name}
+\setContactPerson{Contact HR Person\\}
+\setCompanyAddress{Companystreet. 2}
 \setCompanyZip{12345}
-\setCompanyCity{Musterstadt}
-\setPosition{Bewerber}
+\setCompanyCity{City}
+\setPosition{Applicationposition}
 
-\setJobofferURL{Stelle auf google.de,}
+\setJobofferURL{Position on google.com,}
 \setPositionId{Job ID 1234}
 ```
 ## Thanks

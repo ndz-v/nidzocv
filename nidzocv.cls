@@ -699,8 +699,8 @@
 
 % Environment template
 \NewDocumentCommand{\@createEnvironment}{mmm}{
-	\NewDocumentEnvironment{#1}{O{#2}}{
-		\@createTitle{##1}{#3}
+	\NewDocumentEnvironment{#1}{O{#2}O{#3}}{
+		\@createTitle{##1}{##2}
 		\stepcounter{@itemPrev}
 		\stepcounter{@itemNext}
 		\@definecvItem
@@ -716,7 +716,7 @@
 \@createEnvironment{experience}{\pgfkeysvalueof{/variables/experience}}{\faBriefcase}
 \@createEnvironment{education}{\pgfkeysvalueof{/variables/education}}{\faGraduationCap}
 \@createEnvironment{scholarship}{\pgfkeysvalueof{/variables/scholarship}}{\faDollarSign}
-\@createEnvironment{interests}{\pgfkeysvalueof{/variables/interests}}{\faGraduationCap}
+\@createEnvironment{interests}{\pgfkeysvalueof{/variables/interests}}{\faHandPointRight}
 
 \newcount\my@repeat@count
 \NewDocumentCommand{\@markGrade}{m}{%
