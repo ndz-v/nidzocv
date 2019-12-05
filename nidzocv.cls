@@ -6,7 +6,7 @@
 \ProvidesClass{nidzocv}
 \LoadClass{article}
 
-\RequirePackage[german]{babel}
+\RequirePackage[english,ngerman]{babel}
 \RequirePackage{lipsum}
 \RequirePackage[hidelinks,pdfusetitle]{hyperref}
 \RequirePackage[hidelinks]{hyperref}
@@ -52,7 +52,8 @@
 	shapes.geometric,
 	shapes.misc,
 	shadings,
-   	shadows,
+	shadows,
+	fadings
 }
 
 \ExplSyntaxOn
@@ -68,15 +69,15 @@
 
 % Lines under title points
 \definecolor{lineColors}{HTML}{4A6B8A}
+% Name and address block color
+\definecolor{blockColor}{HTML}{4A6B8A}
+% Accent color i.e. loading bars
+\definecolor{accentColor}{HTML}{4A6B8A}
 % Background color sidebar and coverletter heading
 \definecolor{backgroundColor}{HTML}{ECECEC}
 % Font color in coverletter and sidebar
 \definecolor{fontColor}{HTML}{041D37}
-% Accent color i.e. loading bars
 % \definecolor{accentColor}{HTML}{133253}
-\definecolor{accentColor}{HTML}{4A6B8A}
-% Name and address block color
-\definecolor{blockColor}{HTML}{4A6B8A}
 
 %----------------------------------------------------------------------------------------
 %	Margins
@@ -168,7 +169,8 @@
 	@timedot/.style = {@invisibleTimeDot,draw,fill,accentColor},
 	@sidebarPicturePosition/.style = {anchor=north east},
 	@column1/.style={anchor=west},
-	@column2/.style={anchor=east,align=right}
+	@column2/.style={anchor=east,align=right},
+	@sidebarNameBlockAnchor/.style={anchor=east}
 }
 
 \pgfkeys{/variables/.is family,
@@ -177,6 +179,7 @@
 			.initial = #1}}
 % Set all title names to English (default):
 \NewDocumentCommand{\cv@setEnglish}{}{
+	\select@language{english}
 	\pgfkeys{/variables/contact = CONTACT}%
 	\pgfkeys{/variables/education = Education}%
 	\pgfkeys{/variables/experience = Experience}%
@@ -186,12 +189,14 @@
 	\pgfkeys{/variables/professional = Professional}%
 	\pgfkeys{/variables/profile = PROFILE}%
 	\pgfkeys{/variables/projects = Projects}%
-	\pgfkeys{/variables/scholarship = Scholarship}%
+	\pgfkeys{/variables/scholarship = Scholarships}%
 	\pgfkeys{/variables/skills = Skills}%
+	\pgfkeys{/variables/applyAs = Application as}%
 }
 %
 % Set all title names to German:
 \NewDocumentCommand{\cv@setGerman}{}{
+	\select@language{ngerman}
 	\pgfkeys{/variables/contact = KONTAKT}%
 	\pgfkeys{/variables/education = Bildung}%
 	\pgfkeys{/variables/experience = Erfahrung}%
@@ -203,6 +208,7 @@
 	\pgfkeys{/variables/projects = Projekte}%
 	\pgfkeys{/variables/scholarship = Stipendien}%
 	\pgfkeys{/variables/skills = Fertigkeiten}%
+	\pgfkeys{/variables/applyAs = Bewerbung als}%
 }
 
 % Set the actual language to English. This can be overwritten by the user in the
@@ -221,7 +227,7 @@
 			for this macro.}}
 }
 \ExplSyntaxOff
-\cvSetLanguage{german}
+
 
 % Create counters so pages can be referenced in the document
 \newcounter{cvPage}
@@ -245,8 +251,9 @@
 	\pgfkeysvalueof{companyZip} \pgfkeysvalueof{companyCity}
 }
 
-\NewDocumentCommand{\displaySubject}{O{Bewerbung als}O{\today}}{
-	\textbf{#1 \pgfkeysvalueof{position}}  \null\hfill #2\\
+\NewDocumentCommand{\displaySubject}{O{\pgfkeysvalueof{/variables/applyAs}}O{\today}}{
+	\IfNoValueTF{#1}{\textbf{#1 \pgfkeysvalueof{position}}}{\textbf{\pgfkeysvalueof{/variables/applyAs} \pgfkeysvalueof{position}}}
+	\null\hfill #2\\
 	{\pgfkeysvalueof{jobofferlocation}
 	\pgfkeysvalueof{positionid}}
 }
@@ -282,7 +289,7 @@
 
 % Calculates width and height of text, is needed for block sizes adjustments
 \NewDocumentCommand{\@calculateDimensions}{}{
-	\fontsize{14}{12}\selectfont
+	\LARGE
 	\setlength\@fullNameWidth{\widthof{\pgfkeysvalueof{firstName} \pgfkeysvalueof{lastName}}}
 
 	\fontsize{10}{12}\selectfont
@@ -313,7 +320,7 @@
 			\fill[blockColor, drop shadow] (nameBlockPos) rectangle%
 			++(0.5\paperwidth-0.5\@coverletterWidth+\@fullNameWidth+0.3cm,-\@nameBlockHeight)%
 			node [anchor=west, xshift=-\@fullNameWidth-0.3cm,yshift=0.5\@nameBlockHeight] (coverletter name)
-			{\fontsize{14}{12}\selectfont\color{white}\pgfkeysvalueof{firstName} \pgfkeysvalueof{lastName}};
+			{\LARGE\selectfont\color{white}\pgfkeysvalueof{firstName} \pgfkeysvalueof{lastName}};
 
 			% Footer
 			\fill[backgroundColor] (current page.south east) rectangle ++(-\paperwidth, \@footerHeight);
@@ -364,6 +371,7 @@
 }
 
 \newif\if@isPictureDefined
+\newif\if@isSidebarLeft
 \global\@isPictureDefinedfalse
 
 % Optional arguments: xshift, yshift, picture size
@@ -385,31 +393,35 @@
 
 		\end{tikzpicture}
 	}{\global\@isPictureDefinedfalse}
-	\vspace{150pt}
+	\vspace{145pt}
 }
 
 \NewDocumentCommand{\displaySidebarName}{}{
+	\begin{tikzpicture}[remember picture, overlay]
 	\if@isPictureDefined
-		\begin{tikzpicture}[remember picture, overlay]
-			\node[anchor=north, yshift=-10pt] at (picture.south) {
-				{\LARGE
-				\vspace{3\@idNameSep}
-				\pgfkeysvalueof{firstName}
-				\vspace{3\@idNameSep}
-				\pgfkeysvalueof{lastName}
-				\vspace{\@positionSep}}
-			};
-		\end{tikzpicture}
+		\tikzset{@sidebarNameBlock/.style={}}
+		\tikzset{@sidebarNameBlockAnchor/.style={anchor=north}}
+		\coordinate (sidebarNamePos) at (picture.south);
 	\else
-		\begin{center}
-			\LARGE
-			\vspace{3\@idNameSep}
-			\pgfkeysvalueof{firstName}
-			\vspace{3\@idNameSep}
-			\pgfkeysvalueof{lastName}
-			\vspace{\@positionSep}
-		\end{center}
+		\if@isSidebarLeft
+			\tikzset{@sidebarNameBlockAnchor/.style={anchor=east}}
+		\else
+			\tikzset{@sidebarNameBlockAnchor/.style={anchor=west}}
+		\fi
+		\tikzset{@sidebarNameBlock/.style={yshift=\textheight+\@margin}}
+		\coordinate (sidebarNamePos) at (sidebar.base);
 	\fi
+		\node[@sidebarNameBlock,@sidebarNameBlockAnchor,rectangle,fill,blockColor,
+		minimum width=\@sideWidth+2\@margin,
+		minimum height=\@nameBlockHeight,
+		align=center,
+		text width=\@sideWidth,
+		drop shadow] at (sidebarNamePos)
+		{%
+			\LARGE\color{white}
+			\pgfkeysvalueof{firstName}\hspace{3\@idNameSep}\pgfkeysvalueof{lastName}};
+	\end{tikzpicture}
+	\vspace{\@positionSep}
 }
 
 \NewDocumentCommand{\displayJobDetails}{}{
@@ -418,12 +430,13 @@
 		\pgfkeysvalueof{positionid}
 	\end{center}
 	\vspace{\@positionSep}
-	\vspace{10pt}
 }
 
 % Left Sidebar
 \NewDocumentEnvironment{sidebar}{}{
+	\global\@isSidebarLefttrue
 	\tikzset{@sidebarPicturePosition/.style = {anchor=north east},}
+	\tikzset{@sidebarNameBlockAnchor/.style={anchor=east}}
 	\refstepcounter{cvPage}\label{cvPage.\thecvPage}
 	\begin{tikzpicture}[remember picture,overlay]
 		\fill[backgroundColor](current page.north west)rectangle%
@@ -440,7 +453,9 @@
 }
 
 \NewDocumentEnvironment{sidebar*}{}{
+	\global\@isSidebarLeftfalse
 	\tikzset{@sidebarPicturePosition/.style = {anchor=north west},}
+	\tikzset{@sidebarNameBlockAnchor/.style={anchor=west}}
 	\refstepcounter{cvPage}\label{cvPage.\thecvPage}
 	\begin{tikzpicture}[remember picture,overlay]
 		\fill[backgroundColor](current page.north east)rectangle%
@@ -513,7 +528,7 @@
 	\@contactTemplateLink{\keybase}{\faKey}
 	\begin{tikzpicture}[every node/.style={inner sep=0pt, outer sep=0pt}]
 		\matrix [
-			column 1/.style={anchor=east},
+			column 1/.style={anchor=west},
 			column 2/.style={anchor=west,align=left},
 			column sep=\@contactItemSep,
 			row sep=\@contactItemSep,
