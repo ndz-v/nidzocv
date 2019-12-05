@@ -9,7 +9,6 @@
 \RequirePackage[english,ngerman]{babel}
 \RequirePackage{lipsum}
 \RequirePackage[hidelinks,pdfusetitle]{hyperref}
-\RequirePackage[hidelinks]{hyperref}
 \RequirePackage{calc}
 \RequirePackage{xcolor}
 \RequirePackage{xparse}
@@ -147,7 +146,7 @@
 \pagestyle{empty}
 
 % PDF meta data
-\title{Bewerbung als \pgfkeysvalueof{position}}
+\title{\pgfkeysvalueof{firstName} \pgfkeysvalueof{lastName}, \pgfkeysvalueof{/variables/applyAs} \pgfkeysvalueof{position}, \pgfkeysvalueof{positionid}}
 \author{\pgfkeysvalueof{firstName} \pgfkeysvalueof{lastName}}
 
 \hypersetup{
@@ -178,7 +177,7 @@
 		{\pgfkeyscurrentpath/\pgfkeyscurrentname/%
 			.initial = #1}}
 % Set all title names to English (default):
-\NewDocumentCommand{\cv@setEnglish}{}{
+\NewDocumentCommand{\setEnglish}{}{
 	\select@language{english}
 	\pgfkeys{/variables/contact = CONTACT}%
 	\pgfkeys{/variables/education = Education}%
@@ -195,7 +194,7 @@
 }
 %
 % Set all title names to German:
-\NewDocumentCommand{\cv@setGerman}{}{
+\NewDocumentCommand{\@setGerman}{}{
 	\select@language{ngerman}
 	\pgfkeys{/variables/contact = KONTAKT}%
 	\pgfkeys{/variables/education = Bildung}%
@@ -216,11 +215,11 @@
 %
 % Define the command to change the language
 \ExplSyntaxOn
-\NewDocumentCommand{\cvSetLanguage}{m}{
+\NewDocumentCommand{\setLanguage}{m}{
 	\str_case:nnF {#1}
 	{
-		{german} {\cv@setGerman}
-		{english} {\cv@setEnglish}
+		{german} {\@setGerman}
+			{english} {\setEnglish}
 	}
 	{\ClassError{error}{Unknown option `#1' for cvLanguage %
 			macro.}{Only `english' and `german' are valid options %
@@ -252,10 +251,10 @@
 }
 
 \NewDocumentCommand{\displaySubject}{O{\pgfkeysvalueof{/variables/applyAs}}O{\today}}{
-	\IfNoValueTF{#1}{\textbf{#1 \pgfkeysvalueof{position}}}{\textbf{\pgfkeysvalueof{/variables/applyAs} \pgfkeysvalueof{position}}}
-	\null\hfill #2\\
-	{\pgfkeysvalueof{jobofferlocation}
-	\pgfkeysvalueof{positionid}}
+\IfNoValueTF{#1}{\textbf{#1 \pgfkeysvalueof{position}}}{\textbf{\pgfkeysvalueof{/variables/applyAs} \pgfkeysvalueof{position}}}
+\null\hfill #2\\
+{\pgfkeysvalueof{jobofferlocation}
+\pgfkeysvalueof{positionid}}
 }
 
 \xdef\signature{\empty}
@@ -355,7 +354,7 @@
 %----------------------------------------------------------------------------------------
 \NewDocumentCommand{\@hRulefill}{}{
 	{\color{accentColor}%
-	\leavevmode\leaders\hrule height \@sBSectionLineWidth\hfill\kern\z@}
+			\leavevmode\leaders\hrule height \@sBSectionLineWidth\hfill\kern\z@}
 }
 
 \NewDocumentCommand{\@ruleline}{m}{
@@ -376,47 +375,47 @@
 
 % Optional arguments: xshift, yshift, picture size
 \NewDocumentCommand{\displaySidebarPicture}{O{0cm}O{0cm}O{0cm}}{
-	\IfFileExists{\profilePicture}{
-		\global\@isPictureDefinedtrue
-		\begin{tikzpicture}[remember picture, overlay]
-			\node[@sidebarPicturePosition,
-				yshift=\textheight+2\@margin,
-				xshift=-3.5pt,
-				minimum width=\@sideWidth+2\@margin-2pt,
-				draw, line width = 2pt,color=backgroundColor,
-				minimum height= 150pt,
-				path picture={
+\IfFileExists{\profilePicture}{
+	\global\@isPictureDefinedtrue
+	\begin{tikzpicture}[remember picture, overlay]
+		\node[@sidebarPicturePosition,
+			yshift=\textheight+2\@margin,
+			xshift=-3.5pt,
+			minimum width=\@sideWidth+2\@margin-2pt,
+			draw, line width = 2pt,color=backgroundColor,
+			minimum height= 150pt,
+			path picture={
 					\node[xshift=#1,yshift=#2,anchor=center] at (path picture bounding box.center){\includegraphics[height=150pt+#3]{\profilePicture}};
 				}
-			] at (sidebar.north east) (picture)
-			{};
+		] at (sidebar.north east) (picture)
+		{};
 
-		\end{tikzpicture}
-	}{\global\@isPictureDefinedfalse}
-	\vspace{145pt}
+	\end{tikzpicture}
+}{\global\@isPictureDefinedfalse}
+\vspace{145pt}
 }
 
 \NewDocumentCommand{\displaySidebarName}{}{
 	\begin{tikzpicture}[remember picture, overlay]
-	\if@isPictureDefined
-		\tikzset{@sidebarNameBlock/.style={}}
-		\tikzset{@sidebarNameBlockAnchor/.style={anchor=north}}
-		\coordinate (sidebarNamePos) at (picture.south);
-	\else
-		\if@isSidebarLeft
-			\tikzset{@sidebarNameBlockAnchor/.style={anchor=east}}
+		\if@isPictureDefined
+			\tikzset{@sidebarNameBlock/.style={}}
+			\tikzset{@sidebarNameBlockAnchor/.style={anchor=north}}
+			\coordinate (sidebarNamePos) at (picture.south);
 		\else
-			\tikzset{@sidebarNameBlockAnchor/.style={anchor=west}}
+			\if@isSidebarLeft
+				\tikzset{@sidebarNameBlockAnchor/.style={anchor=east}}
+			\else
+				\tikzset{@sidebarNameBlockAnchor/.style={anchor=west}}
+			\fi
+			\tikzset{@sidebarNameBlock/.style={yshift=\textheight+\@margin}}
+			\coordinate (sidebarNamePos) at (sidebar.base);
 		\fi
-		\tikzset{@sidebarNameBlock/.style={yshift=\textheight+\@margin}}
-		\coordinate (sidebarNamePos) at (sidebar.base);
-	\fi
 		\node[@sidebarNameBlock,@sidebarNameBlockAnchor,rectangle,fill,blockColor,
-		minimum width=\@sideWidth+2\@margin,
-		minimum height=\@nameBlockHeight,
-		align=center,
-		text width=\@sideWidth,
-		drop shadow] at (sidebarNamePos)
+			minimum width=\@sideWidth+2\@margin,
+			minimum height=\@nameBlockHeight,
+			align=center,
+			text width=\@sideWidth,
+			drop shadow] at (sidebarNamePos)
 		{%
 			\LARGE\color{white}
 			\pgfkeysvalueof{firstName}\hspace{3\@idNameSep}\pgfkeysvalueof{lastName}};
@@ -446,7 +445,7 @@
 	\begin{flushleft}
 		\begin{minipage}[c][\@minipageLength]{\@sideWidth}
 			\begin{center}
-}{
+				}{
 			\end{center}
 		\end{minipage}
 	\end{flushleft}
@@ -464,22 +463,20 @@
 	\color{fontColor}
 	\begin{flushright}
 		\begin{minipage}[c][\@minipageLength]{\@sideWidth}
-		\begin{center}
-}{
-		\end{center}
-	\end{minipage}
+			\begin{center}
+				}{
+			\end{center}
+		\end{minipage}
 	\end{flushright}
 }
 
-\NewDocumentEnvironment{profile}{}{%
+\NewDocumentEnvironment{profile}{O{\pgfkeysvalueof{/variables/profile}}}{%
 	\vspace{\@sectionSBSep}
-	\@ruleline{\pgfkeysvalueof{/variables/profile}}
+	\@ruleline{#1}
 	\vspace{\@sectionSBSep}\\
 }{%
-\vspace{.5cm}
+	\vspace{.5cm}
 }
-
-\NewDocumentEnvironment{miscellaneous}{}{}{\vspace{.5cm}}
 
 \NewDocumentCommand{\@contactTemplate}{mm}{
 	\NewDocumentCommand{#1}{m}{
@@ -535,10 +532,10 @@
 			inner sep=0pt,
 			outer sep=0pt] (contact)
 		\bgroup
-			\address{\pgfkeysvalueof{address}\\\pgfkeysvalueof{zipcode} \pgfkeysvalueof{city}}
-			\email{mailto:\pgfkeysvalueof{email}}{\pgfkeysvalueof{email}}
-			\phone{\pgfkeysvalueof{phoneNumber}}
-}{%
+		\address{\pgfkeysvalueof{address}\\\pgfkeysvalueof{zipcode} \pgfkeysvalueof{city}}
+		\email{mailto:\pgfkeysvalueof{email}}{\pgfkeysvalueof{email}}
+		\phone{\pgfkeysvalueof{phoneNumber}}
+		}{%
 		\\\egroup;
 	\end{tikzpicture}%
 	\vspace{.5cm}
@@ -549,8 +546,8 @@
 \pgfkeys{
 	/languages/.is family,
 	/languages/.unknown/.style = {%
-		\pgfkeyscurrentpath/\pgfkeyscurrentname/.initial = #1
-	}
+			\pgfkeyscurrentpath/\pgfkeyscurrentname/.initial = #1
+		}
 }
 
 \newcounter{@languagelevel}
@@ -568,9 +565,9 @@
 	\vspace{15pt}
 	\begin{tikzpicture}[every node/.style={text depth=0pt,inner sep=0pt,outer sep=0pt}]
 		\matrix [column 1/.style=@column1,column 2/.style=@column2,%
-		column sep=1.5\@sectionSBSep,row sep=1.5\@sectionSBSep] (contact)
+			column sep=1.5\@sectionSBSep,row sep=1.5\@sectionSBSep] (contact)
 		\bgroup
-}{%
+		}{%
 		\\\egroup;
 		\setcounter{@languagelevel}{1}
 		\loop\ifnum\value{@languagelevel}<\value{@languages}
@@ -598,30 +595,30 @@
 
 	\ifnodedefined{last item \the\value{@lastItem}}{%
 		\tikzset{@titlenode/.style = {below=\@sectionSep of last item \the\value{@lastItem}.south west}}
-	}{
-		\tikzset{@titlenode/.style = {}}
-	}
+}{
+	\tikzset{@titlenode/.style = {}}
+}
 
-	\node[@titlenode,@sectionTitle](@title \the\value{@titleNext})
-	{
-		\begingroup\edef\y
-		{\endgroup\titleText\bgroup\noexpand\extract{#1}{1}}\y\StrGobbleLeft{#1}{1}\egroup
-	};
+\node[@titlenode,@sectionTitle](@title \the\value{@titleNext})
+{
+	\begingroup\edef\y
+	{\endgroup\titleText\bgroup\noexpand\extract{#1}{1}}\y\StrGobbleLeft{#1}{1}\egroup
+};
 
-	\node[left=\@timeDotSep of @title \the\value{@titleNext},@headerIcon]
-	{#2};
+\node[left=\@timeDotSep of @title \the\value{@titleNext},@headerIcon]
+{#2};
 
-	\node[@titlenode,@sectionTitle](@title \the\value{@titleNext} dummy)
-	{\phantom{\titleText{Education}}};
+\node[@titlenode,@sectionTitle](@title \the\value{@titleNext} dummy)
+{\phantom{\titleText{Education}}};
 
-	\begin{scope}[on background layer]
-		\draw[line width=\@titleLineWidth,accentColor]
-		let
-			\p1=(@title \the\value{@titleNext} dummy.south west),
-			\p2=(current page.east) in (\x1,\y1-\@titleLineSpacing) to (\@mainWidth-\@timeDotSep,\y1-\@titleLineSpacing);
-	\end{scope}
-	\stepcounter{@titlePrev}%
-	\stepcounter{@titleNext}
+\begin{scope}[on background layer]
+	\draw[line width=\@titleLineWidth,accentColor]
+	let
+	\p1=(@title \the\value{@titleNext} dummy.south west),
+	\p2=(current page.east) in (\x1,\y1-\@titleLineSpacing) to (\@mainWidth-\@timeDotSep,\y1-\@titleLineSpacing);
+\end{scope}
+\stepcounter{@titlePrev}%
+\stepcounter{@titleNext}
 }
 
 \NewDocumentCommand{\@endSectionDraw}{}{
@@ -640,33 +637,33 @@
 	\NewDocumentEnvironment{cvItem}{}{%
 		\ifnodedefined{item \the\value{@itemPrev}}{%
 			\tikzset{@skillnode/.style= {below=\@itemSep of item \the\value{@itemPrev}.south west}}
-		}{
-			\tikzset{@skillnode/.style= {below=\@itemSep of @title \the\value{@titlePrev}.south west}}
-		}
-
-		\node[@skillnode,@eventdotText]
-		(item \the\value{@itemNext} header){\phantom{Evening}};
-
-		\node[@skillnode,@sectionEduText]
-		(item \the\value{@itemNext})
-		\bgroup
 	}{
-		\egroup;
+		\tikzset{@skillnode/.style= {below=\@itemSep of @title \the\value{@titlePrev}.south west}}
+}
 
-		\ifnodedefined{item \the\value{@itemPrev}}{%
-			\node[left=\@timeDotSep of item \the\value{@itemNext} header,@timedot]
-			{};
-		}{
-			\node[left=\@timeDotSep of item \the\value{@itemNext} header,@timedot]
-			(start)
-			{};
-		}
-		\node[left=\@timeDotSep of item \the\value{@itemNext}.south west,@invisibleTimeDot]
-		(end)
-		{};
-		\stepcounter{@itemPrev}
-		\stepcounter{@itemNext}
-	}
+\node[@skillnode,@eventdotText]
+(item \the\value{@itemNext} header){\phantom{Evening}};
+
+\node[@skillnode,@sectionEduText]
+(item \the\value{@itemNext})
+\bgroup
+}{
+\egroup;
+
+\ifnodedefined{item \the\value{@itemPrev}}{%
+	\node[left=\@timeDotSep of item \the\value{@itemNext} header,@timedot]
+	{};
+}{
+	\node[left=\@timeDotSep of item \the\value{@itemNext} header,@timedot]
+	(start)
+	{};
+}
+\node[left=\@timeDotSep of item \the\value{@itemNext}.south west,@invisibleTimeDot]
+(end)
+{};
+\stepcounter{@itemPrev}
+\stepcounter{@itemNext}
+}
 }
 
 \NewDocumentEnvironment{body}{}{%
@@ -674,7 +671,7 @@
 		[every node/.style={inner sep=0pt,outer sep=0pt},remember picture,overlay,
 			shift={($(current page.north west)+(\@sideWidth+2.5\@margin+\@timeDotSep,-\@margin)$)}]
 		\begin{scope}[on background layer]
-}{%
+			}{%
 		\end{scope}
 	\end{tikzpicture}
 	\restoregeometry
@@ -699,17 +696,17 @@
 
 % Environment template
 \NewDocumentCommand{\@createEnvironment}{mmm}{
-	\NewDocumentEnvironment{#1}{O{#2}O{#3}}{
-		\@createTitle{##1}{##2}
-		\stepcounter{@itemPrev}
-		\stepcounter{@itemNext}
-		\@definecvItem
-	}{
-		\@endSectionDraw
-		\stepcounter{@lastItem}
-		\draw (item \the\value{@itemPrev}.south west)
-		node (last item \the\value{@lastItem}) {};
-	}
+\NewDocumentEnvironment{#1}{O{#2}O{#3}}{
+\@createTitle{##1}{##2}
+\stepcounter{@itemPrev}
+\stepcounter{@itemNext}
+\@definecvItem
+}{
+\@endSectionDraw
+\stepcounter{@lastItem}
+\draw (item \the\value{@itemPrev}.south west)
+node (last item \the\value{@lastItem}) {};
+}
 }
 
 % Create needed environments
@@ -766,40 +763,40 @@
 	\fi
 }
 
-\NewDocumentEnvironment{skills}{O{\pgfkeysvalueof{/variables/skills}}}{%
-	\@createTitle{#1}{\faStar}
-	\global\@isFirstSkilltrue
-	\global\@isOneSkillfalse
-	\global\@isGradelessSkillfalse
+\NewDocumentEnvironment{skills}{O{\pgfkeysvalueof{/variables/skills}}O{\faStar}}{%
+\@createTitle{#1}{#2}
+\global\@isFirstSkilltrue
+\global\@isOneSkillfalse
+\global\@isGradelessSkillfalse
 }{%
-	\node[below=\@sectionSep of @title \the\value{@titlePrev}.south west,anchor=north west]
+\node[below=\@sectionSep of @title \the\value{@titlePrev}.south west,anchor=north west]
+(skills)
+{
+	\begin{tabular}{@{}l@{\hskip 5pt}l@{\hskip \@colSep}l@{\hskip 5pt}l@{}}%
+		\@twoSkillsTable
+	\end{tabular}
+};
+\if@isOneSkill
+	\node[below=-0.65\@sectionSep of skills.south west,anchor=north west,]
 	(skills)
 	{
-		\begin{tabular}{@{}l@{\hskip 5pt}l@{\hskip \@colSep}l@{\hskip 5pt}l@{}}%
-			\@twoSkillsTable
+		\begin{tabular}{@{}l@{\hskip 5pt}l@{}}%
+			\@oneSkillTable
 		\end{tabular}
 	};
-	\if@isOneSkill
-		\node[below=-0.65\@sectionSep of skills.south west,anchor=north west,]
-		 (skills)
-		{
-			\begin{tabular}{@{}l@{\hskip 5pt}l@{}}%
-				\@oneSkillTable
-			\end{tabular}
-		};
-	\fi
+\fi
 
-	\if@isGradelessSkill
-		\node[below=-0.65\@sectionSep of skills.south west,anchor=north west]
-		(skills)
-		{
-			\begin{tabular}{@{}l}%
-				\@gradelessSkillTable
-			\end{tabular}
-		};
-	\fi
+\if@isGradelessSkill
+	\node[below=-0.65\@sectionSep of skills.south west,anchor=north west]
+	(skills)
+	{
+		\begin{tabular}{@{}l}%
+			\@gradelessSkillTable
+		\end{tabular}
+	};
+\fi
 
-	\stepcounter{@lastItem}
-	\draw (skills.south west) node %
-	(last item \the\value{@lastItem}) {};
+\stepcounter{@lastItem}
+\draw (skills.south west) node %
+(last item \the\value{@lastItem}) {};
 }

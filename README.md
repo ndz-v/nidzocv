@@ -2,7 +2,7 @@
 
 <!--
 command to convert a pdf page to png
-convert -density 200 main.pdf\[\0] -quality 100 -background white -flatten coverletter.png
+convert -density 200 main.pdf\[\0] -quality 100 -resize 50% -background white -flatten coverletter.png
 -->
 
 <div>
