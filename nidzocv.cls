@@ -583,7 +583,7 @@
 %----------------------------------------------------------------------------------------
 %   Body Environment
 %----------------------------------------------------------------------------------------
-\NewDocumentCommand{\titleText}{m}{\large\textbf{#1}}
+\NewDocumentCommand{\titleText}{m}{\Large\textbf{#1}}
 
 \newcounter{@titlePrev}
 \setcounter{@titlePrev}{0}
