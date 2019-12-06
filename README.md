@@ -21,8 +21,8 @@ Fill main.tex, cvsidebar.tex and cvbody.tex with information and build it.
 % \cvSetLanguage{german}
 \cvSetLanguage{english}
 
-\setFirstName{John}
-\setLastName{Doe}
+\setFirstName{Firstname}
+\setLastName{Lastname}
 \setAddress{Street 1}
 \setZipcode{12345}
 \setCity{City}
