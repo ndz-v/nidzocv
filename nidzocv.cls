@@ -418,7 +418,7 @@
 			drop shadow] at (sidebarNamePos)
 		{%
 			\LARGE\color{white}
-			\pgfkeysvalueof{firstName}\hspace{3\@idNameSep}\pgfkeysvalueof{lastName}};
+			\pgfkeysvalueof{firstName}\hspace{3\@idNameSep}\pgfkeysvalueof{lastName}\par};
 	\end{tikzpicture}
 	\vspace{\@positionSep}
 }
