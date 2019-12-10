@@ -180,6 +180,7 @@
 \NewDocumentCommand{\setEnglish}{}{
 	\select@language{english}
 	\pgfkeys{/variables/contact = CONTACT}%
+	\pgfkeys{/variables/certifications = Certifications}%
 	\pgfkeys{/variables/education = Education}%
 	\pgfkeys{/variables/experience = Experience}%
 	\pgfkeys{/variables/interests = Interests}%
@@ -197,6 +198,7 @@
 \NewDocumentCommand{\@setGerman}{}{
 	\select@language{ngerman}
 	\pgfkeys{/variables/contact = KONTAKT}%
+	\pgfkeys{/variables/certifications = Zertifizierung}%
 	\pgfkeys{/variables/education = Bildung}%
 	\pgfkeys{/variables/experience = Erfahrung}%
 	\pgfkeys{/variables/interests = Interessen}%
@@ -713,6 +715,7 @@ node (last item \the\value{@lastItem}) {};
 \@createEnvironment{experience}{\pgfkeysvalueof{/variables/experience}}{\faBriefcase}
 \@createEnvironment{education}{\pgfkeysvalueof{/variables/education}}{\faGraduationCap}
 \@createEnvironment{scholarship}{\pgfkeysvalueof{/variables/scholarship}}{\faDollarSign}
+\@createEnvironment{certifications}{\pgfkeysvalueof{/variables/certifications}}{\faClipboardCheck}
 \@createEnvironment{interests}{\pgfkeysvalueof{/variables/interests}}{\faHandPointRight}
 
 \newcount\my@repeat@count
