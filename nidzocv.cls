@@ -522,7 +522,7 @@
 	\@contactTemplateLink{\email}{\faEnvelope}
 	\@contactTemplateLink{\website}{\faGlobe}
 	\@contactTemplateLink{\github}{\faGithub}
-	\@contactTemplateLink{\linkedin}{\faLinkedinSquare}
+	\@contactTemplateLink{\linkedin}{\faLinkedin}
 	\@contactTemplateLink{\twitter}{\faTwitter}
 	\@contactTemplateLink{\keybase}{\faKey}
 	\begin{tikzpicture}[every node/.style={inner sep=0pt, outer sep=0pt}]
