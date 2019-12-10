@@ -6,7 +6,7 @@
 \ProvidesClass{nidzocv}
 \LoadClass{article}
 
-\RequirePackage[english,ngerman]{babel}
+\RequirePackage[english,ngerman,french]{babel}
 \RequirePackage{lipsum}
 \RequirePackage[hidelinks,pdfusetitle]{hyperref}
 \RequirePackage{calc}
@@ -86,7 +86,7 @@
 \newlength\@margin
 \setlength\@margin{1cm}
 \newlength\@sideWidth
-\setlength\@sideWidth{0.3\paperwidth-\@margin}
+\setlength\@sideWidth{0.25\paperwidth-\@margin}
 \newlength\@mainWidth
 \setlength\@mainWidth{\paperwidth-3.5\@margin-\@sideWidth}
 \newlength\@coverletterWidth
@@ -180,6 +180,7 @@
 \NewDocumentCommand{\setEnglish}{}{
 	\select@language{english}
 	\pgfkeys{/variables/contact = CONTACT}%
+	\pgfkeys{/variables/certifications = Certifications}%
 	\pgfkeys{/variables/education = Education}%
 	\pgfkeys{/variables/experience = Experience}%
 	\pgfkeys{/variables/interests = Interests}%
@@ -197,6 +198,7 @@
 \NewDocumentCommand{\@setGerman}{}{
 	\select@language{ngerman}
 	\pgfkeys{/variables/contact = KONTAKT}%
+	\pgfkeys{/variables/certifications = Zertifizierung}%
 	\pgfkeys{/variables/education = Bildung}%
 	\pgfkeys{/variables/experience = Erfahrung}%
 	\pgfkeys{/variables/interests = Interessen}%
@@ -209,6 +211,24 @@
 	\pgfkeys{/variables/skills = Fertigkeiten}%
 	\pgfkeys{/variables/applyAs = Bewerbung als}%
 }
+%
+% Set all title names to German:
+\NewDocumentCommand{\@setFrench}{}{
+	\select@language{ngerman}
+	\pgfkeys{/variables/contact = Contact}%
+	\pgfkeys{/variables/certifications = Certifications}%
+	\pgfkeys{/variables/education = Formation}%
+	\pgfkeys{/variables/experience = Expérience}%
+	\pgfkeys{/variables/interests = Intérêts}%
+	\pgfkeys{/variables/languages = Langues}%
+	\pgfkeys{/variables/personal = Personnel}%
+	\pgfkeys{/variables/professional = Professionel}%
+	\pgfkeys{/variables/profile = Profil}%
+	\pgfkeys{/variables/projects = Projets}%
+	\pgfkeys{/variables/scholarship = Scolarité}%
+	\pgfkeys{/variables/skills = Compétences}%
+	\pgfkeys{/variables/applyAs = Postulant comme}%
+}
 
 % Set the actual language to English. This can be overwritten by the user in the
 % preamble
@@ -219,10 +239,11 @@
 	\str_case:nnF {#1}
 	{
 		{german} {\@setGerman}
-			{english} {\setEnglish}
+		{english} {\setEnglish}
+		{french} {\@setFrench}
 	}
 	{\ClassError{error}{Unknown option `#1' for cvLanguage %
-			macro.}{Only `english' and `german' are valid options %
+			macro.}{Only `english', `german' and 'french' are valid options %
 			for this macro.}}
 }
 \ExplSyntaxOff
@@ -520,7 +541,7 @@
 	\@contactTemplateLink{\email}{\faEnvelope}
 	\@contactTemplateLink{\website}{\faGlobe}
 	\@contactTemplateLink{\github}{\faGithub}
-	\@contactTemplateLink{\linkedin}{\faLinkedinSquare}
+	\@contactTemplateLink{\linkedin}{\faLinkedin}
 	\@contactTemplateLink{\twitter}{\faTwitter}
 	\@contactTemplateLink{\keybase}{\faKey}
 	\begin{tikzpicture}[every node/.style={inner sep=0pt, outer sep=0pt}]
@@ -713,6 +734,7 @@ node (last item \the\value{@lastItem}) {};
 \@createEnvironment{experience}{\pgfkeysvalueof{/variables/experience}}{\faBriefcase}
 \@createEnvironment{education}{\pgfkeysvalueof{/variables/education}}{\faGraduationCap}
 \@createEnvironment{scholarship}{\pgfkeysvalueof{/variables/scholarship}}{\faDollarSign}
+\@createEnvironment{certifications}{\pgfkeysvalueof{/variables/certifications}}{\faClipboardCheck}
 \@createEnvironment{interests}{\pgfkeysvalueof{/variables/interests}}{\faHandPointRight}
 
 \newcount\my@repeat@count
