@@ -86,7 +86,7 @@
 \newlength\@margin
 \setlength\@margin{1cm}
 \newlength\@sideWidth
-\setlength\@sideWidth{0.3\paperwidth-\@margin}
+\setlength\@sideWidth{0.25\paperwidth-\@margin}
 \newlength\@mainWidth
 \setlength\@mainWidth{\paperwidth-3.5\@margin-\@sideWidth}
 \newlength\@coverletterWidth
