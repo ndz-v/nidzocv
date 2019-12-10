@@ -214,7 +214,7 @@
 %
 % Set all title names to German:
 \NewDocumentCommand{\@setFrench}{}{
-	\select@language{ngerman}
+	\select@language{french}
 	\pgfkeys{/variables/contact = Contact}%
 	\pgfkeys{/variables/certifications = Certifications}%
 	\pgfkeys{/variables/education = Formation}%
