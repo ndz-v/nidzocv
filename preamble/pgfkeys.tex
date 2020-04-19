@@ -1,0 +1,60 @@
+\pgfkeys{/variables/.is family,
+  /variables/.unknown/.style = %
+    {\pgfkeyscurrentpath/\pgfkeyscurrentname/%
+      .initial = #1}}
+% Set all title names to English (default):
+\NewDocumentCommand{\setEnglish}{}{
+  \usepackage[english]{babel}
+  \selectlanguage{english}
+  \pgfkeys{/variables/contact = CONTACT}%
+  \pgfkeys{/variables/certifications = Certifications}%
+  \pgfkeys{/variables/education = Education}%
+  \pgfkeys{/variables/experience = Experience}%
+  \pgfkeys{/variables/interests = Interests}%
+  \pgfkeys{/variables/languages = LANGUAGES}%
+  \pgfkeys{/variables/personal = Personal}%
+  \pgfkeys{/variables/professional = Professional}%
+  \pgfkeys{/variables/profile = PROFILE}%
+  \pgfkeys{/variables/projects = Projects}%
+  \pgfkeys{/variables/scholarship = Scholarships}%
+  \pgfkeys{/variables/skills = Skills}%
+  \pgfkeys{/variables/applyAs = Application as}%
+}
+%
+% Set all title names to German:
+\NewDocumentCommand{\@setGerman}{}{
+  \usepackage[ngerman]{babel}
+  \selectlanguage{ngerman}
+  \pgfkeys{/variables/contact = KONTAKT}%
+  \pgfkeys{/variables/certifications = Zertifizierung}%
+  \pgfkeys{/variables/education = Bildung}%
+  \pgfkeys{/variables/experience = Erfahrung}%
+  \pgfkeys{/variables/interests = Interessen}%
+  \pgfkeys{/variables/languages = SPRACHEN}%
+  \pgfkeys{/variables/personal = Persönlich}%
+  \pgfkeys{/variables/professional = Professionel}%
+  \pgfkeys{/variables/profile = PROFIL}%
+  \pgfkeys{/variables/projects = Projekte}%
+  \pgfkeys{/variables/scholarship = Stipendien}%
+  \pgfkeys{/variables/skills = Fertigkeiten}%
+  \pgfkeys{/variables/applyAs = Bewerbung als}%
+}
+%
+% Set all title names to German:
+\NewDocumentCommand{\@setFrench}{}{
+  \usepackage[french]{babel}
+  \selectlanguage{french}
+  \pgfkeys{/variables/contact = Contact}%
+  \pgfkeys{/variables/certifications = Certifications}%
+  \pgfkeys{/variables/education = Formation}%
+  \pgfkeys{/variables/experience = Expérience}%
+  \pgfkeys{/variables/interests = Intérêts}%
+  \pgfkeys{/variables/languages = Langues}%
+  \pgfkeys{/variables/personal = Personnel}%
+  \pgfkeys{/variables/professional = Professionel}%
+  \pgfkeys{/variables/profile = Profil}%
+  \pgfkeys{/variables/projects = Projets}%
+  \pgfkeys{/variables/scholarship = Scolarité}%
+  \pgfkeys{/variables/skills = Compétences}%
+  \pgfkeys{/variables/applyAs = Postulant comme}%
+}

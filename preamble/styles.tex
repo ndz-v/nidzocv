@@ -1,0 +1,33 @@
+%----------------------------------------------------------------------------------------
+%	Colors ans tikz styles
+%----------------------------------------------------------------------------------------
+
+% Lines under title points
+\definecolor{accentColor}{HTML}{4A6B8A}
+% Name and address block color
+\definecolor{blockColor}{HTML}{4A6B8A}
+% Accent color i.e. loading bars
+\definecolor{accentColor}{HTML}{4A6B8A}
+% Background color sidebar and coverletter heading
+\definecolor{backgroundColor}{HTML}{ECECEC}
+% Font color in coverletter and sidebar
+\definecolor{fontColor}{HTML}{041D37}
+% \definecolor{accentColor}{HTML}{133253}
+
+
+\tikzset{
+  @contactIcon/.style={minimum height=\baselineskip},
+  @contactText/.style={minimum height=\baselineskip,text depth=0pt},
+  @eventdotText/.style = {text width=\@mainWidth-\@timeDotSep,fontColor,anchor=north west},
+  @headerIcon/.style={minimum width=\@headerIconWidth,anchor=center},
+  @invisibleTimeDot/.style = {circle,minimum width=\@timeDotDiameter,anchor=center},
+  @progressArea/.style={minimum width=\@progressAreaWidth,minimum height=\@progressAreaHeight,rectangle,draw,accentColor},
+  @progressBar/.style={minimum height=\@progressAreaHeight,rectangle,draw,fill,accentColor,anchor=west},
+  @sectionEduText/.style={@eventdotText,anchor=north west,align=justify},
+  @sectionTitle/.style={anchor=north west,align=left},
+  @timedot/.style = {},
+  @sidebarPicturePosition/.style = {anchor=north east},
+  @column1/.style={anchor=west},
+  @column2/.style={anchor=east,align=right},
+  @sidebarNameBlockAnchor/.style={anchor=east}
+}

@@ -1,0 +1,234 @@
+%----------------------------------------------------------------------------------------
+%   Sidebar Environment
+%----------------------------------------------------------------------------------------
+\NewDocumentCommand{\@hRulefill}{}{
+  {\color{accentColor}%
+      \leaders\hrule height 0.5\@sBSectionLineWidth\hfill\kern\z@}
+}
+
+\NewDocumentCommand{\@ruleline}{m}{
+  \par\noindent\raisebox{.6ex}{%
+    \makebox[\linewidth]{\raisebox{-.6ex}{#1}\hspace{1ex}\@hRulefill}}%
+}
+% \NewDocumentCommand{\@ruleline}{m}{
+% 	\par\noindent\raisebox{.6ex}{%
+% 		\makebox[\linewidth]{\@hRulefill\hspace{1ex}%
+% 			\raisebox{-.6ex}{#1}\hspace{1ex}\@hRulefill}}%
+% }
+
+\NewDocumentCommand{\displaySidebarSignature}{}{
+  \vfill
+  \centering
+  \includegraphics[width=4cm]{\signature}\\
+  \pgfkeysvalueof{city}, \today
+}
+
+\newif\if@isPictureDefined
+\newif\if@isSidebarLeft
+\global\@isPictureDefinedfalse
+
+% Optional arguments: xshift, yshift, picture size
+\NewDocumentCommand{\displaySidebarPicture}{O{0cm}O{0cm}O{0cm}}{
+\IfFileExists{\profilePicture}{
+  \global\@isPictureDefinedtrue
+  \begin{tikzpicture}[remember picture, overlay]
+    \node[@sidebarPicturePosition,
+      yshift=\textheight+2\@margin,
+      xshift=-3.5pt,
+      minimum width=\@sideWidth+2\@margin-2pt,
+      draw, line width = 2pt,color=backgroundColor,
+      minimum height= 150pt,
+      path picture={
+          \node[xshift=#1,yshift=#2,anchor=center] at (path picture bounding box.center){\includegraphics[height=150pt+#3]{\profilePicture}};
+        }
+    ] at (sidebar.north east) (picture)
+    {};
+
+  \end{tikzpicture}
+}{\global\@isPictureDefinedfalse}
+\vspace{145pt}
+}
+
+\NewDocumentCommand{\displaySidebarName}{}{
+  \begin{tikzpicture}[remember picture, overlay]
+    \if@isPictureDefined
+      \tikzset{@sidebarNameBlock/.style={}}
+      \tikzset{@sidebarNameBlockAnchor/.style={anchor=north}}
+      \coordinate (sidebarNamePos) at (picture.south);
+    \else
+      \if@isSidebarLeft
+        \tikzset{@sidebarNameBlockAnchor/.style={anchor=east}}
+      \else
+        \tikzset{@sidebarNameBlockAnchor/.style={anchor=west}}
+      \fi
+      \tikzset{@sidebarNameBlock/.style={yshift=\textheight+\@margin}}
+      \coordinate (sidebarNamePos) at (sidebar.base);
+    \fi
+    \node[@sidebarNameBlock,@sidebarNameBlockAnchor,rectangle,fill,blockColor,
+      minimum width=\@sideWidth+2\@margin,
+      minimum height=\@nameBlockHeight,
+      align=center,
+      text width=\@sideWidth,
+      drop shadow] at (sidebarNamePos)
+    {%
+      \LARGE\color{white}
+      \pgfkeysvalueof{firstName}\hspace{2\@idNameSep}\textbf{\pgfkeysvalueof{lastName}}\par};
+  \end{tikzpicture}
+  \vspace{\@positionSep}
+}
+
+\NewDocumentCommand{\displayJobDetails}{}{
+  \begin{center}
+    \pgfkeysvalueof{position}\\
+    \pgfkeysvalueof{positionid}
+  \end{center}
+  \vspace{\@positionSep}
+}
+
+% Left Sidebar
+\NewDocumentEnvironment{sidebar}{}{
+  \global\@isSidebarLefttrue
+  \tikzset{@sidebarPicturePosition/.style = {anchor=north east},}
+  \tikzset{@sidebarNameBlockAnchor/.style={anchor=east}}
+  \refstepcounter{cvPage}\label{cvPage.\thecvPage}
+  \begin{tikzpicture}[remember picture,overlay]
+    \fill[backgroundColor](current page.north west)rectangle%
+    ++(\@sideWidth+2\@margin,-\paperheight) node [anchor=north] (sidebar){};
+  \end{tikzpicture}
+  \color{fontColor}
+  \begin{flushleft}
+    \begin{minipage}[c][\@minipageLength]{\@sideWidth+0.2cm}
+      }{
+    \end{minipage}
+  \end{flushleft}
+}
+
+\NewDocumentEnvironment{sidebar*}{}{
+  \global\@isSidebarLeftfalse
+  \tikzset{@sidebarPicturePosition/.style = {anchor=north west},}
+  \tikzset{@sidebarNameBlockAnchor/.style={anchor=west}}
+  \refstepcounter{cvPage}\label{cvPage.\thecvPage}
+  \begin{tikzpicture}[remember picture,overlay]
+    \fill[backgroundColor](current page.north east)rectangle%
+    ++(-\@sideWidth-2\@margin,-\paperheight) node [anchor=north] (sidebar){};
+  \end{tikzpicture}
+  \color{fontColor}
+  \begin{flushright}
+    \begin{minipage}[c][\@minipageLength]{\@sideWidth}
+      }{
+    \end{minipage}
+  \end{flushright}
+}
+
+\NewDocumentEnvironment{profile}{O{\pgfkeysvalueof{/variables/profile}}}{%
+  \vspace{\@sectionSBSep}
+  \@ruleline{#1}
+  \vspace{-\@sectionSBSep}\\
+}{
+  \vspace{.3cm}
+}
+
+\NewDocumentCommand{\@contactTemplate}{mm}{
+  \NewDocumentCommand{#1}{m}{
+    \if@contactfirst \\ \else %
+      \global\@contactfirsttrue \fi\node[@contactIcon]{#2};
+    \pgfmatrixnextcell \node[@contactText]{##1};
+  }
+}
+
+\NewDocumentCommand{\@contactTemplateLink}{mm}{
+  \NewDocumentCommand{#1}{mm}{
+    \if@contactfirst \\ \else %
+      \global\@contactfirsttrue \fi\node[@contactIcon]{#2};
+    \pgfmatrixnextcell \node[@contactText]{%
+      \IfEq{##1}{}{##2}{\href{##1}{##2}}
+    };
+  }
+}
+
+\NewDocumentCommand{\contactTemplate}{O{} mm}{
+  \if@contactfirst%
+    \\%
+  \else %
+    \global\@contactfirsttrue %
+  \fi %
+  \node[@contactIcon]{#2};
+  \pgfmatrixnextcell \node[@contactText]{%
+    \IfEq{##1}{}{##3}{\href{##1}{##3}}
+  };
+}
+
+\newif\if@contactfirst
+\NewDocumentEnvironment{contact}{O{\pgfkeysvalueof{/variables/contact}}}{%
+  \vspace{\@sectionSBSep}
+  \@ruleline{#1}
+  \vspace{-4\@sectionSBSep}\\
+
+  \global\@contactfirstfalse
+  \@contactTemplate{\address}{\faMapMarker*}
+  \@contactTemplate{\phone}{\faPhone}
+
+  \@contactTemplateLink{\email}{\faEnvelope}
+  \@contactTemplateLink{\website}{\faGlobe}
+  \@contactTemplateLink{\github}{\faGithub}
+  \@contactTemplateLink{\linkedin}{\faLinkedin}
+  \@contactTemplateLink{\twitter}{\faTwitter}
+  \@contactTemplateLink{\keybase}{\faKey}
+  \begin{tikzpicture}[every node/.style={inner sep=0pt, outer sep=0pt}]
+    \matrix [
+      column 1/.style={anchor=west,align=right},
+      column 2/.style={anchor=west,align=right},
+      column sep=\@contactItemSep,
+      row sep=1.5\@contactItemSep,
+      inner sep=0pt,
+      outer sep=0pt] (contact)
+    \bgroup
+    \address{\pgfkeysvalueof{address}}\\[-5pt]
+    \node[@contactIcon]{};
+    \pgfmatrixnextcell \node[@contactText]{%
+      \pgfkeysvalueof{zipcode} \pgfkeysvalueof{city}
+    };
+    \email{mailto:\pgfkeysvalueof{email}}{\pgfkeysvalueof{email}}
+    \phone{\pgfkeysvalueof{phoneNumber}}
+    }{%
+    \\\egroup;
+  \end{tikzpicture}%
+  \vspace{.3cm}
+}
+
+\newcounter{@languages}
+\setcounter{@languages}{1}
+\pgfkeys{
+  /languages/.is family,
+  /languages/.unknown/.style = {%
+      \pgfkeyscurrentpath/\pgfkeyscurrentname/.initial = #1
+    }
+}
+
+\newcounter{@languagelevel}
+\NewDocumentEnvironment{languages}{}{%
+  \NewDocumentCommand{\languageRating}{mm}{%
+    {\globaldefs=1\relax\pgfkeys{%
+          /languages/lang\the\value{@languages} = ##2}}
+    \node[]{##1}; \pgfmatrixnextcell %
+    \node[@progressArea] (@language \the\value{@languages}) {}; \\
+    \stepcounter{@languages}
+  }%
+  \@ruleline{\pgfkeysvalueof{/variables/languages}}%
+  \vspace{15pt}
+  \begin{tikzpicture}[every node/.style={text depth=0pt,inner sep=0pt,outer sep=0pt}]
+    \matrix [column 1/.style=@column1,column 2/.style=@column2,%
+      column sep=3\@sectionSBSep,row sep=1.5\@sectionSBSep] (contact)
+    \bgroup
+    }{%
+    \\\egroup;
+    \setcounter{@languagelevel}{1}
+    \loop\ifnum\value{@languagelevel}<\value{@languages}
+    \draw (@language \the\value{@languagelevel}.west) %
+    node[@progressBar,minimum width=\pgfkeysvalueof{/languages/lang\the\value{@languagelevel}}em]%
+    {};
+    \stepcounter{@languagelevel}
+    \repeat
+  \end{tikzpicture}
+  \vspace{.3cm}
+}

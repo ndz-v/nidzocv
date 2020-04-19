@@ -1,0 +1,58 @@
+\PassOptionsToPackage{table}{xcolor}
+\usepackage[hidelinks,pdfusetitle]{hyperref}
+\usepackage[T1]{fontenc}
+\usepackage[margin=1cm,noheadfoot]{geometry} % Options in brackets are needed for centering in sidebar showframe=true
+\usepackage{blindtext}
+\usepackage{calc}
+\usepackage{enumitem}
+\usepackage{fontawesome5}
+\usepackage{graphicx}
+\usepackage{lmodern}
+% \usepackage{helvet}
+\usepackage{parskip} % Remove paragraph indentation
+\usepackage{pdfpages}
+\usepackage{tabularx}
+\usepackage{tikz} % For drawing header, footer and blocks
+\usepackage{xcolor}
+\usepackage{xparse}
+\usepackage{xstring}
+\usepackage{eurosym}
+
+\RenewDocumentCommand{\familydefault}{}{\sfdefault}
+
+\usetikzlibrary{
+  backgrounds,
+  calc,
+  positioning,
+  shapes.geometric,
+  shapes.misc,
+  shadings,
+  shadows,
+  fadings
+}
+
+% PDF meta data
+\title{\pgfkeysvalueof{firstName} \pgfkeysvalueof{lastName}, \pgfkeysvalueof{/variables/applyAs} \pgfkeysvalueof{position}, \pgfkeysvalueof{positionid}}
+\author{\pgfkeysvalueof{firstName} \pgfkeysvalueof{lastName}}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue,
+  urlcolor=blue
+}
+
+% Global options for pdfpages
+\includepdfset{
+  linkname=attachment,
+  pagecommand={
+      \refstepcounter{attachment}
+      \label{attachment.\theattachment}
+    }
+}
+
+% Create counters so pages can be referenced in the document
+\newcounter{cvPage}
+\newcounter{attachment}
+
+% No page numbering
+\pagestyle{empty}

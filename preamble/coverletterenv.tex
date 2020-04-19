@@ -1,0 +1,67 @@
+%----------------------------------------------------------------------------------------
+%   Cover Letter Environment
+%----------------------------------------------------------------------------------------
+\newlength\@fullNameWidth
+\newlength\@addressWidth
+\newlength\@addressHeight
+
+% Calculates width and height of text, is needed for block sizes adjustments
+\NewDocumentCommand{\@calculateDimensions}{}{
+  \LARGE
+  \setlength\@fullNameWidth{\widthof{\pgfkeysvalueof{firstName} \pgfkeysvalueof{lastName}}}
+  \large
+  \setlength\@addressWidth{\maxof{\widthof{\pgfkeysvalueof{address}, \pgfkeysvalueof{zipcode} \pgfkeysvalueof{city}}}{\widthof{\pgfkeysvalueof{email}}}}
+
+  \setlength\@addressBlockWidth{0.5\paperwidth-0.5\@coverletterWidth+\@addressWidth}
+  \setlength\@addressHeight{\heightof{\pgfkeysvalueof{address}, \pgfkeysvalueof{zipcode} \pgfkeysvalueof{city}}}
+  \setlength\@addressBlockHeight{6\@addressHeight+.3cm}
+}
+
+\NewDocumentEnvironment{coverletter}{O{\@headerHeight} O{\@footerHeight}}{
+  \setlength\@headerHeight{#1}
+  \setlength\@footerHeight{#2}
+  \color{fontColor}
+  \refstepcounter{cvPage}\label{cvPage.\thecvPage}
+  \newgeometry{textwidth=\@coverletterWidth,textheight=\paperheight,noheadfoot}
+  \begin{tikzpicture}[remember picture, overlay, every node/.style={inner sep=0cm, outer sep=0cm}]
+    \begin{scope}[on background layer]
+      % Header
+      \fill[backgroundColor] (current page.north west) rectangle ++(\paperwidth, -0.8\@headerHeight);
+
+      \@calculateDimensions
+
+      \coordinate (nameBlockPos) at ($(current page.north west)+(0pt,-0.8\@headerHeight+0.5\@nameBlockHeight)$);
+      \coordinate (addressBlockPos) at ($(current page.south west)+(0pt,\@footerHeight-0.5\@addressBlockHeight)$);
+
+      \fill[blockColor, drop shadow] (nameBlockPos) rectangle%
+      ++(0.5\paperwidth-0.5\@coverletterWidth+\@fullNameWidth+0.5cm,-\@nameBlockHeight)%
+      node [anchor=west, xshift=-\@fullNameWidth-0.5cm,yshift=0.5\@nameBlockHeight] (coverletter name)
+      {\LARGE\selectfont\color{white}\pgfkeysvalueof{firstName} \textbf{\pgfkeysvalueof{lastName}}};
+
+      % Footer
+      \fill[backgroundColor] (current page.south east) rectangle ++(-\paperwidth, \@footerHeight);
+
+      % Blue address block
+      \fill[blockColor,drop shadow] (addressBlockPos) rectangle%
+      ++(\@addressBlockWidth+0.3cm,\@addressBlockHeight)
+      node[anchor=west, text=white,xshift=-\@addressWidth-0.3cm, yshift=-0.5\@addressBlockHeight] (email)
+      {\large\href{mailto:\pgfkeysvalueof{email}}{\color{white}{\pgfkeysvalueof{email}}}};
+
+      \node[align=right,text=white,below=-10pt-\@addressHeight of email.north west,anchor=north west]
+      (address)
+      {\large\pgfkeysvalueof{address}, \pgfkeysvalueof{zipcode} \pgfkeysvalueof{city}};
+
+      \node[align=right,text=white,below=10pt+\@addressHeight of email.south west, anchor=south west]
+      (phone)
+      {\large\pgfkeysvalueof{phoneNumber}};
+
+    \end{scope}
+  \end{tikzpicture}
+  % Ensures the space below header
+  \vspace{\dimexpr\@headerHeight-1in-\topmargin\relax}
+}{
+  % Ensures the space above footer
+  \vspace{\dimexpr\@footerHeight+1.2cm\relax}
+  \restoregeometry
+  \cleardoublepage
+}

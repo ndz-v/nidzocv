@@ -1,0 +1,237 @@
+%----------------------------------------------------------------------------------------
+%   Body Environment
+%----------------------------------------------------------------------------------------
+\NewDocumentCommand{\titleText}{m}{\large\textbf{#1}}
+
+\newcounter{@titlePrev}
+\setcounter{@titlePrev}{0}
+\newcounter{@titleNext}
+\setcounter{@titleNext}{1}
+
+\NewDocumentCommand{\@createTitle}{mm}{
+  \color{fontColor}
+
+  \ifnodedefined{last item \the\value{@lastItem}}
+  {%
+    \tikzset{@titlenode/.style = {below=\@sectionSep of last item \the\value{@lastItem}.south west}}
+}{
+  \tikzset{@titlenode/.style = {}}
+}
+
+% Title text of section
+\node[@titlenode,@sectionTitle](@title \the\value{@titleNext})
+{
+  \begingroup\edef\y
+  {\endgroup\titleText\bgroup\noexpand\extract{#1}{1}}\y\StrGobbleLeft{#1}{1}\egroup
+};
+
+\if@isIcons
+  Title section icon
+  \node[left=\@timeDotSep of @title \the\value{@titleNext},@headerIcon]
+  {#2};
+\fi
+
+\node[@titlenode,@sectionTitle](@title \the\value{@titleNext} dummy)
+{\phantom{\titleText{Education}}};
+
+% Title section header line
+\begin{scope}[on background layer]
+  \draw[line width=0.5\@titleLineWidth,accentColor]
+  let
+  \p1=(@title \the\value{@titleNext} dummy.south west),
+  \p2=(current page.east) in (\x1,\y1-1.5\@titleLineSpacing) to (\@mainWidth-\@timeDotSep,\y1-1.5\@titleLineSpacing);
+\end{scope}
+\stepcounter{@titlePrev}%
+\stepcounter{@titleNext}
+}
+
+% Vertical lines in sections
+\NewDocumentCommand{\@endSectionDraw}{}{
+  \if@isIcons
+    \color{accentColor}
+    \draw (start) to (end.center);
+  \fi
+}
+
+\newcounter{@itemPrev}
+\setcounter{@itemPrev}{0}
+\newcounter{@itemNext}
+\setcounter{@itemNext}{1}
+\newcounter{@lastItem}
+\setcounter{@lastItem}{1}
+
+\NewDocumentCommand{\@definecvItem}{}{
+  \NewDocumentEnvironment{cvItem}{}{
+    \ifnodedefined{item \the\value{@itemPrev}}{%
+      \tikzset{@skillnode/.style= {below=\@itemSep of item \the\value{@itemPrev}.south west}}
+  }{
+    \tikzset{@skillnode/.style= {below=\@itemSep of @title \the\value{@titlePrev}.south west}}
+}
+
+\node[@skillnode,@eventdotText](item \the\value{@itemNext} header){\phantom{Evening}};
+\node[@skillnode,@sectionEduText](item \the\value{@itemNext})
+\bgroup
+}{
+\egroup;
+
+\ifnodedefined{item \the\value{@itemPrev}}{
+  \node[left=\@timeDotSep of item \the\value{@itemNext} header,@timedot]{};
+}{
+  \node[left=\@timeDotSep of item \the\value{@itemNext} header,@timedot](start){};
+}
+\node[left=\@timeDotSep of item \the\value{@itemNext}.south west,@invisibleTimeDot](end){};
+\stepcounter{@itemPrev}
+\stepcounter{@itemNext}
+}
+}
+
+\NewDocumentEnvironment{body}{}{%
+  \begin{tikzpicture}
+    [every node/.style={inner sep=0pt,outer sep=0pt},remember picture,overlay,
+      shift={($(current page.north west)+(\@sideWidth+2.5\@margin+\@timeDotSep,-\@margin)$)}]
+    \begin{scope}[on background layer]
+      }{%
+    \end{scope}
+  \end{tikzpicture}
+  \restoregeometry
+  \setcounter{@itemPrev}{0}
+  \setcounter{@itemNext}{1}
+  \setcounter{@lastItem}{1}
+}
+
+\NewDocumentEnvironment{body*}{}{%
+  \stepcounter{@titlePrev}
+  \stepcounter{@titleNext}
+  \begin{tikzpicture}[%
+      every node/.style={inner sep=0pt,outer sep=0pt},remember picture,overlay,
+      shift={($(current page.north west)+(\@margin+\@timeDotSep,-\@margin)$)}]
+    }{%
+  \end{tikzpicture}%
+  \restoregeometry
+  \setcounter{@itemPrev}{0}
+  \setcounter{@itemNext}{1}
+  \setcounter{@lastItem}{1}
+}
+
+% Environment template
+\NewDocumentCommand{\@createEnvironment}{mmm}{
+\NewDocumentEnvironment{#1}{O{#2}O{#3}}{
+\@createTitle{##1}{##2}
+\stepcounter{@itemPrev}
+\stepcounter{@itemNext}
+\@definecvItem
+}{
+\@endSectionDraw
+\stepcounter{@lastItem}
+\draw (item \the\value{@itemPrev}.south west)
+node (last item \the\value{@lastItem}) {};
+}
+}
+
+% Create needed environments
+\@createEnvironment{experience}{\pgfkeysvalueof{/variables/experience}}{\faBriefcase}
+\@createEnvironment{education}{\pgfkeysvalueof{/variables/education}}{\faGraduationCap}
+\@createEnvironment{scholarship}{\pgfkeysvalueof{/variables/scholarship}}{\faDollarSign}
+\@createEnvironment{certifications}{\pgfkeysvalueof{/variables/certifications}}{\faClipboardCheck}
+\@createEnvironment{interests}{\pgfkeysvalueof{/variables/interests}}{\faHandPointRight}
+
+\newcount\my@repeat@count
+\NewDocumentCommand{\@markGrade}{m}{%
+  \begingroup
+  \my@repeat@count=\z@
+  \@whilenum\my@repeat@count<#1\do{\faStar\advance%
+    \my@repeat@count\@ne}%
+  \my@repeat@count=\numexpr5-\z@\relax
+  \@whilenum\my@repeat@count>#1\do{\faStar[regular]\advance%
+    \my@repeat@count\m@ne}%
+  \endgroup
+}
+
+\newif\if@isFirstSkill
+\newif\if@isOneSkill
+\newif\if@isGradelessSkill
+\NewDocumentCommand{\@twoSkillsTable}{}{}
+\NewDocumentCommand{\@oneSkillTable}{}{}
+\NewDocumentCommand{\@gradelessSkillTable}{}{}
+
+\NewDocumentCommand{\skillTwo}{mmmm}{%
+  \if@isFirstSkill
+    \g@addto@macro\@twoSkillsTable{\@markGrade{#1} & #2 & \@markGrade{#3} & #4}
+    \@isFirstSkillfalse
+  \else
+    \g@addto@macro\@twoSkillsTable{\\[\@skillSep] \@markGrade{#1} & #2 & \@markGrade{#3} & #4}
+  \fi
+}
+\NewDocumentCommand{\skillOne}{mm}{%
+  \@isOneSkilltrue
+
+  \if@isFirstSkill
+    \g@addto@macro\@oneSkillTable{\@markGrade{#1} & #2}
+    \@isFirstSkillfalse
+  \else
+    \g@addto@macro\@oneSkillTable{\\[\@skillSep] \@markGrade{#1} & #2}
+  \fi
+}
+\NewDocumentCommand{\skill}{m}{%
+  \@isGradelessSkilltrue
+
+  \if@isFirstSkill
+    \g@addto@macro\@gradelessSkillTable{\parbox{\@mainWidth-\@timeDotSep}{#1}}
+    \@isFirstSkillfalse
+  \else
+    \g@addto@macro\@gradelessSkillTable{\\[\@skillSep] \parbox{\@mainWidth-\@timeDotSep}{#1}}
+  \fi
+}
+
+\NewDocumentEnvironment{skills}{O{\pgfkeysvalueof{/variables/skills}}O{\faStar}}{%
+\@createTitle{#1}{#2}
+\global\@isFirstSkilltrue
+\global\@isOneSkillfalse
+\global\@isGradelessSkillfalse
+}{%
+\node[below=\@sectionSep of @title \the\value{@titlePrev}.south west,anchor=north west]
+(skills)
+{
+  \begin{tabular}{@{}l@{\hskip 5pt}l@{\hskip \@colSep}l@{\hskip 5pt}l@{}}%
+    \@twoSkillsTable
+  \end{tabular}
+};
+\if@isOneSkill
+  \node[below=-0.65\@sectionSep of skills.south west,anchor=north west,]
+  (skills)
+  {
+    \begin{tabular}{@{}l@{\hskip 5pt}l@{}}%
+      \@oneSkillTable
+    \end{tabular}
+  };
+\fi
+
+\if@isGradelessSkill
+  \node[below=-0.65\@sectionSep of skills.south west,anchor=north west]
+  (skills)
+  {
+    \begin{tabular}{@{}l}%
+      \@gradelessSkillTable
+    \end{tabular}
+  };
+\fi
+
+\stepcounter{@lastItem}
+\draw (skills.south west) node %
+(last item \the\value{@lastItem}) {};
+}
+
+\NewDocumentEnvironment{emptySkills}{O{\pgfkeysvalueof{/variables/skills}}O{\faStar}}{%
+\@createTitle{#1}{#2}
+\global\@isFirstSkilltrue
+\global\@isOneSkillfalse
+\global\@isGradelessSkillfalse
+\node[below=0.6\@sectionSep of @title \the\value{@titlePrev}.south west,anchor=north west, text width=\@mainWidth-\@timeDotSep,align=justify]
+(skills)
+\bgroup
+}{%
+\egroup;
+\stepcounter{@lastItem}
+\draw (skills.south west) node %
+(last item \the\value{@lastItem}) {};
+}

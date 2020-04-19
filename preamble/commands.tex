@@ -1,0 +1,83 @@
+%----------------------------------------------------------------------------------------
+%   Commands for profile info
+%----------------------------------------------------------------------------------------
+\newif\if@isIcons
+\NewDocumentCommand{\useIcons}{}{
+  \global\@isIconstrue
+  \setlength\@timeDotSep{0.4cm}
+  \tikzset{
+    @timedot/.style = {@invisibleTimeDot,draw,fill,accentColor}
+  }
+}
+
+\xdef\profilePicture{\empty}
+\NewDocumentCommand{\setPicture}{m}{
+  \IfEq{#1}{}{}{\xdef\profilePicture{#1}}
+}
+
+\NewDocumentCommand{\displayCompanyAdress}{}{
+  \textbf{\pgfkeysvalueof{companyName}}\\
+  \IfEq{\pgfkeysvalueof{contactPerson}}{}{}{\pgfkeysvalueof{contactPerson}\\}
+  \pgfkeysvalueof{companyAddress}\\
+  \pgfkeysvalueof{companyZip} \pgfkeysvalueof{companyCity}
+}
+
+\NewDocumentCommand{\displaySubject}{O{\pgfkeysvalueof{/variables/applyAs}}O{\today}}{
+\IfEq{#1}{}{\textbf{#1 \pgfkeysvalueof{position}}}{\textbf{\pgfkeysvalueof{/variables/applyAs} \pgfkeysvalueof{position}}}
+\null\hfill #2\\
+{\pgfkeysvalueof{jobofferlocation}
+\pgfkeysvalueof{positionid}}
+}
+
+\xdef\signature{\empty}
+\NewDocumentCommand{\setSignaturePicture}{m}{
+  \IfEq{#1}{}{}{\xdef\signature{#1}}
+}
+
+\NewDocumentCommand{\displaysignature}{O{5cm}}{
+  \begin{figure}[htbp]
+    \includegraphics[width=#1]{\signature}
+  \end{figure}
+}
+
+\NewDocumentCommand{\setFirstName}{m}{\pgfkeyssetvalue{firstName}{#1}}
+\NewDocumentCommand{\setLastName}{m}{\pgfkeyssetvalue{lastName}{#1}}
+\NewDocumentCommand{\setAddress}{m}{\pgfkeyssetvalue{address}{#1}}
+\NewDocumentCommand{\setJobofferURL}{m}{\pgfkeyssetvalue{jobofferlocation}{#1}}
+\NewDocumentCommand{\setZipcode}{m}{\pgfkeyssetvalue{zipcode}{#1}}
+\NewDocumentCommand{\setCity}{m}{\pgfkeyssetvalue{city}{#1}}
+\NewDocumentCommand{\setEmail}{m}{\pgfkeyssetvalue{email}{#1}}
+\NewDocumentCommand{\setPhone}{m}{\pgfkeyssetvalue{phoneNumber}{#1}}
+\NewDocumentCommand{\setPosition}{m}{\pgfkeyssetvalue{position}{#1}}
+\NewDocumentCommand{\setPositionId}{m}{\pgfkeyssetvalue{positionid}{#1}}
+\NewDocumentCommand{\setCompanyName}{m}{\pgfkeyssetvalue{companyName}{#1}}
+\NewDocumentCommand{\setContactPerson}{m}{\pgfkeyssetvalue{contactPerson}{#1}}
+\NewDocumentCommand{\setCompanyAddress}{m}{\pgfkeyssetvalue{companyAddress}{#1}}
+\NewDocumentCommand{\setCompanyZip}{m}{\pgfkeyssetvalue{companyZip}{#1}}
+\NewDocumentCommand{\setCompanyCity}{m}{\pgfkeyssetvalue{companyCity}{#1}}
+\NewDocumentCommand{\ifnodedefined}{mmm}{\@ifundefined{pgf@sh@ns@#1}{#3}{#2}}
+
+\ExplSyntaxOn
+\cs_generate_variant:Nn\tl_item:nn {f}
+\DeclareExpandableDocumentCommand{\extract}{mm}{%
+  \tl_item:fn{#1}{#2}%
+}
+\ExplSyntaxOff
+
+% Set the actual language to English. This can be overwritten by the user in the
+% preamble
+%
+% Define the command to change the language
+\ExplSyntaxOn
+\NewDocumentCommand{\setLanguage}{m}{
+  \str_case:nnF {#1}
+  {
+    {german} {\@setGerman}
+      {english} {\setEnglish}
+      {french} {\@setFrench}
+  }
+  {\ClassError{error}{Unknown option `#1' for cvLanguage %
+      macro.}{Only `english', `german' and 'french' are valid options %
+      for this macro.}}
+}
+\ExplSyntaxOff
