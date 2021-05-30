@@ -45,14 +45,6 @@
 \stepcounter{@titleNext}
 }
 
-% Vertical lines in sections
-\NewDocumentCommand{\@endSectionDraw}{}{
-  \if@isIcons
-    \color{accentColor}
-    \draw (start) to (end.center);
-  \fi
-}
-
 \newcounter{@itemPrev}
 \setcounter{@itemPrev}{0}
 \newcounter{@itemNext}
@@ -94,8 +86,6 @@
     \end{scope}
   \end{tikzpicture}
   \restoregeometry
-  \setcounter{@itemPrev}{0}
-  \setcounter{@itemNext}{1}
   \setcounter{@lastItem}{1}
 }
 
@@ -108,8 +98,6 @@
     }{%
   \end{tikzpicture}%
   \restoregeometry
-  \setcounter{@itemPrev}{0}
-  \setcounter{@itemNext}{1}
   \setcounter{@lastItem}{1}
 }
 
@@ -121,7 +109,11 @@
 \stepcounter{@itemNext}
 \@definecvItem
 }{
-\@endSectionDraw
+% Vertical lines in sections
+\if@isIcons
+  \color{accentColor}
+  \draw (start) to (end.center);
+\fi
 \stepcounter{@lastItem}
 \draw (item \the\value{@itemPrev}.south west)
 node (last item \the\value{@lastItem}) {};
