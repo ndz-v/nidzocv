@@ -7,8 +7,9 @@
 \usepackage{enumitem}
 \usepackage{fontawesome5}
 \usepackage{graphicx}
-\usepackage{lmodern}
-% \usepackage{helvet}
+% \usepackage{lmodern}
+\usepackage{multicol}
+\usepackage{helvet}
 \usepackage{parskip} % Remove paragraph indentation
 \usepackage{pdfpages}
 \usepackage{tabularx}
@@ -17,6 +18,14 @@
 \usepackage{xparse}
 \usepackage{xstring}
 \usepackage{eurosym}
+\usepackage[
+  protrusion=true,
+  activate={true,nocompatibility},
+  final,
+  tracking=true,
+  kerning=true,
+  spacing=true,
+  factor=1100]{microtype}
 
 \RenewDocumentCommand{\familydefault}{}{\sfdefault}
 
