@@ -1,6 +1,3 @@
-%----------------------------------------------------------------------------------------
-%   Commands for profile info
-%----------------------------------------------------------------------------------------
 \newif\if@isIcons
 \NewDocumentCommand{\useIcons}{}{
   \global\@isIconstrue
@@ -10,6 +7,8 @@
   }
 }
 
+\NewDocumentCommand{\CS}{}{C\nolinebreak\hspace{-.05em}\raisebox{.1ex}{\small \bf \#}}
+
 \xdef\profilePicture{\empty}
 \NewDocumentCommand{\setPicture}{m}{
   \IfEq{#1}{}{}{\xdef\profilePicture{#1}}
@@ -18,7 +17,7 @@
 \NewDocumentCommand{\displayCompanyAdress}{}{
   \textbf{\pgfkeysvalueof{companyName}}\\
   \IfEq{\pgfkeysvalueof{contactPerson}}{}{}{\pgfkeysvalueof{contactPerson}\\}
-  \pgfkeysvalueof{companyAddress}\\
+  \IfEq{\pgfkeysvalueof{companyAddress}}{}{}{\pgfkeysvalueof{companyAddress}\\}
   \pgfkeysvalueof{companyZip} \pgfkeysvalueof{companyCity}
 }
 
@@ -39,6 +38,22 @@
     \includegraphics[width=#1]{\signature}
   \end{figure}
 }
+
+\pgfkeyssetvalue{firstName}{}
+\pgfkeyssetvalue{lastName}{}
+\pgfkeyssetvalue{address}{}
+\pgfkeyssetvalue{jobofferlocation}{}
+\pgfkeyssetvalue{zipcode}{}
+\pgfkeyssetvalue{city}{}
+\pgfkeyssetvalue{email}{}
+\pgfkeyssetvalue{phoneNumber}{}
+\pgfkeyssetvalue{position}{}
+\pgfkeyssetvalue{positionid}{}
+\pgfkeyssetvalue{companyName}{}
+\pgfkeyssetvalue{contactPerson}{}
+\pgfkeyssetvalue{companyAddress}{}
+\pgfkeyssetvalue{companyZip}{}
+\pgfkeyssetvalue{companyCity}{}
 
 \NewDocumentCommand{\setFirstName}{m}{\pgfkeyssetvalue{firstName}{#1}}
 \NewDocumentCommand{\setLastName}{m}{\pgfkeyssetvalue{lastName}{#1}}
